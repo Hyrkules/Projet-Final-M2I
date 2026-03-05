@@ -3,6 +3,46 @@
   "WorkspaceRootPath": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|c:\\users\\administrateur\\documents\\projet final\\projet-final-m2i\\projet cryptosim\\orderservice\\data\\orderdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|solutionrelative:projet cryptosim\\orderservice\\data\\orderdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|c:\\users\\administrateur\\documents\\projet final\\projet-final-m2i\\projet cryptosim\\orderservice\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|solutionrelative:projet cryptosim\\orderservice\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|c:\\users\\administrateur\\documents\\projet final\\projet-final-m2i\\projet cryptosim\\portfolioservice\\data\\portfoliodbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|solutionrelative:projet cryptosim\\portfolioservice\\data\\portfoliodbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|c:\\users\\administrateur\\documents\\projet final\\projet-final-m2i\\projet cryptosim\\portfolioservice\\controllers\\portfoliocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|solutionrelative:projet cryptosim\\portfolioservice\\controllers\\portfoliocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|c:\\users\\administrateur\\documents\\projet final\\projet-final-m2i\\projet cryptosim\\marketservice\\data\\marketdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|solutionrelative:projet cryptosim\\marketservice\\data\\marketdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|c:\\users\\administrateur\\documents\\projet final\\projet-final-m2i\\projet cryptosim\\marketservice\\services\\pricesimulatorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|solutionrelative:projet cryptosim\\marketservice\\services\\pricesimulatorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|c:\\users\\administrateur\\documents\\projet final\\projet-final-m2i\\projet cryptosim\\marketservice\\controllers\\marketcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|solutionrelative:projet cryptosim\\marketservice\\controllers\\marketcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|c:\\users\\administrateur\\documents\\projet final\\projet-final-m2i\\projet cryptosim\\authservice\\data\\authdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|solutionrelative:projet cryptosim\\authservice\\data\\authdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|c:\\users\\administrateur\\documents\\projet final\\projet-final-m2i\\projet cryptosim\\authservice\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|solutionrelative:projet cryptosim\\authservice\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|c:\\users\\administrateur\\documents\\projet final\\projet-final-m2i\\projet cryptosim\\authservice\\services\\jwtservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|solutionrelative:projet cryptosim\\authservice\\services\\jwtservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|c:\\users\\administrateur\\documents\\projet final\\projet-final-m2i\\projet cryptosim\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8D2F2044-F1D9-954C-E4D5-218565FF740E}|Projet CryptoSim\\Projet CryptoSim.csproj|solutionrelative:projet cryptosim\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -27,6 +67,136 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "OrderDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\OrderService\\Data\\OrderDbContext.cs",
+              "RelativeDocumentMoniker": "Projet CryptoSim\\OrderService\\Data\\OrderDbContext.cs",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\OrderService\\Data\\OrderDbContext.cs",
+              "RelativeToolTip": "Projet CryptoSim\\OrderService\\Data\\OrderDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T13:20:23.902Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "OrderController.cs",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\OrderService\\Controllers\\OrderController.cs",
+              "RelativeDocumentMoniker": "Projet CryptoSim\\OrderService\\Controllers\\OrderController.cs",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\OrderService\\Controllers\\OrderController.cs",
+              "RelativeToolTip": "Projet CryptoSim\\OrderService\\Controllers\\OrderController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T13:20:11.832Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PortfolioDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\PortfolioService\\Data\\PortfolioDbContext.cs",
+              "RelativeDocumentMoniker": "Projet CryptoSim\\PortfolioService\\Data\\PortfolioDbContext.cs",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\PortfolioService\\Data\\PortfolioDbContext.cs",
+              "RelativeToolTip": "Projet CryptoSim\\PortfolioService\\Data\\PortfolioDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T13:19:54.332Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PortfolioController.cs",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\PortfolioService\\Controllers\\PortfolioController.cs",
+              "RelativeDocumentMoniker": "Projet CryptoSim\\PortfolioService\\Controllers\\PortfolioController.cs",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\PortfolioService\\Controllers\\PortfolioController.cs",
+              "RelativeToolTip": "Projet CryptoSim\\PortfolioService\\Controllers\\PortfolioController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T13:19:36.569Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MarketDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\MarketService\\Data\\MarketDbContext.cs",
+              "RelativeDocumentMoniker": "Projet CryptoSim\\MarketService\\Data\\MarketDbContext.cs",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\MarketService\\Data\\MarketDbContext.cs",
+              "RelativeToolTip": "Projet CryptoSim\\MarketService\\Data\\MarketDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T13:19:16.655Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "PriceSimulatorService.cs",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\MarketService\\Services\\PriceSimulatorService.cs",
+              "RelativeDocumentMoniker": "Projet CryptoSim\\MarketService\\Services\\PriceSimulatorService.cs",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\MarketService\\Services\\PriceSimulatorService.cs",
+              "RelativeToolTip": "Projet CryptoSim\\MarketService\\Services\\PriceSimulatorService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T13:18:55.108Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MarketController.cs",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\MarketService\\Controllers\\MarketController.cs",
+              "RelativeDocumentMoniker": "Projet CryptoSim\\MarketService\\Controllers\\MarketController.cs",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\MarketService\\Controllers\\MarketController.cs",
+              "RelativeToolTip": "Projet CryptoSim\\MarketService\\Controllers\\MarketController.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAIwEMAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T13:17:47.013Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AuthDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\AuthService\\Data\\AuthDbContext.cs",
+              "RelativeDocumentMoniker": "Projet CryptoSim\\AuthService\\Data\\AuthDbContext.cs",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\AuthService\\Data\\AuthDbContext.cs",
+              "RelativeToolTip": "Projet CryptoSim\\AuthService\\Data\\AuthDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T13:17:34.721Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "JwtService.cs",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\AuthService\\Services\\JwtService.cs",
+              "RelativeDocumentMoniker": "Projet CryptoSim\\AuthService\\Services\\JwtService.cs",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\AuthService\\Services\\JwtService.cs",
+              "RelativeToolTip": "Projet CryptoSim\\AuthService\\Services\\JwtService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T13:16:54.117Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\AuthService\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "Projet CryptoSim\\AuthService\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\AuthService\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "Projet CryptoSim\\AuthService\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T13:08:21.191Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Projet CryptoSim\\Program.cs",
               "RelativeDocumentMoniker": "Projet CryptoSim\\Program.cs",

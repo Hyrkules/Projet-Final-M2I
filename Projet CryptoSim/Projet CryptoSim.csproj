@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -16,14 +16,7 @@
   <ItemGroup>
     <Folder Include="CryptoSim.Blazor\Components\" />
     <Folder Include="CryptoSim.Blazor\Pages\" />
-    <Folder Include="OrderService\Models\" />
-    <Folder Include="OrderService\Services\" />
     <Folder Include="CryptoSim.Blazor\Services\" />
-    <Folder Include="PortfolioService\Models\" />
-    <Folder Include="PortfolioService\Services\" />
-    <Folder Include="MarketService\Models\" />
-    <Folder Include="AuthService\Models\" />
-    <Folder Include="AuthService\DTOs\" />
   </ItemGroup>
 
 </Project>

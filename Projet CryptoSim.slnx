@@ -1,3 +1,7 @@
 <Solution>
-  <Project Path="Projet CryptoSim/Projet CryptoSim.csproj" />
+  <Project Path="AuthService/AuthService.csproj" Id="d7219206-902f-4cd0-919e-70ca37422427" />
+  <Project Path="CryptoSim/CryptoSim.Blazor.csproj" Id="f8953a47-5b33-4ded-9bb3-8b3de9c71073" />
+  <Project Path="MarketService/MarketService.csproj" Id="4e7490c9-3c6d-4de9-9981-a7b0deea1625" />
+  <Project Path="OrderService/OrderService.csproj" Id="7107b2b3-00f4-4971-8656-fc2f223bc497" />
+  <Project Path="PortfolioService/PortfolioService.csproj" Id="f5b46ac7-f71d-4e0d-a297-1bb5b23c382e" />
 </Solution>
