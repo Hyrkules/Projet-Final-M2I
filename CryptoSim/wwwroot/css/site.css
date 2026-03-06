@@ -1,0 +1,31 @@
+﻿/* Style personnalisé pour compléter Bootstrap */
+body {
+    background-color: #0f172a; /* Bleu très foncé / Noir */
+    color: #f8fafc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.crypto-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    transition: transform 0.2s;
+}
+
+    .crypto-card:hover {
+        transform: translateY(-5px);
+        border-color: #38bdf8;
+    }
+
+.price-up {
+    color: #22c55e;
+}
+
+.price-down {
+    color: #ef4444;
+}
+
+.navbar-custom {
+    background-color: #1e293b;
+    border-bottom: 1px solid #334155;
+}

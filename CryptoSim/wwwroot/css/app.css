@@ -1,0 +1,67 @@
+﻿:root {
+    /* Palette TradingView / High-Tech */
+    --neon-green: #00ff88;
+    --neon-green-glow: rgba(0, 255, 136, 0.3);
+    --dark-bg: #0b0e14;         /* Fond principal ultra sombre */
+    --card-bg: #151921;         /* Fond des surfaces (Sidebar/Header/Cards) */
+    --border-color: #2a2e39;    /* Bordures fines style interface de trading */
+    --text-muted: #848e9c;      /* Texte secondaire (gris) */
+    --text-main: #e0e3eb;       /* Texte principal (blanc cassé) */
+    --sidebar-collapsed: 70px;  /* Largeur réduite */
+    --sidebar-expanded: 240px;  /* Largeur au survol */
+}
+
+/* Base de la page */
+body {
+    background-color: var(--dark-bg);
+    color: var(--text-main);
+    font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.trade-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+    .trade-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--neon-green);
+    }
+
+/* Conteneur parent qui prend tout l'écran */
+.app-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: var(--dark-bg);
+}
+
+/* Le bloc qui contient Header + Body */
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Prend tout l'espace restant à droite du menu */
+    min-width: 0; /* Évite les bugs de débordement avec flex */
+    height: 100vh;
+}
+
+/* Zone du contenu sous le header */
+.content-area {
+    flex-grow: 1;
+    overflow-y: auto; /* Permet de scroller uniquement ici */
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre horizontalement le contenu */
+}
+
+    /* Centre le contenu de Home.razor proprement */
+    .content-area .container-fluid {
+        max-width: 1200px; /* Évite que le texte soit trop étalé sur les grands écrans */
+        width: 100%;
+    }
