@@ -1,9 +1,0 @@
-C:\Users\Administrateur\Documents\cours M2I\projet_final\CryptoSim\obj\Debug\net10.0\EmbeddedAttribute.cs
-C:\Users\Administrateur\Documents\cours M2I\projet_final\CryptoSim\obj\Debug\net10.0\ValidatableTypeAttribute.cs
-C:\Users\Administrateur\Documents\cours M2I\projet_final\CryptoSim\obj\Debug\net10.0\rpswa.dswa.cache.json
-C:\Users\Administrateur\Documents\cours M2I\projet_final\CryptoSim\obj\Debug\net10.0\CryptoSim.Blazor.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Administrateur\Documents\cours M2I\projet_final\CryptoSim\obj\Debug\net10.0\CryptoSim.Blazor.AssemblyInfoInputs.cache
-C:\Users\Administrateur\Documents\cours M2I\projet_final\CryptoSim\obj\Debug\net10.0\CryptoSim.Blazor.AssemblyInfo.cs
-C:\Users\Administrateur\Documents\cours M2I\projet_final\CryptoSim\obj\Debug\net10.0\CryptoSim.Blazor.csproj.CoreCompileInputs.cache
-C:\Users\Administrateur\Documents\cours M2I\projet_final\CryptoSim\obj\Debug\net10.0\CryptoSim.Blazor.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Administrateur\Documents\cours M2I\projet_final\CryptoSim\obj\Debug\net10.0\CryptoSim.Blazor.sourcelink.json

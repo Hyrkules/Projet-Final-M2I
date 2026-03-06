@@ -1,0 +1,55 @@
+﻿@rendermode InteractiveServer
+@page "/login"
+@using CryptoSim.Blazor.Components.Layout
+@layout EmptyLayout
+@inject NavigationManager Navigation
+
+<div class="login-page">
+    <div class="login-card animate-fade-in">
+        <div class="login-header">
+            <span class="logo-icon">₿</span>
+            <h1 class="logo-text">CryptoSim</h1>
+            <p class="subtitle">Connectez-vous pour trader</p>
+        </div>
+        <form class="login-form" @onsubmit="HandleLogin" @onsubmit:preventDefault>
+            <div class="form-group">
+                <label>Email ou Utilisateur</label>
+                <div class="input-wrapper">
+                    <i class="bi bi-person"></i>
+                    <input type="text" placeholder="yann@cryptosim.com" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <div class="input-wrapper">
+                    <i class="bi bi-lock"></i>
+                    <input type="password" placeholder="••••••••" />
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login-neon">
+                SE CONNECTER
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <a href="forgot-password">Mot de passe oublié ?</a>
+            <span>Pas de compte ? <a href="register" class="text-neon">S'inscrire</a></span>
+        </div>
+    </div>
+</div>
+
+@code {
+    private async Task HandleLogin()
+    {
+        // 1. On simule le travail serveur
+        await Task.Delay(500);
+
+        // 2. ON CHANGE L'ÉTAT GLOBAL : C'est l'étape clé !
+        AuthState.IsAuthenticated = true;
+
+        // 3. On redirige vers la home
+        Navigation.NavigateTo("/");
+    }
+}

@@ -1,0 +1,243 @@
+﻿:root {
+    /* Palette TradingView / High-Tech */
+    --neon-green: #26a69a;
+    --neon-green-glow: rgba(0, 255, 136, 0.3);
+    --dark-bg: #0b0e14; /* Fond principal ultra sombre */
+    --card-bg: #151921; /* Fond des surfaces (Sidebar/Header/Cards) */
+    --border-color: #2a2e39; /* Bordures fines style interface de trading */
+    --text-muted: #848e9c; /* Texte secondaire (gris) */
+    --text-main: #e0e3eb; /* Texte principal (blanc cassé) */
+    --sidebar-collapsed: 70px; /* Largeur réduite */
+    --sidebar-expanded: 240px; /* Largeur au survol */
+}
+
+/* --- MODE SOMBRE (Par défaut) --- */
+.dark-theme {
+    --sidebar-bg: #1a1e27; /* Fond sombre */
+    --sidebar-border: #2a2e39; /* Bordure discrète */
+    --text-muted: #848e9c; /* Gris pour les icônes non actives */
+    --text-main: #ffffff; /* Blanc pour le survol */
+    --nav-hover-bg: rgba(255, 255, 255, 0.03);
+    --neon-green: #26a69a; /* Vert Trading */
+}
+
+/* --- MODE JOUR (Surcharge) --- */
+.light-theme {
+    --sidebar-bg: #ffffff; /* Fond blanc */
+    --sidebar-border: #e0e3eb; /* Bordure claire */
+    --text-muted: #6a6d78; /* Gris plus foncé pour lisibilité */
+    --text-main: #131722; /* Texte presque noir */
+    --nav-hover-bg: #f0f3fa; /* Gris bleuté très clair au survol */
+    --neon-green: #26a69a; /* Vert trading plus "saisissant" sur blanc */
+}
+
+/* Base de la page */
+body {
+    background-color: var(--dark-bg);
+    color: var(--text-main);
+    font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.trade-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+    .trade-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--neon-green);
+    }
+
+/* Conteneur parent qui prend tout l'écran */
+.app-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: var(--dark-bg);
+}
+
+/* Le bloc qui contient Header + Body */
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Prend tout l'espace restant à droite du menu */
+    min-width: 0; /* Évite les bugs de débordement avec flex */
+    height: 100vh;
+}
+
+/* Zone du contenu sous le header */
+.content-area {
+    flex-grow: 1;
+    overflow-y: auto; /* Permet de scroller uniquement ici */
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre horizontalement le contenu */
+}
+
+    /* Centre le contenu de Home.razor proprement */
+    .content-area .container-fluid {
+        max-width: 1200px; /* Évite que le texte soit trop étalé sur les grands écrans */
+        width: 100%;
+    }
+
+
+/* ==========================================================================
+   STYLE AUTHENTICATION (Login / Forgot Password / Register)
+   ========================================================================== */
+
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: radial-gradient(circle at top right, #1e222d, #0d1017);
+    font-family: 'Inter', sans-serif;
+}
+
+.login-card {
+    background: rgba(30, 34, 45, 0.7);
+    backdrop-filter: blur(10px); /* Effet flou derrière la carte */
+    border: 1px solid rgba(42, 46, 57, 0.5);
+    padding: 40px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+    .login-header .logo-icon {
+        font-size: 3rem;
+        color: #26a69a;
+        display: block;
+        margin-bottom: 10px;
+        text-shadow: 0 0 15px rgba(38, 166, 154, 0.4);
+    }
+
+    .login-header .logo-text {
+        font-size: 1.8rem;
+        color: #ffffff;
+        font-weight: 700;
+        margin: 0;
+    }
+
+.subtitle {
+    color: #848e9c;
+    font-size: 0.9rem;
+    margin-top: 8px;
+}
+
+/* --- FORMULAIRE --- */
+.login-form .form-group {
+    margin-bottom: 15px;
+}
+
+.login-form label {
+    display: block;
+    color: #d1d4dc;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+    .input-wrapper i {
+        position: absolute;
+        left: 12px;
+        color: #848e9c;
+        font-size: 1.1rem;
+    }
+
+    .input-wrapper input {
+        width: 100%;
+        padding: 12px 12px 12px 40px;
+        background: #131722;
+        border: 1px solid #2a2e39;
+        border-radius: 6px;
+        color: #ffffff;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+    }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: #26a69a;
+            box-shadow: 0 0 0 2px rgba(38, 166, 154, 0.2);
+        }
+
+/* --- BOUTON NÉON --- */
+.btn-login-neon {
+    width: 100%;
+    padding: 14px;
+    background: #26a69a;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+    .btn-login-neon:hover {
+        background: #2bbbad;
+        box-shadow: 0 0 20px rgba(38, 166, 154, 0.4);
+        transform: translateY(-1px);
+    }
+
+/* --- FOOTER --- */
+.login-footer {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.85rem;
+    color: #848e9c;
+}
+
+    .login-footer a {
+        color: #26a69a;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+        .login-footer a:hover {
+            color: #2bbbad;
+            text-decoration: underline;
+        }
+
+/* --- ANIMATION --- */
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

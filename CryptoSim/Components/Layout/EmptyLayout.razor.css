@@ -1,0 +1,10 @@
+﻿.empty-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #0d1017; /* Fond sombre par défaut */
+}
+
+main {
+    flex-grow: 1;
+}

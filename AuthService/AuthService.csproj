@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.13" />
@@ -24,6 +25,10 @@
 	<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.6" />
 	<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.6" />
 
+=======
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.13" />
+>>>>>>> main
   </ItemGroup>
 
 </Project>

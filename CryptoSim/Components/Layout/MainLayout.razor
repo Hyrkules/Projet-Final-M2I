@@ -1,23 +1,26 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
+
+<div class="@(IsDark ? "dark-theme" : "light-theme") app-container">
+    <NavMenu />
+
+    <div class="main-wrapper">
+        <Header OnThemeToggled="ToggleTheme" />
+        <main class="content-area">
+            <div class="container-fluid">
+                @Body
+            </div>
+        </main>
     </div>
+</div
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+@code {
+    private bool IsDark = true;
 
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
-</div>
+    private void ToggleTheme() {
+        Console.WriteLine("Le Layout a reçu le signal !"); // Regarde ta console Visual Studio
+        IsDark = !IsDark;
+        StateHasChanged(); 
+    }
+}

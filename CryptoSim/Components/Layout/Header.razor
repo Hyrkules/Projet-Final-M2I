@@ -1,0 +1,93 @@
+﻿@* On injecte le NavigationManager au cas où tu en as besoin pour la déconnexion *@
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+
+<header class="trading-header shadow-sm">
+    <div class="header-container">
+        <div class="brand-section">
+            <NavLink class="header-logo" href="" Match="NavLinkMatch.All">
+                <span class="logo-icon">₿</span>
+                <span class="logo-text">CryptoSim</span>
+            </NavLink>
+        </div>
+
+        <div class="user-section">
+            <div class="balance-display">
+                <span class="balance-amount">10,000.00</span>
+                <span class="balance-currency">€</span>
+            </div>
+
+            <div class="action-icons">
+                <button class="icon-btn-trading" @onclick="HandleToggle" title="Changer le thème">
+                    @if (_localDark) {
+                        <i class="bi bi-moon-stars"></i>
+                    } else {
+                        <i class="bi bi-sun"></i>
+                    }
+                </button>
+                
+                <button class="icon-btn-trading" title="Notifications">
+                    <i class="bi bi-bell-fill"></i>
+                </button>
+
+
+
+                @* --- BLOC AVATAR MODIFIÉ --- *@
+                <div class="avatar-wrapper">
+                    <div class="user-avatar-initial" @onclick="ToggleMenu">
+                        <span>B</span>
+                    </div>
+
+                    @if (isMenuOpen)
+                    {
+                        <div class="user-dropdown animate-fade-in">
+                            <div class="dropdown-user-info">
+                                <strong>Baptiste</strong>
+                                <span class="badge-status"> - Premium</span>
+                            </div>
+
+                            <hr class="dropdown-divider" />
+
+                            <NavLink href="profil" class="dropdown-link" @onclick="CloseMenu">
+                                <i class="bi bi-person-circle"></i> Modifier mon Profil
+                            </NavLink>
+
+                            <NavLink href="transfert" class="dropdown-link" @onclick="CloseMenu">
+                                <i class="bi bi-box-arrow-in-down"></i> Dépôt/Retrait
+                            </NavLink>
+
+
+                            <button class="dropdown-link logout-text" @onclick="Logout">
+                                <i class="bi bi-box-arrow-right"></i> Déconnexion
+                            </button>
+                        </div>
+                    }
+                </div>
+                @* --------------------------- *@
+            </div>
+        </div>
+    </div>
+</header>
+
+@code {
+    [Parameter] public EventCallback OnThemeToggled { get; set; }
+
+    private bool _localDark = true;
+
+    private async Task HandleToggle()
+    {
+        _localDark = !_localDark; // Change l'icône (ça, ça marche chez toi)
+        await OnThemeToggled.InvokeAsync();
+    }
+
+    private bool isMenuOpen = false;
+    private void ToggleMenu() => isMenuOpen = !isMenuOpen;
+    private void CloseMenu() => isMenuOpen = false;
+
+    private void Logout()
+    {
+        isMenuOpen = false;
+        Navigation.NavigateTo("/login");
+    }
+}
