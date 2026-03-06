@@ -15,16 +15,23 @@
         <div class="user-section">
             <div class="balance-display">
                 <span class="balance-amount">10,000.00</span>
-                <span class="balance-currency">VF</span>
+                <span class="balance-currency">€</span>
             </div>
 
             <div class="action-icons">
-                <button class="icon-btn-trading" title="Dépôt/Retrait">
-                    <i class="bi bi-lightning-fill"></i>
+                <button class="icon-btn-trading" @onclick="HandleToggle" title="Changer le thème">
+                    @if (_localDark) {
+                        <i class="bi bi-moon-stars"></i>
+                    } else {
+                        <i class="bi bi-sun"></i>
+                    }
                 </button>
+                
                 <button class="icon-btn-trading" title="Notifications">
                     <i class="bi bi-bell-fill"></i>
                 </button>
+
+
 
                 @* --- BLOC AVATAR MODIFIÉ --- *@
                 <div class="avatar-wrapper">
@@ -46,6 +53,11 @@
                                 <i class="bi bi-person-circle"></i> Modifier mon Profil
                             </NavLink>
 
+                            <NavLink href="transfert" class="dropdown-link" @onclick="CloseMenu">
+                                <i class="bi bi-box-arrow-in-down"></i> Dépôt/Retrait
+                            </NavLink>
+
+
                             <button class="dropdown-link logout-text" @onclick="Logout">
                                 <i class="bi bi-box-arrow-right"></i> Déconnexion
                             </button>
@@ -59,18 +71,22 @@
 </header>
 
 @code {
-    // Variable pour suivre l'état du menu (ouvert/fermé)
+    [Parameter] public EventCallback OnThemeToggled { get; set; }
+
+    private bool _localDark = true;
+
+    private async Task HandleToggle()
+    {
+        _localDark = !_localDark; // Change l'icône (ça, ça marche chez toi)
+        await OnThemeToggled.InvokeAsync();
+    }
+
     private bool isMenuOpen = false;
-
-    // Méthode pour inverser l'état
     private void ToggleMenu() => isMenuOpen = !isMenuOpen;
-
-    // Méthode pour fermer le menu quand on clique sur un lien
     private void CloseMenu() => isMenuOpen = false;
 
     private void Logout()
     {
-        // Logique de déconnexion à ajouter ici plus tard
         isMenuOpen = false;
         Navigation.NavigateTo("/login");
     }

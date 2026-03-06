@@ -2,28 +2,35 @@
 .sidebar-trading {
     width: var(--sidebar-collapsed);
     height: 100vh;
-    background-color: var(--card-bg);
-    border-right: 1px solid var(--border-color);
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--sidebar-border);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     position: sticky;
     top: 0;
     z-index: 1000;
+
 }
 
-    .sidebar-trading:hover {
-        width: var(--sidebar-expanded);
-        box-shadow: 10px 0 20px rgba(0, 0, 0, 0.5);
-    }
+/* Survol de la sidebar (l'ombre change aussi !) */
+.sidebar-trading:hover {
+    width: var(--sidebar-expanded);
+    /* Ombre plus douce en mode clair, forte en mode sombre */
+    box-shadow: 10px 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .sidebar-trading:hover {
+    box-shadow: 10px 0 20px rgba(0, 0, 0, 0.5);
+}
 
 /* On utilise ::deep car .nav-link est généré par le composant enfant <NavLink> */
 ::deep .nav-link {
     display: flex;
     align-items: center;
     padding: 15px 0 15px 23px;
-    color: var(--text-muted) !important;
+    color: var(--text-muted) !important; /* Dynamique ! */
     white-space: nowrap;
     border-radius: 0;
     transition: all 0.2s;
@@ -50,18 +57,18 @@
 }
 
 ::deep .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: var(--nav-hover-bg) !important; /* Dynamique ! */
     color: var(--text-main) !important;
 }
 
 ::deep .nav-link.active {
     color: var(--neon-green) !important;
-    background-color: rgba(0, 255, 136, 0.05);
+    background-color: var(--nav-hover-bg) !important;
     border-left: 3px solid var(--neon-green);
 }
 
 .sidebar-footer {
     margin-top: auto;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--sidebar-border); /* Dynamique ! */
     padding-bottom: 10px;
 }
