@@ -2,10 +2,10 @@
 {
     public class AuthResponse
     {
-        public string Token;
-        public string Username;
-        public string Role;
-        public decimal Balance;
-        public long ExpiresIn;
+        public string Token { get; set; }
+        public string Username { get; set; }
+        public string Role { get; set; }
+        public decimal Balance { get; set; }
+        public long ExpiresIn { get; set; }
     }
 }

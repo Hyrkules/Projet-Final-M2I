@@ -6,13 +6,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Articles.Api.Services
+namespace AuthService.Services
 {
-    public interface IJwtService
-    {
-        string GenerateToken(User user);
-        TokenValidationParameters GetValidationParameters();
-    }
 
     public class JwtService : IJwtService
     {

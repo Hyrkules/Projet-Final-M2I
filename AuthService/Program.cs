@@ -1,12 +1,12 @@
 using AuthService.Controllers;
 using AuthService.Middleware;
+using AuthService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Projet_CryptoSim.AuthService.Data;
 using System.Text;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,27 +38,27 @@ builder.Services.AddSwaggerGen(options =>
         Description = "Entrez votre token JWT. \nExemple : eyJHjhfgjhdfOSDGJ...."
     });
 
-//    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-//{
-//    {
-//        new OpenApiSecurityScheme
-//        {
-//            Reference = new OpenApiReference
-//            {
-//                Type = ReferenceType.SecurityScheme,
-//                Id   = "Bearer"
-//            }
-//        },
-//        Array.Empty<string>()
-//    }
-//});
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+{
+    {
+        new OpenApiSecurityScheme
+        {
+            Reference = new OpenApiReference
+            {
+                Type = ReferenceType.SecurityScheme,
+                Id   = "Bearer"
+            }
+        },
+        Array.Empty<string>()
+    }
+});
 
 });
 
 var secretKey = builder.Configuration["Jwt:Secret"]
                 ?? throw new InvalidOperationException("Jwt:Secret manquant.");
 
-var key = Encoding.ASCII.GetBytes(secretKey);
+var key = Encoding.UTF8.GetBytes(secretKey);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -77,14 +77,18 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(key),
 
         ValidateIssuer = true,
-
+        ValidIssuer = "CryptoSim.AuthService",
         ValidateAudience = true,
+        ValidAudience = "CryptoSim.Services",
 
         ClockSkew = TimeSpan.Zero
 
     };
 
 });
+
+builder.Services.AddSingleton<IJwtService, JwtService>();
+builder.Services.AddScoped<IAuthService, AuthService.Services.AuthService>();
 
 builder.Services.AddAuthorization();
 

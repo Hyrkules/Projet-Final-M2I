@@ -6,11 +6,11 @@ namespace AuthService.DTOs
     {
         [Required]
         [MinLength(3)]
-        public string Username;
+        public string Username { get; set; }
         [Required][MinLength(6)]
-        string Password;
+        public string Password { get; set; }
         [Required]
         [EmailAddress]
-        public string Email;
+        public string Email { get; set; }
     }
 }
