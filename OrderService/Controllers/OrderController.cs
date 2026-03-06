@@ -1,83 +1,100 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OrderService.DTOs;
+using OrderService.Services;
 
-namespace Projet_CryptoSim.OrderService.Controllers
+namespace OrderService.Controllers;
+
+[ApiController]
+[Route("api/orders")]
+[Authorize]
+public class OrderController : ControllerBase
 {
-    public class OrderController : Controller
+    private readonly IOrderManagerService _orderService;
+
+    public OrderController(IOrderManagerService orderService)
     {
-        // GET: OrderController
-        public ActionResult Index()
-        {
-            return View();
-        }
+        _orderService = orderService;
+    }
 
-        // GET: OrderController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+    // POST /api/orders
+    // Passer un ordre d'achat ou de vente
+    [HttpPost]
+    public async Task<IActionResult> PlaceOrder([FromBody] OrderRequestDto request)
+    {
+        var userId = GetCurrentUserId();
+        if (userId is null) return Unauthorized();
 
-        // GET: OrderController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        // On transmet le token JWT pour que le service puisse appeler AuthService et PortfolioService
+        var token = GetCurrentToken();
 
-        // POST: OrderController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        var (order, error) = await _orderService.PlaceOrderAsync(userId.Value, request, token);
 
-        // GET: OrderController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+        if (error != null && order?.Status == "Rejected")
+            return BadRequest(new { message = error, order });
 
-        // POST: OrderController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        if (error != null)
+            return BadRequest(new { message = error });
 
-        // GET: OrderController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+        return Ok(order);
+    }
 
-        // POST: OrderController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+    // GET /api/orders
+    // Historique des ordres de l'utilisateur connecté
+    [HttpGet]
+    public async Task<IActionResult> GetOrders()
+    {
+        var userId = GetCurrentUserId();
+        if (userId is null) return Unauthorized();
+
+        var orders = await _orderService.GetOrdersAsync(userId.Value);
+        return Ok(orders);
+    }
+
+    // GET /api/orders/{id}
+    // Détails d'un ordre
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetOrder(int id)
+    {
+        var userId = GetCurrentUserId();
+        if (userId is null) return Unauthorized();
+
+        var order = await _orderService.GetOrderByIdAsync(userId.Value, id);
+        if (order == null)
+            return NotFound(new { message = $"Ordre #{id} introuvable." });
+
+        return Ok(order);
+    }
+
+    // DELETE /api/orders/{id}
+    // Annuler un ordre en attente
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> CancelOrder(int id)
+    {
+        var userId = GetCurrentUserId();
+        if (userId is null) return Unauthorized();
+
+        var (success, error) = await _orderService.CancelOrderAsync(userId.Value, id);
+
+        if (!success)
+            return BadRequest(new { message = error });
+
+        return Ok(new { message = $"Ordre #{id} annulé." });
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
+    private int? GetCurrentUserId()
+    {
+        var sub = User.FindFirstValue(ClaimTypes.NameIdentifier)
+               ?? User.FindFirstValue("sub");
+        return int.TryParse(sub, out var id) ? id : null;
+    }
+
+    private string GetCurrentToken()
+    {
+        var authHeader = Request.Headers["Authorization"].ToString();
+        return authHeader.StartsWith("Bearer ") ? authHeader["Bearer ".Length..] : string.Empty;
     }
 }
