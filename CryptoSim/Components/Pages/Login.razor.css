@@ -1,0 +1,143 @@
+﻿.login-page {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0d1017; /* Fond encore plus sombre que le dashboard */
+    background-image: radial-gradient(circle at 20% 30%, rgba(38, 166, 154, 0.05) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(131, 85, 255, 0.05) 0%, transparent 40%);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    background-color: #161a25;
+    border: 1px solid #2a2e39;
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-icon {
+    font-size: 3rem;
+    color: #00ff88;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.logo-text {
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.subtitle {
+    color: #848e9c;
+    font-size: 0.9rem;
+}
+
+/* Formulaire */
+.form-group {
+    margin-bottom: 20px;
+}
+
+    .form-group label {
+        display: block;
+        color: #b2b5be;
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+    }
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+    .input-wrapper i {
+        position: absolute;
+        left: 15px;
+        color: #848e9c;
+    }
+
+    .input-wrapper input {
+        width: 100%;
+        padding: 12px 15px 12px 45px;
+        background-color: #1e222d;
+        border: 1px solid #2a2e39;
+        border-radius: 6px;
+        color: #ffffff;
+        transition: border-color 0.2s;
+    }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: #00ff88;
+        }
+
+/* Bouton Néon */
+.btn-login-neon {
+    width: 100%;
+    padding: 14px;
+    background-color: #00ff88;
+    color: #000000;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+}
+
+    .btn-login-neon:hover {
+        background-color: #00e67a;
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+        transform: translateY(-2px);
+    }
+
+.login-footer {
+    margin-top: 25px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.85rem;
+}
+
+    .login-footer a {
+        color: #848e9c;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+        .login-footer a:hover {
+            color: #ffffff;
+        }
+
+.text-neon {
+    color: #00ff88 !important;
+}
+
+/* Animation */
+.animate-fade-in {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

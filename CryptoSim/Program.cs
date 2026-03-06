@@ -1,4 +1,4 @@
-using CryptoSim.Components;
+using CryptoSim.Blazor.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -8,8 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="Pages\" />
+    <Compile Remove="Services\**" />
+    <Content Remove="Services\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Components\Layout\NavMenu.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Components\Layout\NavMenu.razor.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

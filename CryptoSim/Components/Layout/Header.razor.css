@@ -1,0 +1,224 @@
+﻿/* ==========================================================================
+   STRUCTURE DU HEADER (Style TradingView)
+   ========================================================================== */
+.trading-header {
+    background-color: #1a1e27;
+    border-bottom: 1px solid #2a2e39;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    color: #e0e3eb;
+}
+
+.header-container {
+    width: 100%;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* --- ZONE GAUCHE (Logo) --- */
+.brand-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-logo {
+    text-decoration: none !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-icon {
+    font-size: 1.4rem;
+    color: #26a69a; /* Vert trading */
+}
+
+.logo-text {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #e0e3eb;
+}
+
+/* --- ZONE DROITE (Solde & Actions) --- */
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.balance-display {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.balance-amount {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #e0e3eb;
+}
+
+.balance-currency {
+    color: #848e9c;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.action-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon-btn-trading {
+    background: none;
+    border: none;
+    color: #848e9c;
+    font-size: 1.2rem;
+    padding: 4px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+    .icon-btn-trading:hover {
+        color: #00ff88;
+    }
+
+.bi-lightning-fill {
+    color: #8355ff; /* Violet dépôt */
+}
+
+/* --- AVATAR & WRAPPER --- */
+.avatar-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.user-avatar-initial {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #313a48;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #e0e3eb;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+    .user-avatar-initial:hover {
+        border-color: #848e9c;
+    }
+
+/* ==========================================================================
+   DROPDOWN MENU (Profil)
+   ========================================================================== */
+.user-dropdown {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    width: 220px;
+    background-color: #1a1e27; /* Fond sombre identique au header */
+    border: 1px solid #2a2e39;
+    border-radius: 4px;
+    padding: 8px 0;
+    z-index: 2000;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.dropdown-user-info {
+    padding: 8px 16px;
+}
+
+.badge-status {
+    font-size: 0.7rem;
+    color: #00ff88;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.dropdown-divider {
+    border-top: 1px solid #2a2e39;
+    margin: 8px 0;
+}
+
+/* --- LIENS DU MENU (NavLink & Buttons) --- */
+::deep .dropdown-link {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 10px 16px !important;
+    color: #b2b5be !important;
+    text-decoration: none !important;
+    font-size: 0.85rem !important;
+    transition: all 0.2s ease !important;
+    background: transparent !important; /* Supprime le fond blanc des boutons */
+    border: none !important;
+    width: 100% !important;
+    text-align: left !important;
+    cursor: pointer !important;
+}
+
+    ::deep .dropdown-link:hover {
+        background-color: #2a2e39 !important;
+        color: #ffffff !important;
+    }
+
+    ::deep .dropdown-link i {
+        font-size: 1.1rem;
+        color: #848e9c;
+    }
+
+/* Couleur spéciale Déconnexion */
+::deep .logout-text {
+    /* On utilise la même couleur que les autres liens pour ne pas attirer l'œil inutilement */
+    color: #b2b5be !important;
+    margin-top: 4px;
+    border-top: 1px solid #2a2e39 !important; /* Petit séparateur subtil juste pour ce bouton */
+    padding-top: 12px !important;
+}
+
+    ::deep .logout-text:hover {
+        /* Au survol, on utilise un gris plus clair ou une légère teinte bleutée au lieu du rouge */
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: #ffffff !important;
+    }
+
+    /* Optionnel : si tu veux une icône légèrement orangée pour l'alerte sans que ce soit agressif */
+    ::deep .logout-text i {
+        color: #848e9c; /* Couleur neutre par défaut */
+        transition: color 0.2s;
+    }
+
+    ::deep .logout-text:hover i {
+        color: #e0e3eb; /* S'éclaire simplement au survol */
+    }
+
+/* Animation d'apparition */
+.animate-fade-in {
+    animation: fadeInSlide 0.2s ease-out;
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
