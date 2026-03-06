@@ -3,16 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7107B2B3-00F4-4971-8656-FC2F223BC497}|OrderService\\OrderService.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\orderservice\\services\\pricesimulatorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7107B2B3-00F4-4971-8656-FC2F223BC497}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\services\\pricesimulatorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D7219206-902F-4CD0-919E-70CA37422427}|AuthService\\AuthService.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\authservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D7219206-902F-4CD0-919E-70CA37422427}|AuthService\\AuthService.csproj|solutionrelative:authservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4E7490C9-3C6D-4DE9-9981-A7B0DEEA1625}|MarketService\\MarketService.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\marketservice\\marketservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{4E7490C9-3C6D-4DE9-9981-A7B0DEEA1625}|MarketService\\MarketService.csproj|solutionrelative:marketservice\\marketservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{D7219206-902F-4CD0-919E-70CA37422427}|AuthService\\AuthService.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\authservice\\authservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{D7219206-902F-4CD0-919E-70CA37422427}|AuthService\\AuthService.csproj|solutionrelative:authservice\\authservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D7219206-902F-4CD0-919E-70CA37422427}|AuthService\\AuthService.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\authservice\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D7219206-902F-4CD0-919E-70CA37422427}|AuthService\\AuthService.csproj|solutionrelative:authservice\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D7219206-902F-4CD0-919E-70CA37422427}|AuthService\\AuthService.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\authservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{D7219206-902F-4CD0-919E-70CA37422427}|AuthService\\AuthService.csproj|solutionrelative:authservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D7219206-902F-4CD0-919E-70CA37422427}|AuthService\\AuthService.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\authservice\\data\\authdbcontextfactory .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D7219206-902F-4CD0-919E-70CA37422427}|AuthService\\AuthService.csproj|solutionrelative:authservice\\data\\authdbcontextfactory .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,45 +26,58 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "PriceSimulatorService.cs",
-              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\OrderService\\Services\\PriceSimulatorService.cs",
-              "RelativeDocumentMoniker": "OrderService\\Services\\PriceSimulatorService.cs",
-              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\OrderService\\Services\\PriceSimulatorService.cs",
-              "RelativeToolTip": "OrderService\\Services\\PriceSimulatorService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-05T13:52:30.341Z",
+              "DocumentIndex": 1,
+              "Title": "AuthService",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\AuthService\\AuthService.csproj",
+              "RelativeDocumentMoniker": "AuthService\\AuthService.csproj",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\AuthService\\AuthService.csproj",
+              "RelativeToolTip": "AuthService\\AuthService.csproj",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAUwAoAAABhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-03-06T09:30:18.941Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MarketService",
-              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\MarketService\\MarketService.csproj",
-              "RelativeDocumentMoniker": "MarketService\\MarketService.csproj",
-              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\MarketService\\MarketService.csproj",
-              "RelativeToolTip": "MarketService\\MarketService.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-05T13:51:24.017Z",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\AuthService\\Program.cs",
+              "RelativeDocumentMoniker": "AuthService\\Program.cs",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\AuthService\\Program.cs",
+              "RelativeToolTip": "AuthService\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-06T09:27:09.57Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\AuthService\\Models\\User.cs",
-              "RelativeDocumentMoniker": "AuthService\\Models\\User.cs",
-              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\AuthService\\Models\\User.cs",
-              "RelativeToolTip": "AuthService\\Models\\User.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\AuthService\\appsettings.json",
+              "RelativeDocumentMoniker": "AuthService\\appsettings.json",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\AuthService\\appsettings.json",
+              "RelativeToolTip": "AuthService\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-03-06T09:21:28.199Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Authdbcontextfactory .cs",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\AuthService\\Data\\Authdbcontextfactory .cs",
+              "RelativeDocumentMoniker": "AuthService\\Data\\Authdbcontextfactory .cs",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\AuthService\\Data\\Authdbcontextfactory .cs",
+              "RelativeToolTip": "AuthService\\Data\\Authdbcontextfactory .cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-05T13:50:10.224Z",
+              "WhenOpened": "2026-03-06T09:18:38.045Z",
               "EditorCaption": ""
             },
             {

@@ -51,9 +51,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\CryptoSim\\CryptoSim.csproj",
-      "projectName": "CryptoSim",
-      "projectPath": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\CryptoSim\\CryptoSim.csproj",
+      "projectUniqueName": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\CryptoSim\\CryptoSim.Blazor.csproj",
+      "projectName": "CryptoSim.Blazor",
+      "projectPath": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\CryptoSim\\CryptoSim.Blazor.csproj",
       "packagesPath": "C:\\Users\\Administrateur\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\CryptoSim\\obj\\",
       "projectStyle": "PackageReference",
