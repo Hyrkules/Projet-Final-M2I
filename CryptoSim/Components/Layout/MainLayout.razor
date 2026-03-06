@@ -1,15 +1,26 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="app-container">
+
+<div class="@(IsDark ? "dark-theme" : "light-theme") app-container">
     <NavMenu />
 
     <div class="main-wrapper">
-        <Header />
-
+        <Header OnThemeToggled="ToggleTheme" />
         <main class="content-area">
             <div class="container-fluid">
                 @Body
             </div>
         </main>
     </div>
-</div>
+</div
+
+
+@code {
+    private bool IsDark = true;
+
+    private void ToggleTheme() {
+        Console.WriteLine("Le Layout a reçu le signal !"); // Regarde ta console Visual Studio
+        IsDark = !IsDark;
+        StateHasChanged(); 
+    }
+}

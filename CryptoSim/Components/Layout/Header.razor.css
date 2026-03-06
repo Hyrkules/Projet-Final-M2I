@@ -1,9 +1,33 @@
 ﻿/* ==========================================================================
    STRUCTURE DU HEADER (Style TradingView)
    ========================================================================== */
+/* --- DÉFINITION DES THÈMES --- */
+
+/* Mode Sombre (par défaut) */
+.dark-theme {
+    --header-bg: #1a1e27;
+    --header-border: #2a2e39;
+    --text-main: #e0e3eb;
+    --text-muted: #848e9c;
+    --dropdown-bg: #1a1e27;
+    --hover-bg: #2a2e39;
+}
+
+/* Mode Jour (Surcharge) */
+.light-theme {
+    --header-bg: #ffffff;
+    --header-border: #e0e3eb;
+    --text-main: #131722;
+    --text-muted: #6a6d78;
+    --dropdown-bg: #ffffff;
+    --hover-bg: #f0f3fa;
+}
+
 .trading-header {
-    background-color: #1a1e27;
-    border-bottom: 1px solid #2a2e39;
+    background-color: var(--header-bg); /* Utilise la variable */
+    border-bottom: 1px solid var(--header-border);
+    color: var(--text-main);
+    transition: all 0.3s ease; /* Transition douce */
     height: 50px;
     width: 100%;
     display: flex;
@@ -11,7 +35,6 @@
     position: sticky;
     top: 0;
     z-index: 1020;
-    color: #e0e3eb;
 }
 
 .header-container {
@@ -89,7 +112,7 @@
 }
 
     .icon-btn-trading:hover {
-        color: #00ff88;
+        color: #26a69a;
     }
 
 .bi-lightning-fill {
@@ -144,7 +167,7 @@
 
 .badge-status {
     font-size: 0.7rem;
-    color: #00ff88;
+    color: #26a69a;
     text-transform: uppercase;
     font-weight: 700;
 }
@@ -221,4 +244,46 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+
+/* MODE JOUR/NUIT */
+
+.bi-sun {
+    color: #ffb800; /* Jaune chaud pour le soleil */
+    filter: drop-shadow(0 0 5px rgba(255, 184, 0, 0.4));
+}
+
+.bi-moon-stars {
+    color: #a78bfa; /* Violet doux pour la lune */
+    filter: drop-shadow(0 0 5px rgba(167, 139, 250, 0.4));
+}
+
+.logo-text, .balance-amount {
+    color: var(--text-main);
+}
+
+.icon-btn-trading {
+    color: var(--text-muted);
+}
+
+.user-dropdown {
+    background-color: var(--dropdown-bg);
+    border: 1px solid var(--header-border);
+    color: var(--text-main);
+}
+
+::deep .dropdown-link {
+    color: var(--text-muted) !important;
+}
+
+    ::deep .dropdown-link:hover {
+        background-color: var(--hover-bg) !important;
+        color: var(--text-main) !important;
+    }
+
+/* On n'oublie pas le fond de l'application */
+.app-container {
+    background-color: var(--header-bg);
+    min-height: 100vh;
 }
