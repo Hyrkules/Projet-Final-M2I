@@ -9,6 +9,9 @@
     --text-main: #e0e3eb; /* Texte principal (blanc cassé) */
     --sidebar-collapsed: 70px; /* Largeur réduite */
     --sidebar-expanded: 240px; /* Largeur au survol */
+    --gold: #c1a461;
+    --white: #ffffff;
+    --grisé: #848e9c
 }
 
 /* --- MODE SOMBRE (Par défaut) --- */
@@ -19,6 +22,8 @@
     --text-main: #ffffff; /* Blanc pour le survol */
     --nav-hover-bg: rgba(255, 255, 255, 0.03);
     --neon-green: #26a69a; /* Vert Trading */
+    --gold: #c1a461;
+    --white: #ffffff;
 }
 
 /* --- MODE JOUR (Surcharge) --- */
@@ -29,16 +34,35 @@
     --text-main: #131722; /* Texte presque noir */
     --nav-hover-bg: #f0f3fa; /* Gris bleuté très clair au survol */
     --neon-green: #26a69a; /* Vert trading plus "saisissant" sur blanc */
+    --gold: #c1a461;
+    --white: #ffffff;
 }
 
 /* Base de la page */
 body {
-    background-color: var(--dark-bg);
-    color: var(--text-main);
-    font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
-    margin: 0;
-    overflow-x: hidden;
+    margin: 0; 
+    min-height: 100vh; 
 }
+
+body, .app-container {
+    background-image: url('/images/background.jpg') !important;
+    background-size: cover !important;
+    background-attachment: fixed !important;
+    background-position: center center !important;
+    background-color: #0d1017; /* Couleur de secours si l'image met du temps à charger */
+}
+
+.card {
+    background-color: rgba(30, 34, 45, 0.75); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); 
+    border: 1px solid rgba(42, 46, 57, 0.5); /* #2A2E39 à 50% */
+
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3); /* Ombre pour la profondeur */
+}
+
 
 .trade-card {
     background: var(--card-bg);
@@ -82,7 +106,7 @@ body {
 
     /* Centre le contenu de Home.razor proprement */
     .content-area .container-fluid {
-        max-width: 1200px; /* Évite que le texte soit trop étalé sur les grands écrans */
+        max-width: 1500px; /* Évite que le texte soit trop étalé sur les grands écrans */
         width: 100%;
     }
 
@@ -118,7 +142,7 @@ body {
 
     .login-header .logo-icon {
         font-size: 3rem;
-        color: #26a69a;
+        color: var(--neon-green);
         display: block;
         margin-bottom: 10px;
         text-shadow: 0 0 15px rgba(38, 166, 154, 0.4);
@@ -176,7 +200,7 @@ body {
 
         .input-wrapper input:focus {
             outline: none;
-            border-color: #26a69a;
+            border-color: var(--neon-green);
             box-shadow: 0 0 0 2px rgba(38, 166, 154, 0.2);
         }
 
@@ -184,7 +208,7 @@ body {
 .btn-login-neon {
     width: 100%;
     padding: 14px;
-    background: #26a69a;
+    background: var(--neon-green);
     border: none;
     border-radius: 6px;
     color: #ffffff;
@@ -215,7 +239,7 @@ body {
 }
 
     .login-footer a {
-        color: #26a69a;
+        color: var(--neon-green);
         text-decoration: none;
         transition: color 0.2s;
     }
