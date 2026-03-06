@@ -3,20 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7107B2B3-00F4-4971-8656-FC2F223BC497}|OrderService\\OrderService.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\orderservice\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{7107B2B3-00F4-4971-8656-FC2F223BC497}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{F5B46AC7-F71D-4E0D-A297-1BB5B23C382E}|PortfolioService\\PortfolioService.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\portfolioservice\\controllers\\portfoliocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5B46AC7-F71D-4E0D-A297-1BB5B23C382E}|PortfolioService\\PortfolioService.csproj|solutionrelative:portfolioservice\\controllers\\portfoliocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7107B2B3-00F4-4971-8656-FC2F223BC497}|OrderService\\OrderService.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\orderservice\\orderservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{7107B2B3-00F4-4971-8656-FC2F223BC497}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\orderservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{C81CD45B-76A7-4C6B-A8D0-689F433D2545}|Gateway\\Gateway.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\gateway\\restclient\\client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C81CD45B-76A7-4C6B-A8D0-689F433D2545}|Gateway\\Gateway.csproj|solutionrelative:gateway\\restclient\\client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7107B2B3-00F4-4971-8656-FC2F223BC497}|OrderService\\OrderService.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\orderservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7107B2B3-00F4-4971-8656-FC2F223BC497}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C81CD45B-76A7-4C6B-A8D0-689F433D2545}|Gateway\\Gateway.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\gateway\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{C81CD45B-76A7-4C6B-A8D0-689F433D2545}|Gateway\\Gateway.csproj|solutionrelative:gateway\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7107B2B3-00F4-4971-8656-FC2F223BC497}|OrderService\\OrderService.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\orderservice\\services\\ordermanagerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7107B2B3-00F4-4971-8656-FC2F223BC497}|OrderService\\OrderService.csproj|solutionrelative:orderservice\\services\\ordermanagerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F5B46AC7-F71D-4E0D-A297-1BB5B23C382E}|PortfolioService\\PortfolioService.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\portfolioservice\\portfolioservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{F5B46AC7-F71D-4E0D-A297-1BB5B23C382E}|PortfolioService\\PortfolioService.csproj|solutionrelative:portfolioservice\\portfolioservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C81CD45B-76A7-4C6B-A8D0-689F433D2545}|Gateway\\Gateway.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\gateway\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C81CD45B-76A7-4C6B-A8D0-689F433D2545}|Gateway\\Gateway.csproj|solutionrelative:gateway\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C81CD45B-76A7-4C6B-A8D0-689F433D2545}|Gateway\\Gateway.csproj|c:\\users\\administrateur\\documents\\cours m2i\\projet_final\\gateway\\gateway.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{C81CD45B-76A7-4C6B-A8D0-689F433D2545}|Gateway\\Gateway.csproj|solutionrelative:gateway\\gateway.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -31,53 +39,79 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "launchSettings.json",
-              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\OrderService\\Properties\\launchSettings.json",
-              "RelativeDocumentMoniker": "OrderService\\Properties\\launchSettings.json",
-              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\OrderService\\Properties\\launchSettings.json",
-              "RelativeToolTip": "OrderService\\Properties\\launchSettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-03-06T15:01:01.455Z",
+              "Title": "PortfolioController.cs",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\PortfolioService\\Controllers\\PortfolioController.cs",
+              "RelativeDocumentMoniker": "PortfolioService\\Controllers\\PortfolioController.cs",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\PortfolioService\\Controllers\\PortfolioController.cs",
+              "RelativeToolTip": "PortfolioService\\Controllers\\PortfolioController.cs",
+              "ViewState": "AgIAADAAAAAAAAAAAAAhwEkAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-06T15:40:55.613Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "OrderService",
-              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\OrderService\\OrderService.csproj",
-              "RelativeDocumentMoniker": "OrderService\\OrderService.csproj",
-              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\OrderService\\OrderService.csproj",
-              "RelativeToolTip": "OrderService\\OrderService.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-06T14:58:44.821Z",
+              "Title": "Client.cs",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\Gateway\\RestClient\\Client.cs",
+              "RelativeDocumentMoniker": "Gateway\\RestClient\\Client.cs",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\Gateway\\RestClient\\Client.cs",
+              "RelativeToolTip": "Gateway\\RestClient\\Client.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAYwEIAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-06T15:35:04.169Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\OrderService\\Program.cs",
-              "RelativeDocumentMoniker": "OrderService\\Program.cs",
-              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\OrderService\\Program.cs",
-              "RelativeToolTip": "OrderService\\Program.cs",
-              "ViewState": "AgIAADYAAAAAAAAAAAAAAEUAAAADAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-06T14:57:58.028Z",
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\Gateway\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "Gateway\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\Gateway\\Properties\\launchSettings.json",
+              "RelativeToolTip": "Gateway\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-03-06T15:32:49.579Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "OrderManagerService.cs",
-              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\OrderService\\Services\\OrderManagerService.cs",
-              "RelativeDocumentMoniker": "OrderService\\Services\\OrderManagerService.cs",
-              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\OrderService\\Services\\OrderManagerService.cs",
-              "RelativeToolTip": "OrderService\\Services\\OrderManagerService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Title": "PortfolioService",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\PortfolioService\\PortfolioService.csproj",
+              "RelativeDocumentMoniker": "PortfolioService\\PortfolioService.csproj",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\PortfolioService\\PortfolioService.csproj",
+              "RelativeToolTip": "PortfolioService\\PortfolioService.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-03-06T15:32:41.899Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Gateway",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\Gateway\\Gateway.csproj",
+              "RelativeDocumentMoniker": "Gateway\\Gateway.csproj",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\Gateway\\Gateway.csproj",
+              "RelativeToolTip": "Gateway\\Gateway.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-03-06T15:28:41.397Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\Gateway\\Program.cs",
+              "RelativeDocumentMoniker": "Gateway\\Program.cs",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\Gateway\\Program.cs",
+              "RelativeToolTip": "Gateway\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-06T14:56:32.564Z",
+              "WhenOpened": "2026-03-06T15:28:20.091Z",
               "EditorCaption": ""
             },
             {

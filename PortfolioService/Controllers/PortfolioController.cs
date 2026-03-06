@@ -26,8 +26,8 @@ public class PortfolioController : ControllerBase
         var userId = GetCurrentUserId();
         if (userId is null) return Unauthorized();
 
-        var summary = await _portfolioService.GetSummaryAsync(userId.Value);
-        return Ok(summary);
+        var performance = await _portfolioService.GetSummaryAsync(userId.Value);
+        return Ok(performance);
     }
 
     // GET /api/portfolio/holdings
@@ -71,14 +71,14 @@ public class PortfolioController : ControllerBase
 
     // GET /api/portfolio/summary
     // Résumé de performance du portefeuille
-    [HttpGet("summary")]
+    [HttpGet("performance")]
     public async Task<IActionResult> GetSummary()
     {
         var userId = GetCurrentUserId();
         if (userId is null) return Unauthorized();
 
-        var summary = await _portfolioService.GetSummaryAsync(userId.Value);
-        return Ok(summary);
+        var performance = await _portfolioService.GetSummaryAsync(userId.Value);
+        return Ok(performance);
     }
 
     // POST /api/portfolio/transactions

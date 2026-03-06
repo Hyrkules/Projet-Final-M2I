@@ -20,6 +20,13 @@ public class AuthController : ControllerBase
         _db = db;
     }
 
+    [Authorize]
+    [HttpGet("ping")]
+    public IActionResult Ping()
+    {
+        return Ok(new { status = "ok" });
+    }
+
     // POST /api/auth/register
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)

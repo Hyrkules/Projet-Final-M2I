@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CryptoSim.Blazor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a6bad900c6f448e199a6e42f0199b5d728791a97")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+25e4ebb71cc5df982021b5e9d383955d63298463")]
 [assembly: System.Reflection.AssemblyProductAttribute("CryptoSim.Blazor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CryptoSim.Blazor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
