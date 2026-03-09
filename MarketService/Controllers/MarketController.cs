@@ -1,83 +1,60 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Projet_CryptoSim.MarketService.Services;
 
-namespace Projet_CryptoSim.MarketService.Controllers
+namespace Projet_CryptoSim.MarketService.Controllers;
+
+[ApiController]
+[Route("api/market")]
+public class MarketController : ControllerBase
 {
-    public class MarketController : Controller
+    private readonly IPriceService _priceService;
+
+    public MarketController(IPriceService priceService)
     {
-        // GET: MarketController
-        public ActionResult Index()
-        {
-            return View();
-        }
+        _priceService = priceService;
+    }
 
-        // GET: MarketController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+    // GET /api/market/cryptos
+    // Liste de toutes les cryptos avec prix actuel — pas d'auth requise
+    [HttpGet("cryptos")]
+    public async Task<IActionResult> GetAllCryptos()
+    {
+        var cryptos = await _priceService.GetAllCryptosAsync();
+        return Ok(cryptos);
+    }
 
-        // GET: MarketController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+    // GET /api/market/cryptos/{symbol}
+    // Détails d'une crypto (ex: BBTC) — pas d'auth requise
+    [HttpGet("cryptos/{symbol}")]
+    public async Task<IActionResult> GetCrypto(string symbol)
+    {
+        var crypto = await _priceService.GetCryptoBySymbolAsync(symbol);
 
-        // POST: MarketController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        if (crypto == null)
+            return NotFound(new { message = $"Crypto '{symbol}' introuvable." });
 
-        // GET: MarketController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+        return Ok(crypto);
+    }
 
-        // POST: MarketController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+    // GET /api/market/history/{symbol}?limit=50
+    // Historique des prix — pas d'auth requise
+    [HttpGet("history/{symbol}")]
+    public async Task<IActionResult> GetPriceHistory(string symbol, [FromQuery] int limit = 50)
+    {
+        var history = await _priceService.GetPriceHistoryAsync(symbol, limit);
 
-        // GET: MarketController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+        if (!history.Any())
+            return NotFound(new { message = $"Aucun historique pour '{symbol}'." });
 
-        // POST: MarketController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        return Ok(history);
+    }
+
+    // GET /api/market/snapshot
+    // Snapshot complet du marché — pas d'auth requise
+    [HttpGet("snapshot")]
+    public async Task<IActionResult> GetSnapshot()
+    {
+        var snapshot = await _priceService.GetSnapshotAsync();
+        return Ok(snapshot);
     }
 }
