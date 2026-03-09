@@ -18,8 +18,6 @@ public class PortfolioController : ControllerBase
         _portfolioService = portfolioService;
     }
 
-    // GET /api/portfolio
-    // Portefeuille complet avec valeur actuelle
     [HttpGet]
     public async Task<IActionResult> GetPortfolio()
     {
@@ -30,8 +28,6 @@ public class PortfolioController : ControllerBase
         return Ok(performance);
     }
 
-    // GET /api/portfolio/holdings
-    // Liste des cryptos détenues
     [HttpGet("holdings")]
     public async Task<IActionResult> GetHoldings()
     {
@@ -42,8 +38,6 @@ public class PortfolioController : ControllerBase
         return Ok(holdings);
     }
 
-    // GET /api/portfolio/holdings/{symbol}
-    // Holding d'une crypto spécifique
     [HttpGet("holdings/{symbol}")]
     public async Task<IActionResult> GetHolding(string symbol)
     {
@@ -57,8 +51,6 @@ public class PortfolioController : ControllerBase
         return Ok(holding);
     }
 
-    // GET /api/portfolio/transactions
-    // Historique des transactions
     [HttpGet("transactions")]
     public async Task<IActionResult> GetTransactions()
     {
@@ -69,8 +61,6 @@ public class PortfolioController : ControllerBase
         return Ok(transactions);
     }
 
-    // GET /api/portfolio/summary
-    // Résumé de performance du portefeuille
     [HttpGet("performance")]
     public async Task<IActionResult> GetSummary()
     {
@@ -81,16 +71,12 @@ public class PortfolioController : ControllerBase
         return Ok(performance);
     }
 
-    // POST /api/portfolio/transactions
-    // Créer une transaction — appelé par OrderService
     [HttpPost("transactions")]
     public async Task<IActionResult> CreateTransaction([FromBody] CreateTransactionDto dto)
     {
         var transaction = await _portfolioService.CreateTransactionAsync(dto);
         return CreatedAtAction(nameof(GetTransactions), transaction);
     }
-
-    // ── Helper ───────────────────────────────────────────────────────────────
 
     private int? GetCurrentUserId()
     {

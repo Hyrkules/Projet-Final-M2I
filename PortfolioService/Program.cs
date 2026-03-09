@@ -79,7 +79,6 @@ builder.Services.AddDbContext<PortfolioDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
-// Client HTTP vers MarketService (port 5002)
 var marketServiceUrl = builder.Configuration["Services:MarketService"]
     ?? "http://localhost:5002";
 
