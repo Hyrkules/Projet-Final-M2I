@@ -6,6 +6,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+// ── HttpClient vers le Gateway ────────────────────────────────────────────────
+builder.Services.AddHttpClient("Gateway", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5005");
+});
+
+// Pour les composants Blazor qui injectent HttpClient directement
+builder.Services.AddScoped(sp =>
+    sp.GetRequiredService<IHttpClientFactory>().CreateClient("Gateway"));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
