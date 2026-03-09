@@ -1,8 +1,10 @@
 ﻿@rendermode InteractiveServer
 @page "/login"
 @using CryptoSim.Blazor.Components.Layout
+@using CryptoSim.Blazor.Services
 @layout EmptyLayout
 @inject NavigationManager Navigation
+@inject AuthService AuthService
 
 <div class="login-page">
     <div class="login-card animate-fade-in">
@@ -16,23 +18,24 @@
                 <label>Email ou Utilisateur</label>
                 <div class="input-wrapper">
                     <i class="bi bi-person"></i>
-                    <input type="text" placeholder="yann@cryptosim.com" />
+                    <input type="text" @bind="_username" placeholder="yann@cryptosim.com" />
                 </div>
             </div>
-
             <div class="form-group">
                 <label>Mot de passe</label>
                 <div class="input-wrapper">
                     <i class="bi bi-lock"></i>
-                    <input type="password" placeholder="••••••••" />
+                    <input type="password" @bind="_password" placeholder="••••••••" />
                 </div>
             </div>
-
-            <button type="submit" class="btn-login-neon">
-                SE CONNECTER
+            @if (!string.IsNullOrEmpty(_error))
+            {
+                <p class="text-danger">@_error</p>
+            }
+            <button type="submit" class="btn-login-neon" disabled="@_isLoading">
+                @(_isLoading ? "Connexion..." : "SE CONNECTER")
             </button>
         </form>
-
         <div class="login-footer">
             <a href="forgot-password">Mot de passe oublié ?</a>
             <span>Pas de compte ? <a href="register" class="text-neon">S'inscrire</a></span>
@@ -41,15 +44,31 @@
 </div>
 
 @code {
+    private string _username = string.Empty;
+    private string _password = string.Empty;
+    private string? _error;
+    private bool _isLoading = false;
+
     private async Task HandleLogin()
     {
-        // 1. On simule le travail serveur
-        await Task.Delay(500);
+        _isLoading = true;
+        _error = null;
 
-        // 2. ON CHANGE L'ÉTAT GLOBAL : C'est l'étape clé !
+        var result = await AuthService.LoginAsync(_username, _password);
+
+        if (result == null)
+        {
+            _error = "Identifiants incorrects.";
+            _isLoading = false;
+            return;
+        }
+
+        // Stocker les infos dans AuthState
+        AuthState.Token = result.Token;
+        AuthState.Username = result.Username;
+        AuthState.Balance = result.Balance;
         AuthState.IsAuthenticated = true;
 
-        // 3. On redirige vers la home
         Navigation.NavigateTo("/");
     }
 }

@@ -49,7 +49,7 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
-        policy.WithOrigins("http://localhost:5000", "https://localhost:5000")
+        policy.WithOrigins("http://localhost:5005", "https://localhost:5005")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials()));

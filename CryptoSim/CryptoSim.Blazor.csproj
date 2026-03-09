@@ -19,6 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Services\AuthService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Components\Layout\NavMenu.razor.css">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
