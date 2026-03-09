@@ -17,7 +17,6 @@ public class PortfolioManagerService : IPortfolioManagerService
         _marketClient = marketClient;
     }
 
-    // Résumé complet du portefeuille avec valeur actuelle
     public async Task<PortfolioSummaryDto> GetSummaryAsync(int userId)
     {
         var holdings = await GetHoldingsAsync(userId);
@@ -39,7 +38,6 @@ public class PortfolioManagerService : IPortfolioManagerService
         };
     }
 
-    // Liste des holdings enrichis avec les prix actuels depuis MarketService
     public async Task<List<HoldingDto>> GetHoldingsAsync(int userId)
     {
         var holdings = await _context.Holdings
@@ -50,7 +48,6 @@ public class PortfolioManagerService : IPortfolioManagerService
 
         foreach (var holding in holdings)
         {
-            // Appel HTTP vers MarketService pour le prix actuel
             var crypto = await _marketClient.GetCryptoAsync(holding.CryptoSymbol);
             var currentPrice = crypto?.CurrentPrice ?? holding.AverageBuyPrice;
 
@@ -125,12 +122,10 @@ public class PortfolioManagerService : IPortfolioManagerService
         };
     }
 
-    // Créer une transaction + mettre à jour le holding (appelé par OrderService)
     public async Task<TransactionDto> CreateTransactionAsync(CreateTransactionDto dto)
     {
         var now = DateTime.UtcNow;
 
-        // 1. Enregistrer la transaction
         var transaction = new Models.Transaction
         {
             UserId = dto.UserId,
@@ -144,7 +139,6 @@ public class PortfolioManagerService : IPortfolioManagerService
 
         _context.Transactions.Add(transaction);
 
-        // 2. Mettre à jour le holding
         var holding = await _context.Holdings
             .FirstOrDefaultAsync(h => h.UserId == dto.UserId
                 && h.CryptoSymbol == dto.CryptoSymbol);
@@ -153,7 +147,6 @@ public class PortfolioManagerService : IPortfolioManagerService
         {
             if (holding == null)
             {
-                // Premier achat : créer le holding
                 _context.Holdings.Add(new Holding
                 {
                     UserId = dto.UserId,
@@ -165,7 +158,6 @@ public class PortfolioManagerService : IPortfolioManagerService
             }
             else
             {
-                // Achat supplémentaire : recalculer le prix moyen
                 var totalQuantity = holding.Quantity + dto.Quantity;
                 var totalCost = (holding.Quantity * holding.AverageBuyPrice) + dto.Total;
                 holding.AverageBuyPrice = totalCost / totalQuantity;
