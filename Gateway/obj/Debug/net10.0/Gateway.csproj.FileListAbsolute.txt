@@ -34,4 +34,3 @@ C:\Users\Administrateur\Documents\cours M2I\projet_final\Gateway\obj\Debug\net10
 C:\Users\Administrateur\Documents\cours M2I\projet_final\Gateway\obj\Debug\net10.0\Gateway.pdb
 C:\Users\Administrateur\Documents\cours M2I\projet_final\Gateway\obj\Debug\net10.0\Gateway.genruntimeconfig.cache
 C:\Users\Administrateur\Documents\cours M2I\projet_final\Gateway\obj\Debug\net10.0\ref\Gateway.dll
-C:\Users\Administrateur\Documents\cours M2I\projet_final\Gateway\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

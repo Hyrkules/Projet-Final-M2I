@@ -3,4 +3,7 @@
 public static class AuthState
 {
     public static bool IsAuthenticated { get; set; } = false;
+    public static string Token { get; set; } = string.Empty;
+    public static string Username { get; set; } = string.Empty;
+    public static decimal Balance { get; set; } = 0;
 }

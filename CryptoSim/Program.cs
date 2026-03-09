@@ -1,4 +1,5 @@
 using CryptoSim.Blazor.Components;
+using CryptoSim.Blazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,11 +7,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// ── HttpClient vers le Gateway ────────────────────────────────────────────────
 builder.Services.AddHttpClient("Gateway", client =>
 {
     client.BaseAddress = new Uri("http://localhost:5005");
 });
+
+builder.Services.AddScoped(sp =>
+    sp.GetRequiredService<IHttpClientFactory>().CreateClient("Gateway"));
+
+builder.Services.AddScoped<AuthService>();
 
 // Pour les composants Blazor qui injectent HttpClient directement
 builder.Services.AddScoped(sp =>
