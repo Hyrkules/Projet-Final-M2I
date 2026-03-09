@@ -5,47 +5,73 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Fichier Home.razor (CryptoSim.Blazor/Components/Pages/Home.razor)</h1>
-<p>État auth : @AuthState.IsAuthenticated</p>
-<div class="text-center py-5">
-    <h1 class="display-3 fw-bold text-white">Prêt à <span class="text-neon">Trader</span> ?</h1>
-    <p class="lead text-secondary">La simulation de crypto-monnaie la plus rapide pour Yann et Helouri.</p>
-    <div class="mt-4">
-        <a href="trade" class="btn btn-neon btn-lg px-5 me-3">Commencer à trader</a>
-        <a href="portfolio" class="btn btn-outline-light btn-lg px-5">Voir mon solde</a>
+<div class="profile-container animate-fade-in">
+    <div class="wallet-page-header">
+        <h1 class="main-page-title text-gold">TABLEAU DE BORD</h1>
+        <div class="balance-badge">
+            <span class="label">VALEUR TOTALE</span>
+            <span class="value">11,550.00 VF</span>
+        </div>
+    </div>
+    <div class="header-separator-bar"></div>
+
+    @* --- 1. RÉSUMÉ RAPIDE --- *@
+    <div class="dashboard-stats-grid">
+        <div class="standard-card stat-item">
+            <i class="bi bi-wallet2 text-gold"></i>
+            <div>
+                <span class="stat-label">SOLDE DISPONIBLE</span>
+                <span class="stat-value">11,550.00 VF</span>
+            </div>
+        </div>
+        <div class="standard-card stat-item">
+            <i class="bi bi-graph-up-arrow text-green"></i>
+            <div>
+                <span class="stat-label">PERFORMANCE MENSUELLE</span>
+                <span class="stat-value text-green">+55.5%</span>
+            </div>
+        </div>
+        <div class="standard-card stat-item">
+            <i class="bi bi-cpu text-gold"></i>
+            <div>
+                <span class="stat-label">ACTIFS DÉTENUS</span>
+                <span class="stat-value">12 Jetons</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-main-grid">
+        @* --- 2. APERÇU PORTEFEUILLE --- *@
+        <div class="standard-card">
+            <h3 class="card-subtitle text-white">RÉPARTITION DES ACTIFS</h3>
+            <div class="chart-placeholder">
+                @* Ici s'insérerait ton graphique de performance *@
+                <div class="performance-circle-container">
+                    <div class="performance-value">+55.5%</div>
+                </div>
+            </div>
+        </div>
+
+        @* --- 3. DERNIERS MOUVEMENTS --- *@
+        <div class="standard-card">
+            <h3 class="card-subtitle text-white">ACTIVITÉ RÉCENTE</h3>
+            <div class="recent-list">
+                <div class="recent-item">
+                    <span class="badge badge-sale">VENTE</span>
+                    <span class="asset-name">BZH</span>
+                    <span class="recent-amount">+1,104.60 VF</span>
+                    <span class="recent-date">Aujourd'hui</span>
+                </div>
+                <div class="recent-item">
+                    <span class="badge badge-buy">ACHAT</span>
+                    <span class="asset-name">CAFE</span>
+                    <span class="recent-amount">-237.50 VF</span>
+                    <span class="recent-date">Hier</span>
+                </div>
+            </div>
+            <button class="btn-glass mt-3" @onclick='() => Navigation.NavigateTo("/Historique")'>
+                VOIR TOUT L'HISTORIQUE
+            </button>
+        </div>
     </div>
 </div>
-
-<div class="row g-4 mt-4">
-    <div class="col-md-4">
-        <div class="card bg-dark-card border-secondary p-3 text-center">
-            <h5 class="text-muted">Marché Actif</h5>
-            <h2 class="text-white">12 Actifs</h2>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card bg-dark-card border-secondary p-3 text-center">
-            <h5 class="text-muted">Transactions totales</h5>
-            <h2 class="text-white">1,248</h2>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card bg-dark-card border-secondary p-3 text-center">
-            <h5 class="text-muted">Utilisateurs en ligne</h5>
-            <h2 class="text-neon">42</h2>
-        </div>
-    </div>
-</div>
-
-@code {
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender) // On ne vérifie qu'au tout premier chargement
-        {
-            if (!AuthState.IsAuthenticated)
-            {
-                Navigation.NavigateTo("/login");
-            }
-        }
-    }
-}

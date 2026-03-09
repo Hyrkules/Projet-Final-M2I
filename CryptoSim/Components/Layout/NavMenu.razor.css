@@ -3,7 +3,6 @@
     width: var(--sidebar-collapsed);
     height: 100vh;
     background-color: var(--sidebar-bg);
-    border-right: 1px solid var(--sidebar-border);
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
     overflow: hidden;
     display: flex;
@@ -11,18 +10,15 @@
     position: sticky;
     top: 0;
     z-index: 1000;
-
+    backdrop-filter: blur(15px) saturate(150%);
+    box-shadow: 10px 0 15px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Survol de la sidebar (l'ombre change aussi !) */
 .sidebar-trading:hover {
     width: var(--sidebar-expanded);
     /* Ombre plus douce en mode clair, forte en mode sombre */
-    box-shadow: 10px 0 20px rgba(0, 0, 0, 0.1);
-}
-
-.dark-theme .sidebar-trading:hover {
-    box-shadow: 10px 0 20px rgba(0, 0, 0, 0.5);
 }
 
 /* On utilise ::deep car .nav-link est généré par le composant enfant <NavLink> */
@@ -54,6 +50,7 @@
 .sidebar-trading:hover .nav-text {
     opacity: 1;
     transform: translateX(0);
+
 }
 
 ::deep .nav-link:hover {
