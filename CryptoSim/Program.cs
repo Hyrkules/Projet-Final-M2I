@@ -1,10 +1,15 @@
 using CryptoSim.Blazor.Components;
+using CryptoSim.Blazor.Components.Pages;
+using CryptoSim.Blazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+
+builder.Services.AddScoped<CryptoSim.Blazor.Services.NotificationService>();
 
 var app = builder.Build();
 

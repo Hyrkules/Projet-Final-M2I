@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
-
+@using CryptoSim.Blazor.Services
+@inject NotificationService Notification
 
 <div class="@(IsDark ? "dark-theme" : "light-theme") app-container">
     <NavMenu />
@@ -7,20 +8,40 @@
     <div class="main-wrapper">
         <Header OnThemeToggled="ToggleTheme" />
         <main class="content-area">
+            @if (Notification.IsVisible)
+            {
+                <div class="global-alert-wrapper">
+                    @* On force l'état "show" car le @if gère déjà la présence *@
+                    <div class="success-alert-bar show">
+                        <div class="alert-content">
+                            <i class="bi bi-check-circle-fill success-glow"></i>
+                            <span>@Notification.Message</span>
+                        </div>
+                        <button class="close-btn" @onclick="Notification.Hide">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                </div>
+            }
+
             <div class="container-fluid">
                 @Body
             </div>
         </main>
     </div>
-</div
-
+</div>
 
 @code {
     private bool IsDark = true;
 
-    private void ToggleTheme() {
-        Console.WriteLine("Le Layout a reçu le signal !"); // Regarde ta console Visual Studio
+    private void ToggleTheme()
+    {
         IsDark = !IsDark;
-        StateHasChanged(); 
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        Notification.OnShow += (msg) => InvokeAsync(StateHasChanged);
     }
 }

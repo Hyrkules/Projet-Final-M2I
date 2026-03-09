@@ -1,7 +1,114 @@
-﻿@rendermode InteractiveServer
-@page "/Transfert"
+﻿@page "/Transfert"
+@rendermode InteractiveServer
 @using CryptoSim.Blazor.Services
 @inject NavigationManager Navigation
+@inject NotificationService NotificationService
 
-<PageTitle>Transfert</PageTitle>
-<h1>Page Transfert</h1>
+<PageTitle>Dêpot/Retrait</PageTitle>
+<div class="wallet-container animate-fade-in">
+    @* --- HEADER --- *@
+    <div class="wallet-header">
+        <h1 class="main-page-title text-gold">MON PORTEFEUILLE</h1>
+        <div class="balance-badge">
+            <span class="label">SOLDE DISPONIBLE</span>
+            <span class="value">11,550.00 €</span>
+        </div>
+    </div>
+    <div class="header-separator-bar"></div>
+
+    <div class="wallet-grid">
+        @* --- COLONNE GAUCHE : RÉSUMÉ --- *@
+        <div class="standard-card summary-card">
+            <h3 class="card-subtitle text-white">VUE D'ENSEMBLE</h3>
+
+            <div class="total-balance-display">
+                <div class="currency-icon"><i class="bi bi-currency-bitcoin"></i></div>
+                <div class="balance-info">
+                    <span class="amount">11,550.00 <small>€</small></span>
+                    <span class="trend up">+15.5% ce mois</span>
+                </div>
+            </div>
+
+            <div class="asset-details">
+                <div class="detail-item">
+                    <span><i class="bi bi-lock-fill text-gold"></i> Fonds Bloqués</span>
+                    <span>0.00 €</span>
+                </div>
+                <div class="detail-item">
+                    <span><i class="bi bi-arrow-left-right text-gold"></i> En cours</span>
+                    <span>500.00 €</span>
+                </div>
+            </div>
+
+            <div class="wallet-illustration">
+                @* Un élément purement visuel pour combler l'espace comme sur Profil *@
+                <div class="glass-orb"></div>
+            </div>
+        </div>
+
+        @* --- COLONNE DROITE : ACTIONS --- *@
+        <div class="standard-card action-card">
+            <div class="tabs-actions">
+                <button class="tab-btn @(isDeposit ? "active" : "")" @onclick="() => isDeposit = true">DÉPÔT</button>
+                <button class="tab-btn @(!isDeposit ? "active" : "")" @onclick="() => isDeposit = false">RETRAIT</button>
+            </div>
+
+            <div class="form-content animate-slow-fade">
+                @if (isDeposit)
+                {
+                    <h3 class="card-subtitle text-white">ALIMENTER LE COMPTE</h3>
+                    <p class="text-muted">Ajoutez des fonds virtuels pour augmenter votre pouvoir d'achat.</p>
+
+                    <div class="form-group">
+                        <label>MONTANT À DÉPOSER (€)</label>
+                        <div class="input-with-icon">
+                            <i class="bi bi-plus-circle text-gold"></i>
+                            <input type="number" class="form-input" placeholder="0.00" @bind="transactionAmount" />
+                            
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <h3 class="card-subtitle text-white">RETIRER DES FONDS</h3>
+                    <p class="text-muted">Transférez vos profits vers votre compte de réserve.</p>
+
+                    <div class="form-group">
+                        <label>MONTANT À RETIRER (€)</label>
+                        <div class="input-with-icon">
+                            <i class="bi bi-dash-circle text-gold"></i>
+                            <input type="number" class="form-input" placeholder="0.00" @bind="transactionAmount" />
+                            
+                        </div>
+                    </div>
+                }
+
+                <div class="quick-amounts">
+                    <button @onclick="() => transactionAmount = 100">100</button>
+                    <button @onclick="() => transactionAmount = 500">500</button>
+                    <button @onclick="() => transactionAmount = 1000">1000</button>
+                </div>
+
+                <div class="action-footer">
+                    <button class="btn-glass text-gold w-100" @onclick="HandleTransaction">
+                        CONFIRMER LA TRANSACTION
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool isDeposit = true;
+    private double transactionAmount;
+
+    private void HandleTransaction()
+    {
+        if (transactionAmount <= 0) return;
+
+        string type = isDeposit ? "DÉPÔT" : "RETRAIT";
+        NotificationService.ShowSuccess($"{type} DE {transactionAmount} € EFFECTUÉ AVEC SUCCÈS");
+        transactionAmount = 0;
+    }
+}
