@@ -32,9 +32,24 @@
 
 .dashboard-main-grid {
     display: grid;
-    grid-template-columns: 1fr 400px;
+    grid-template-columns: repeat(3, 1fr);
     gap: 25px;
+    align-items: stretch; /* REMPLACE 'start' par 'stretch' */
 }
+
+/* --- LE GRAPHIQUE (2/3 de l'espace) --- */
+.grid-col-span-2 {
+    /* Il s'étale sur les deux premières colonnes */
+    grid-column: span 2;
+}
+
+.distribution-card {
+    /* Il occupe naturellement la 3ème colonne restante */
+    grid-column: span 1;
+    justify-content: space-between;
+}
+
+
 
 /* --- LISTE RÉCENTE --- */
 .recent-item {
@@ -64,4 +79,323 @@
     justify-content: center;
     align-items: center;
     background: radial-gradient(circle, rgba(38, 166, 154, 0.05) 0%, transparent 70%);
+}
+
+/* --- GRAPHIQUE --- */
+#cryptoChart {
+    width: 100% !important;
+    height: 400px !important; /* Force une hauteur réelle */
+    display: block;
+    position: relative;
+}
+
+.chart-container-pro {
+    padding: 20px !important;
+}
+
+.chart-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.asset-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Version réduite du select pour tenir dans le header */
+.mini-select {
+    height: 35px !important;
+    padding: 0 35px 0 10px !important;
+    font-size: 0.8rem !important;
+    font-weight: 800;
+    min-width: 150px;
+}
+
+.price-badge-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.live-price {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+}
+
+.price-change {
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+    .price-change.positive {
+        color: var(--neon-green);
+    }
+
+/* Stats à droite */
+.market-stats-mini {
+    display: flex;
+    gap: 25px;
+}
+
+    .market-stats-mini .stat {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .market-stats-mini .label {
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        font-weight: 800;
+    }
+
+    .market-stats-mini .value {
+        font-size: 0.85rem;
+        font-weight: 700;
+        font-family: 'Mono', monospace;
+    }
+
+.no-margin {
+    margin: 0 !important;
+}
+
+
+
+/* --- LISTE D'ACTIVITÉ --- */
+.recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.recent-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03); /* Effet verre léger */
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.2s ease;
+}
+
+    .recent-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+        transform: translateX(5px); /* Petit effet dynamique */
+    }
+
+
+
+/* --- TEXTES --- */
+.asset-name {
+    font-weight: 700;
+    color: white;
+    flex-grow: 1;
+    margin-left: 15px;
+}
+
+.recent-amount {
+    font-family: 'Mono', monospace;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-right: 15px;
+}
+
+.recent-date {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4); /* Gris muted pour la date */
+}
+
+/* Couleurs dynamiques pour les montants */
+.badge-buy + .asset-name + .recent-amount {
+    color: #ef5350;
+}
+/* Négatif si achat */
+.badge-sale + .asset-name + .recent-amount {
+    color: #26a69a;
+}
+/* Positif si vente */
+
+
+.history-table td {
+    font-size: 12px;
+}
+
+
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espace entre l'image et le select */
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(193, 164, 97, 0.3);
+    border-radius: 8px;
+    padding: 2px 10px 2px 5px; /* Ajustement du padding */
+}
+
+/* Style de l'image crypto détourée */
+.crypto-select-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; /* Garde l'aspect rond si besoin */
+    object-fit: contain;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.custom-dashboard-select {
+    border: none;
+    background: transparent;
+    color: white;
+    font-weight: 700;
+}
+
+
+
+/* Style global de la carte qui contient le tableau */
+.table-responsive {
+    background: transparent; /* Fond sombre du tableau */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre le tableau horizontalement dans son conteneur */
+    justify-content: center; /* Centre verticalement */
+}
+
+/* Style de la table elle-même */
+.history-table {
+    width: 100%;
+    max-width: 600px; 
+    text-align: center; 
+}
+
+    /* Style de l'en-tête (Thead) */
+    .history-table thead th {
+        color: #848e9c; /* Couleur grise d'origine */
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding-bottom: 15px; /* Espace sous les titres */
+    }
+
+    /* Style des cellules de données (Tbody td) */
+    .history-table tbody td {
+        color: white; /* Texte blanc d'origine */
+        font-size: 13px;
+        font-family: monospace; /* Pour que les chiffres s'alignent */
+        padding: 10px; 
+        vertical-align: middle; 
+    }
+
+        /* Pour le prix : Alignement à droite (par défaut pour la finance), mais centré */
+        .history-table tbody td:nth-child(4) {
+            text-align: right;
+        }
+
+
+.actif-table {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+    /* Style de l'en-tête (Thead) */
+    .actif-table thead th {
+        color: #848e9c; /* Couleur grise d'origine */
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding-bottom: 15px; /* Espace sous les titres */
+    }
+
+    /* Style des cellules de données (Tbody td) */
+    .actif-table tbody td {
+        color: white; /* Texte blanc d'origine */
+        font-size: 13px;
+        font-family: monospace; /* Pour que les chiffres s'alignent */
+        vertical-align: middle;
+    }
+
+        /* Pour le prix : Alignement à droite (par défaut pour la finance), mais centré */
+        .actif-table tbody td:nth-child(4) {
+            text-align: right;
+        }
+
+
+/* Style des badges d'origine (sur fond rouge/vert transparent) */
+.badge {
+    padding: 6px 15px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 10px;
+}
+
+.badge-sale {
+    background: rgba(239, 83, 80, 0.15); /* Rouge transparent d'origine */
+    color: #ef5350;
+}
+
+.badge-buy {
+    background: rgba(38, 166, 154, 0.15); /* Vert transparent d'origine */
+    color: #26a69a;
+}
+.align-crypto {
+    display: flex; /* Active Flexbox pour aligner horizontalement */
+    align-items: center; /* Centre l'image et le texte verticalement sur la même ligne */
+    gap: 10px; /* Ajoute un espace de 10px entre l'image et le texte */
+    white-space: nowrap; /* Empêche le texte de revenir à la ligne s'il n'y a pas assez de place */
+}
+.actif-table td.align-crypto {
+    display: flex;
+    align-items: center;
+    gap: 0; /* Pas besoin de px pour 0 */
+}
+
+.game-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#dinoCanvas {
+    display: block;
+    filter: drop-shadow(0 0 5px rgba(193, 164, 97, 0.5));
+}
+
+.game-overlay {
+    position: absolute;
+    text-align: center;
+    transition: opacity 0.3s;
+}
+
+.game-active .game-overlay {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.game-container:focus {
+    outline: none;
+    border: 1px solid var(--gold-color, #d4af37);
+    box-shadow: 0 0 15px rgba(193, 164, 97, 0.2);
+}
+
+/* Cache l'overlay quand le jeu tourne */
+.game-active .game-overlay {
+    display: none;
 }

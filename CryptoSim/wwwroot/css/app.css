@@ -76,6 +76,216 @@ body {
    3. COMPOSANTS RÉUTILISABLES (Cards, Buttons, Utilities)
    ========================================================================== */
 
+/* --- BUTTONS --- */
+.btn-glass {
+    width: 100%;
+    background: rgba(193, 164, 97, 0.1);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .btn-glass:hover {
+        background: var(--gold);
+        color: var(--white) !important;
+        box-shadow: 0 0 20px rgba(193, 164, 97, 0.3);
+    }
+
+/* Buttons & Close */
+.action-buttons {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-glass {
+    background: rgba(193, 164, 97, 0.1);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .btn-glass:hover {
+        background: var(--gold);
+        color: var(--white) !important;
+    }
+
+    .btn-glass.secondary {
+        border-color: #444;
+        color: var(--text-muted);
+        background: transparent;
+    }
+
+
+
+/* --- FORMS & INPUTS & SELECT --- */
+.form-input {
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 14px;
+    color: white !important;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+    .form-input:focus {
+        border-color: var(--gold);
+        outline: none;
+        box-shadow: 0 0 10px rgba(193, 164, 97, 0.2);
+    }
+
+.input-with-icon {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.25); /* Fond sombre subtil */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2px 12px;
+    height: 45px; /* On force une hauteur confortable */
+    transition: all 0.3s ease;
+}
+
+    .input-with-icon:focus-within {
+        border-color: var(--gold);
+        box-shadow: 0 0 10px rgba(193, 164, 97, 0.15);
+    }
+
+    .input-with-icon i {
+        font-size: 1.1rem;
+        margin-right: 10px;
+        color: var(--gold);
+    }
+
+    .input-with-icon .form-input {
+        flex-grow: 1; /* L'input prend toute la place restante */
+        background: transparent !important;
+        border: none !important;
+        color: var(--white) !important;
+        height: 100%;
+        width: 100%;
+        outline: none;
+        font-size: 0.9rem;
+    }
+
+
+
+
+    /* --- BADGES (Styles repris de ton menu) --- */
+.badge {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    min-width: 65px;
+    text-align: center;
+}
+
+.badge-buy {
+    background: rgba(38, 166, 154, 0.15); /* Vert transparent */
+    color: #26a69a; /* Vert TradingView */
+    border: 1px solid rgba(38, 166, 154, 0.3);
+}
+
+.badge-sale {
+    background: rgba(239, 83, 80, 0.15); /* Rouge transparent */
+    color: #ef5350; /* Rouge TradingView */
+    border: 1px solid rgba(239, 83, 80, 0.3);
+}
+
+
+/* --- SUBTITLES --- */
+.card-subtitle {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 25px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(193, 164, 97, 0.2);
+    color: var(--white);
+    margin-top: 0px;
+}
+
+.relative-card {
+    position: relative;
+}
+
+/* Conteneur parent pour l'icône et la bordure dorée */
+.input-with-icon {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03); /* Verre très sombre */
+    border: 1px solid rgba(193, 164, 97, 0.4); /* Bordure dorée iconique */
+    border-radius: 10px;
+    padding-left: 15px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Effet d'illumination au focus */
+.input-with-icon:focus-within {
+    border-color: #c1a461;
+    box-shadow: 0 0 15px rgba(193, 164, 97, 0.15);
+}
+
+/* Le Select */
+.custom-dashboard-select {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 12px 40px 12px 10px;
+    width: 100%;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.9rem;
+    appearance: none;
+    outline: none;
+}
+
+/* Flèche dorée personnalisée */
+.input-with-icon::after {
+    content: "\F285"; /* Chevron Down Bootstrap */
+    font-family: "bootstrap-icons";
+    position: absolute;
+    right: 15px;
+    color: #c1a461;
+    font-size: 0.8rem;
+    pointer-events: none;
+}
+
+/* Menu déroulant (Options) */
+.custom-dashboard-select option {
+    background-color: #1a1e23; /* Fond sombre dashboard */
+    color: white;
+    padding: 15px;
+    font-weight: 500;
+}
+
+    /* Simulation du surbrillance bleu lors de la sélection */
+    .custom-dashboard-select option:hover,
+    .custom-dashboard-select option:focus,
+    .custom-dashboard-select option:checked {
+        background: #1e62d0 !important; /* Le bleu vif de tes captures */
+        color: white !important;
+    }
+
 /* Header & Titles */
 .main-page-title {
     font-size: 1.6rem;
@@ -227,6 +437,34 @@ body {
         box-shadow: 0 0 20px var(--neon-green-glow);
         transform: translateY(-1px);
     }
+
+
+/* --- FOOTER --- */
+.login-footer {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.85rem;
+    color: #848e9c;
+}
+
+    .login-footer a {
+        color: #26a69a;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+        .login-footer a:hover {
+            color: #2bbbad;
+            text-decoration: underline;
+        }
+
+
+
+
+
 
 /* ==========================================================================
    5. SYSTÈME DE NOTIFICATIONS
@@ -434,7 +672,4 @@ STYLE AUTHENTICATION (Login / Forgot Password / Register)
             border-color: var(--neon-green);
             box-shadow: 0 0 0 2px rgba(38, 166, 154, 0.2);
         }
-
-
-
 
