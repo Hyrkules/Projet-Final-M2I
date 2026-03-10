@@ -2,8 +2,10 @@
 @page "/"
 @using CryptoSim.Blazor.Services
 @inject NavigationManager Navigation
+@inject HttpClient Http
 
 <PageTitle>Home</PageTitle>
+
 
 <div class="profile-container animate-fade-in">
     <div class="wallet-page-header">
@@ -15,21 +17,21 @@
     </div>
     <div class="header-separator-bar"></div>
 
-    @* --- 1. RÉSUMÉ RAPIDE --- *@
-    <div class="dashboard-stats-grid">
-        <div class="standard-card stat-item">
-            <i class="bi bi-wallet2 text-gold"></i>
-            <div>
-                <span class="stat-label">SOLDE DISPONIBLE</span>
-                <span class="stat-value">11,550.00 VF</span>
-            </div>
+<div class="row g-4 mt-4">
+    <div class="col-md-4">
+        <div class="card bg-dark-card border-secondary p-3 text-center">
+            <h5 class="text-muted">Marché Actif</h5>
+            <h2 class="text-white">
+                @(_cryptoCount.HasValue ? $"{_cryptoCount} Actifs" : "Chargement...")
+            </h2>
         </div>
-        <div class="standard-card stat-item">
-            <i class="bi bi-graph-up-arrow text-green"></i>
-            <div>
-                <span class="stat-label">PERFORMANCE MENSUELLE</span>
-                <span class="stat-value text-green">+55.5%</span>
-            </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-dark-card border-secondary p-3 text-center">
+            <h5 class="text-muted">Transactions totales</h5>
+            <h2 class="text-white">
+                @(_transactionCount.HasValue? _transactionCount.ToString() : "Chargement...")
+            </h2>
         </div>
         <div class="standard-card stat-item">
             <i class="bi bi-cpu text-gold"></i>
@@ -40,38 +42,44 @@
         </div>
     </div>
 
-    <div class="dashboard-main-grid">
-        @* --- 2. APERÇU PORTEFEUILLE --- *@
-        <div class="standard-card">
-            <h3 class="card-subtitle text-white">RÉPARTITION DES ACTIFS</h3>
-            <div class="chart-placeholder">
-                @* Ici s'insérerait ton graphique de performance *@
-                <div class="performance-circle-container">
-                    <div class="performance-value">+55.5%</div>
-                </div>
-            </div>
-        </div>
+@code {
+    private int? _cryptoCount;
+    private int? _transactionCount;
 
-        @* --- 3. DERNIERS MOUVEMENTS --- *@
-        <div class="standard-card">
-            <h3 class="card-subtitle text-white">ACTIVITÉ RÉCENTE</h3>
-            <div class="recent-list">
-                <div class="recent-item">
-                    <span class="badge badge-sale">VENTE</span>
-                    <span class="asset-name">BZH</span>
-                    <span class="recent-amount">+1,104.60 VF</span>
-                    <span class="recent-date">Aujourd'hui</span>
-                </div>
-                <div class="recent-item">
-                    <span class="badge badge-buy">ACHAT</span>
-                    <span class="asset-name">CAFE</span>
-                    <span class="recent-amount">-237.50 VF</span>
-                    <span class="recent-date">Hier</span>
-                </div>
-            </div>
-            <button class="btn-glass mt-3" @onclick='() => Navigation.NavigateTo("/Historique")'>
-                VOIR TOUT L'HISTORIQUE
-            </button>
-        </div>
-    </div>
-</div>
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (!AuthState.IsAuthenticated)
+            {
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+            await LoadStatsAsync();
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadStatsAsync()
+    {
+        try
+        {
+            // Nombre de cryptos depuis MarketService
+            var cryptos = await Http.GetFromJsonAsync<List<object>>("/api/market/cryptos");
+            _cryptoCount = cryptos?.Count ?? 0;
+        }
+        catch { _cryptoCount = 0; }
+
+        try
+        {
+            // Nombre de transactions depuis PortfolioService
+            Http.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AuthState.Token);
+
+            var transactions = await Http.GetFromJsonAsync<List<object>>("/api/portfolio/transactions");
+            _transactionCount = transactions?.Count ?? 0;
+        }
+        catch { _transactionCount = 0; }
+    }
+}

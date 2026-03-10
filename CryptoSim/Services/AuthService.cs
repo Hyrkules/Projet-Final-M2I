@@ -20,6 +20,19 @@ public class AuthService
         if (!response.IsSuccessStatusCode) return null;
         return await response.Content.ReadFromJsonAsync<AuthResponse>();
     }
+
+    public async Task<AuthResponse?> RegisterAsync(string username, string email, string password)
+    {
+        var response = await _httpClient.PostAsJsonAsync("/api/auth/register", new
+        {
+            username,
+            email,
+            password
+        });
+
+        if (!response.IsSuccessStatusCode) return null;
+        return await response.Content.ReadFromJsonAsync<AuthResponse>();
+    }
 }
 
 public class AuthResponse

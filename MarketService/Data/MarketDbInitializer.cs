@@ -13,7 +13,7 @@ public static class MarketDbInitializer
 
         var now = DateTime.UtcNow;
 
-        // Seed des cryptos custom avec prix initiaux
+        // Seed des cryptos custom avec prix Initiaux
         var cryptos = new List<Crypto>
         {
             new() { Symbol = "BBTC",  Name = "BabyBitcoin",  CurrentPrice = 42_000m,  LastUpdated = now },
@@ -28,7 +28,7 @@ public static class MarketDbInitializer
         context.Cryptos.AddRange(cryptos);
         context.SaveChanges();
 
-        // Historique initial : un point de départ pour chaque crypto
+        // Historique Initial : un point de départ pour chaque crypto
         var histories = cryptos.Select(c => new PriceHistory
         {
             CryptoSymbol = c.Symbol,
