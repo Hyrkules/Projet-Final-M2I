@@ -1,0 +1,143 @@
+version: '3.9'
+
+services:
+
+  # ── Base de données MySQL ──────────────────────────────────────────────────
+  mysql:
+    image: mysql:8.0
+    container_name: cryptosim-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: users_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./Init-db.sql:/docker-entrypoint-initdb.d/Init-db.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # ── AuthService ────────────────────────────────────────────────────────────
+  auth-service:
+    build:
+      context: .
+      dockerfile: AuthService/Dockerfile
+    container_name: cryptosim-auth
+    ports:
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5001
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=users_db;User=root;Password=root;
+      - Jwt__Secret=CryptoSim2024XyZ987654321AbCdEfGhIjKlMnOpQrStererfdfdfdfzdfzdfdfvefger
+      - Jwt__Issuer=CryptoSim.AuthService
+      - Jwt__Audience=CryptoSim.Services
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # ── MarketService ──────────────────────────────────────────────────────────
+  market-service:
+    build:
+      context: .
+      dockerfile: MarketService/Dockerfile
+    container_name: cryptosim-market
+    ports:
+      - "5002:5002"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5002
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=market_db;User=root;Password=root;
+      - Jwt__Secret=CryptoSim2024XyZ987654321AbCdEfGhIjKlMnOpQrStererfdfdfdfzdfzdfdfvefger
+      - Jwt__Issuer=CryptoSim.AuthService
+      - Jwt__Audience=CryptoSim.Services
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # ── PortfolioService ───────────────────────────────────────────────────────
+  portfolio-service:
+    build:
+      context: .
+      dockerfile: PortfolioService/Dockerfile
+    container_name: cryptosim-portfolio
+    ports:
+      - "5003:5003"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5003
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=portfolio_db;User=root;Password=root;
+      - Jwt__Secret=CryptoSim2024XyZ987654321AbCdEfGhIjKlMnOpQrStererfdfdfdfzdfzdfdfvefger
+      - Jwt__Issuer=CryptoSim.AuthService
+      - Jwt__Audience=CryptoSim.Services
+      - Services__AuthService=http://auth-service:5001
+      - Services__MarketService=http://market-service:5002
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # ── OrderService ───────────────────────────────────────────────────────────
+  order-service:
+    build:
+      context: .
+      dockerfile: OrderService/Dockerfile
+    container_name: cryptosim-order
+    ports:
+      - "5004:5004"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5004
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=orders_db;User=root;Password=root;
+      - Jwt__Secret=CryptoSim2024XyZ987654321AbCdEfGhIjKlMnOpQrStererfdfdfdfzdfzdfdfvefger
+      - Jwt__Issuer=CryptoSim.AuthService
+      - Jwt__Audience=CryptoSim.Services
+      - Services__AuthService=http://auth-service:5001
+      - Services__MarketService=http://market-service:5002
+      - Services__PortfolioService=http://portfolio-service:5003
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # ── Gateway ────────────────────────────────────────────────────────────────
+  gateway:
+    build:
+      context: .
+      dockerfile: Gateway/Dockerfile
+    container_name: cryptosim-gateway
+    ports:
+      - "5005:5005"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5005
+      - HTTP_PORTS=5005
+      - Services__AuthService=http://auth-service:5001
+      - Services__MarketService=http://market-service:5002
+      - Services__PortfolioService=http://portfolio-service:5003
+      - Services__OrderService=http://order-service:5004
+    depends_on:
+      - auth-service
+      - market-service
+      - portfolio-service
+      - order-service
+
+  # ── Blazor Frontend ────────────────────────────────────────────────────────
+  blazor:
+    build:
+      context: .
+      dockerfile: CryptoSim/Dockerfile
+    container_name: cryptosim-blazor
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+      - GatewayBaseUrl=http://gateway:5005
+    depends_on:
+      - gateway
+
+volumes:
+  mysql_data:

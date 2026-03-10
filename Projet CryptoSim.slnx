@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/Building/">
+    <File Path="docker-compose.yml" />
+    <File Path="Init-db.sql" />
+  </Folder>
   <Project Path="AuthService/AuthService.csproj" Id="d7219206-902f-4cd0-919e-70ca37422427" />
   <Project Path="CryptoSim/CryptoSim.Blazor.csproj" Id="f8953a47-5b33-4ded-9bb3-8b3de9c71073" />
   <Project Path="Gateway/Gateway.csproj" Id="c81cd45b-76a7-4c6b-a8d0-689f433d2545" />

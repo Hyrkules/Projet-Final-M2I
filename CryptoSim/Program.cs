@@ -7,19 +7,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+var gatewayUrl = builder.Configuration["GatewayBaseUrl"] ?? "http://localhost:5005";
+Console.WriteLine($">>> Gateway URL: {gatewayUrl}"); // ← ajoute cette ligne
+
 builder.Services.AddHttpClient("Gateway", client =>
 {
-    client.BaseAddress = new Uri("http://localhost:5005");
+    client.BaseAddress = new Uri(gatewayUrl);
 });
 
 builder.Services.AddScoped(sp =>
     sp.GetRequiredService<IHttpClientFactory>().CreateClient("Gateway"));
 
 builder.Services.AddScoped<AuthService>();
-
-// Pour les composants Blazor qui injectent HttpClient directement
-builder.Services.AddScoped(sp =>
-    sp.GetRequiredService<IHttpClientFactory>().CreateClient("Gateway"));
 
 var app = builder.Build();
 
