@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-var gatewayUrl = builder.Configuration["GatewayBaseUrl"] ?? "http://localhost:5005";tte ligne
+var gatewayUrl = builder.Configuration["GatewayBaseUrl"] ?? "http://localhost:5005";
 
 builder.Services.AddScoped<CryptoSim.Blazor.Services.NotificationService>();
 
