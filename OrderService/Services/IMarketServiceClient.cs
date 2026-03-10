@@ -1,4 +1,6 @@
-﻿namespace OrderService.Services
+﻿using static OrderService.DTOs.ExternalDTO;
+
+namespace OrderService.Services
 {
     public interface IMarketServiceClient
     {

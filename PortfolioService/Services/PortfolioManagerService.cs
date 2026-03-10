@@ -72,7 +72,6 @@ public class PortfolioManagerService : IPortfolioManagerService
         return result;
     }
 
-    // Historique des transactions d'un utilisateur
     public async Task<List<TransactionDto>> GetTransactionsAsync(int userId)
     {
         var transactions = await _context.Transactions
@@ -92,7 +91,6 @@ public class PortfolioManagerService : IPortfolioManagerService
         }).ToList();
     }
 
-    // Holding d'un utilisateur pour une crypto spécifique
     public async Task<HoldingDto?> GetHoldingAsync(int userId, string symbol)
     {
         var holding = await _context.Holdings

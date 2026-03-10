@@ -56,7 +56,6 @@ public class Client<TResponse, TRequest>
 
         var response = await _httpClient.PostAsync(_baseUrl + url, content);
 
-        // ← Lis le corps de la réponse même en cas d'erreur
         var json = await response.Content.ReadAsStringAsync();
 
         if (!response.IsSuccessStatusCode)

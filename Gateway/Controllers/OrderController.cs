@@ -17,7 +17,6 @@ public class OrderController : ControllerBase
         _orderBaseUrl = config["Services:OrderService"] ?? "http://localhost:5004";
     }
 
-    // POST /api/orders
     [HttpPost]
     public async Task<IActionResult> PlaceOrder([FromBody] OrderRequestDto dto)
     {
@@ -27,7 +26,6 @@ public class OrderController : ControllerBase
         return Ok(result);
     }
 
-    // GET /api/orders
     [HttpGet]
     public async Task<IActionResult> GetOrders()
     {
@@ -37,7 +35,6 @@ public class OrderController : ControllerBase
         return Ok(result);
     }
 
-    // GET /api/orders/{id}
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOrder(int id)
     {
@@ -47,7 +44,6 @@ public class OrderController : ControllerBase
         return Ok(result);
     }
 
-    // DELETE /api/orders/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> CancelOrder(int id)
     {
