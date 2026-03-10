@@ -105,3 +105,8 @@ public class TransactionDto
     public decimal Total { get; set; }
     public DateTime ExecutedAt { get; set; }
 }
+
+public class BalanceUpdateDto
+{
+    public decimal Amount { get; set; }
+}
