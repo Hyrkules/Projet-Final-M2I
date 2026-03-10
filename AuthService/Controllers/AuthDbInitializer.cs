@@ -7,13 +7,10 @@ namespace AuthService.Controllers
     {
         public static void Initialize(AuthDbContext context)
         {
-            // Applique les migrations en attente si la base n'existe pas encore
             context.Database.EnsureCreated();
 
-            // Si des utilisateurs existent déjà, on ne fait rien
             if (context.Users.Any()) return;
 
-            // Seed : un compte Admin par défaut
             var adminUser = new User
             {
                 Username = "admin",
