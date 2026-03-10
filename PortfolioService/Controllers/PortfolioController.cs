@@ -1,83 +1,87 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PortfolioService.DTOs;
+using PortfolioService.Services;
+using System.Security.Claims;
 
-namespace Projet_CryptoSim.PortfolioService.Controllers
+namespace PortfolioService.Controllers;
+
+[ApiController]
+[Route("api/portfolio")]
+[Authorize]
+public class PortfolioController : ControllerBase
 {
-    public class PortfolioController : Controller
+    private readonly IPortfolioManagerService _portfolioService;
+
+    public PortfolioController(IPortfolioManagerService portfolioService)
     {
-        // GET: PortfolioController
-        public ActionResult Index()
-        {
-            return View();
-        }
+        _portfolioService = portfolioService;
+    }
 
-        // GET: PortfolioController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+    [HttpGet]
+    public async Task<IActionResult> GetPortfolio()
+    {
+        var userId = GetCurrentUserId();
+        if (userId is null) return Unauthorized();
 
-        // GET: PortfolioController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        var performance = await _portfolioService.GetSummaryAsync(userId.Value);
+        return Ok(performance);
+    }
 
-        // POST: PortfolioController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+    [HttpGet("holdings")]
+    public async Task<IActionResult> GetHoldings()
+    {
+        var userId = GetCurrentUserId();
+        if (userId is null) return Unauthorized();
 
-        // GET: PortfolioController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+        var holdings = await _portfolioService.GetHoldingsAsync(userId.Value);
+        return Ok(holdings);
+    }
 
-        // POST: PortfolioController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+    [HttpGet("holdings/{symbol}")]
+    public async Task<IActionResult> GetHolding(string symbol)
+    {
+        var userId = GetCurrentUserId();
+        if (userId is null) return Unauthorized();
 
-        // GET: PortfolioController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+        var holding = await _portfolioService.GetHoldingAsync(userId.Value, symbol);
+        if (holding == null)
+            return NotFound(new { message = $"Vous ne détenez pas de {symbol}." });
 
-        // POST: PortfolioController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        return Ok(holding);
+    }
+
+    [HttpGet("transactions")]
+    public async Task<IActionResult> GetTransactions()
+    {
+        var userId = GetCurrentUserId();
+        if (userId is null) return Unauthorized();
+
+        var transactions = await _portfolioService.GetTransactionsAsync(userId.Value);
+        return Ok(transactions);
+    }
+
+    [HttpGet("performance")]
+    public async Task<IActionResult> GetSummary()
+    {
+        var userId = GetCurrentUserId();
+        if (userId is null) return Unauthorized();
+
+        var performance = await _portfolioService.GetSummaryAsync(userId.Value);
+        return Ok(performance);
+    }
+
+    [HttpPost("transactions")]
+    public async Task<IActionResult> CreateTransaction([FromBody] CreateTransactionDto dto)
+    {
+        var transaction = await _portfolioService.CreateTransactionAsync(dto);
+        return CreatedAtAction(nameof(GetTransactions), transaction);
+    }
+
+    private int? GetCurrentUserId()
+    {
+        var sub = User.FindFirstValue(ClaimTypes.NameIdentifier)
+               ?? User.FindFirstValue("sub");
+        return int.TryParse(sub, out var id) ? id : null;
     }
 }
