@@ -41,7 +41,6 @@ public class PriceSimulatorService : BackgroundService
 
     private async Task SimulatePricesAsync()
     {
-        // On crée un scope car DbContext est Scoped et le BackgroundService est Singleton
         using var scope = _scopeFactory.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<MarketDbContext>();
 
@@ -56,7 +55,6 @@ public class PriceSimulatorService : BackgroundService
             crypto.CurrentPrice = Math.Max(0.01m, crypto.CurrentPrice * (1 + variation));
             crypto.LastUpdated = now;
 
-            // 2. Insérer dans l'historique
             context.PriceHistories.Add(new PriceHistory
             {
                 CryptoSymbol = crypto.Symbol,
@@ -64,7 +62,6 @@ public class PriceSimulatorService : BackgroundService
                 RecordedAt = now
             });
 
-            // 3. Préparer la mise à jour SignalR
             updates.Add(new PriceUpdateDto
             {
                 Symbol = crypto.Symbol,
@@ -74,10 +71,8 @@ public class PriceSimulatorService : BackgroundService
             });
         }
 
-        // 4. Sauvegarder en base
         await context.SaveChangesAsync();
 
-        // 5. Diffuser via SignalR à tous les clients connectés
         await _hubContext.Clients.All.SendAsync("ReceivePrices", updates);
 
         _logger.LogDebug("Prix mis à jour et diffusés pour {Count} cryptos.", cryptos.Count);

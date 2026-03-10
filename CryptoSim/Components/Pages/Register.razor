@@ -1,8 +1,10 @@
-﻿@rendermode InteractiveServer
+@rendermode InteractiveServer
 @page "/register"
 @using CryptoSim.Blazor.Components.Layout
+@using CryptoSim.Blazor.Services
 @layout EmptyLayout
 @inject NavigationManager Navigation
+@inject AuthService AuthService
 
 <div class="login-page">
     <div class="login-card animate-fade-in">
@@ -11,49 +13,45 @@
             <h1 class="logo-text">CryptoSim</h1>
             <p class="subtitle">Créez votre compte de trading</p>
         </div>
-
         <form class="login-form" @onsubmit="HandleRegister" @onsubmit:preventDefault>
-            @* CHAMP NOM D'UTILISATEUR *@
             <div class="form-group">
                 <label>Nom d'utilisateur</label>
                 <div class="input-wrapper">
                     <i class="bi bi-person"></i>
-                    <input type="text" placeholder="TradersDuDimanche" required />
+                    <input type="text" @bind="_username" placeholder="TradersDuDimanche" required />
                 </div>
             </div>
-
-            @* CHAMP EMAIL *@
             <div class="form-group">
                 <label>Email</label>
                 <div class="input-wrapper">
                     <i class="bi bi-envelope"></i>
-                    <input type="email" placeholder="yann@cryptosim.com" required />
+                    <input type="email" @bind="_email" placeholder="yann@cryptosim.com" required />
                 </div>
             </div>
-
-            @* CHAMP MOT DE PASSE *@
             <div class="form-group">
                 <label>Mot de passe</label>
                 <div class="input-wrapper">
                     <i class="bi bi-lock"></i>
-                    <input type="password" placeholder="••••••••" required />
+                    <input type="password" @bind="_password" placeholder="••••••••" required />
                 </div>
             </div>
-
-            @* CHAMP CONFIRMATION *@
             <div class="form-group">
                 <label>Confirmer le mot de passe</label>
                 <div class="input-wrapper">
                     <i class="bi bi-shield-lock"></i>
-                    <input type="password" placeholder="••••••••" required />
+                    <input type="password" @bind="_confirmPassword" placeholder="••••••••" required />
                 </div>
             </div>
 
-            <button type="submit" class="btn-login-neon">
-                CRÉER MON COMPTE
+            @if (!string.IsNullOrEmpty(_error))
+            {
+                <p class="text-danger">@_error</p>
+            }
+
+            <button type="submit" class="btn-login-neon" disabled="@_isLoading">
+                @(_isLoading ? "Création en cours..." : "CRÉER MON COMPTE")
             </button>
         </form>
-
         <div class="login-footer">
             <span>Déjà un compte ? <NavLink href="login" class="text-neon">Se connecter</NavLink></span>
         </div>
@@ -61,12 +59,4 @@
 </div>
 
 @code {
-    private async Task HandleRegister()
-    {
-        // Simulation de création de compte
-        await Task.Delay(800);
-
-        // Redirection vers le login après succès
-        Navigation.NavigateTo("/login");
-    }
 }

@@ -67,6 +67,24 @@ namespace AuthService.Services
             return BuildAuthResponse(user);
         }
 
+        public async Task<User?> CreditBalanceAsync(int userId, decimal amount)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return null;
+            user.Balance += amount;
+            await _context.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<User?> DeductBalanceAsync(int userId, decimal amount)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null || user.Balance < amount) return null;
+            user.Balance -= amount;
+            await _context.SaveChangesAsync();
+            return user;
+        }
+
         // ── Helpers ──────────────────────────────────────────────────────────────
 
         private AuthResponse BuildAuthResponse(User user)

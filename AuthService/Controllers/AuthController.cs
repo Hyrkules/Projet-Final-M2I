@@ -27,7 +27,6 @@ public class AuthController : ControllerBase
         return Ok(new { status = "ok" });
     }
 
-    // POST /api/auth/register
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
     {
@@ -35,7 +34,6 @@ public class AuthController : ControllerBase
         return CreatedAtAction(nameof(Me), response);
     }
 
-    // POST /api/auth/login
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
     {
@@ -43,7 +41,6 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    // GET /api/auth/me
     [Authorize]
     [HttpGet("me")]
     public async Task<IActionResult> Me()
@@ -65,7 +62,6 @@ public class AuthController : ControllerBase
         });
     }
 
-    // GET /api/auth/balance
     [Authorize]
     [HttpGet("balance")]
     public async Task<IActionResult> Balance()
@@ -79,12 +75,30 @@ public class AuthController : ControllerBase
         return Ok(new { user.Id, user.Balance });
     }
 
-    // ── Helper ───────────────────────────────────────────────────────────────
-
     private int? GetCurrentUserId()
     {
         var sub = User.FindFirstValue(ClaimTypes.NameIdentifier)
                ?? User.FindFirstValue("sub");
         return int.TryParse(sub, out var id) ? id : null;
+    }
+
+    [HttpPost("balance/credit")]
+    [Authorize]
+    public async Task<IActionResult> CreditBalance([FromBody] BalanceUpdateDto dto)
+    {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var user = await _authService.CreditBalanceAsync(userId, dto.Amount);
+        if (user == null) return NotFound();
+        return Ok(new { balance = user.Balance });
+    }
+
+    [HttpPost("balance/deduct")]
+    [Authorize]
+    public async Task<IActionResult> DeductBalance([FromBody] BalanceUpdateDto dto)
+    {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var user = await _authService.DeductBalanceAsync(userId, dto.Amount);
+        if (user == null) return BadRequest(new { error = "Solde insuffisant." });
+        return Ok(new { balance = user.Balance });
     }
 }

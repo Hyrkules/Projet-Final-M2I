@@ -1,7 +1,7 @@
 ﻿/* ==========================================================================
    STRUCTURE DU HEADER (Style TradingView)
    ========================================================================== */
-/* --- DÉFINITION DES THÈMES --- */
+/* --- DÉFInitION DES THÈMES --- */
 
 /* Mode Sombre (par défaut) */
 .dark-theme {
@@ -129,7 +129,7 @@
     display: inline-block;
 }
 
-.user-avatar-initial {
+.user-avatar-Initial {
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -145,7 +145,7 @@
     transition: all 0.2s;
 }
 
-    .user-avatar-initial:hover {
+    .user-avatar-Initial:hover {
         border-color: #848e9c;
     }
 

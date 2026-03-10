@@ -17,7 +17,6 @@ public class PortfolioController : ControllerBase
         _portfolioBaseUrl = config["Services:PortfolioService"] ?? "http://localhost:5003";
     }
 
-    // GET /api/portfolio
     [HttpGet]
     public async Task<IActionResult> GetSummary()
     {
@@ -27,7 +26,6 @@ public class PortfolioController : ControllerBase
         return Ok(result);
     }
 
-    // GET /api/portfolio/holdings
     [HttpGet("holdings")]
     public async Task<IActionResult> GetHoldings()
     {
@@ -37,7 +35,6 @@ public class PortfolioController : ControllerBase
         return Ok(result);
     }
 
-    // GET /api/portfolio/transactions
     [HttpGet("transactions")]
     public async Task<IActionResult> GetTransactions()
     {
@@ -47,7 +44,6 @@ public class PortfolioController : ControllerBase
         return Ok(result);
     }
 
-    // GET /api/portfolio/performance
     [HttpGet("performance")]
     public async Task<IActionResult> GetPerformance()
     {

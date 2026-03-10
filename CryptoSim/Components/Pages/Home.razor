@@ -1,15 +1,18 @@
-﻿@rendermode InteractiveServer
+@rendermode InteractiveServer
 @page "/"
 @using CryptoSim.Blazor.Services
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
+@inject HttpClient Http
 
 <PageTitle>Home</PageTitle>
 
 <div class="profile-container animate-fade-in">
     <div class="wallet-page-header">
         <h1 class="main-page-title text-gold">TABLEAU DE BORD</h1>
+
     </div>
+</div>
     <div class="header-separator-bar"></div>
 
     @* --- 1. RÉSUMÉ RAPIDE --- *@
@@ -18,7 +21,7 @@
             <i class="bi bi-wallet2 text-gold"></i>
             <div>
                 <span class="stat-label">VALEUR TOTALE</span>
-                <span class="stat-value">11,550.00 €</span>
+                <span class="stat-value">@AuthState.Balance.ToString("N2") €</span>
             </div>
         </div>
         <div class="standard-card stat-item">
@@ -32,10 +35,18 @@
             <i class="bi bi-cpu text-gold"></i>
             <div>
                 <span class="stat-label">ACTIFS DÉTENUS</span>
-                <span class="stat-value">12 Crypto</span>
+                <span class="stat-value"> @(_cryptoCount.HasValue ? $"{_cryptoCount} Actifs" : "Chargement...")</span>
             </div>
         </div>
     </div>
+</div>
+<div class="row g-4 mt-4">
+    <div class="col-md-4">
+        <div class="card bg-dark-card border-secondary p-3 text-center">
+            <h5 class="text-muted">Marché Actif</h5>
+            <h2 class="text-white">
+                @(_cryptoCount.HasValue ? $"{_cryptoCount} Actifs" : "Chargement...")
+            </h2>
 
     <div class="dashboard-main-grid">
         @* --- 2. APERÇU PORTEFEUILLE --- *@
@@ -201,12 +212,12 @@
                 <div id="game-overlay" class="game-overlay">
                     <p class="text-gold">APPUYEZ SUR <strong>ESPACE</strong> POUR JOUER</p>
                     <span id="game-message" class="text-muted small">@GameMessage</span>
+     
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 @code {
     protected override async Task OnAfterRenderAsync(bool firstRender)

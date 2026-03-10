@@ -13,7 +13,6 @@ public class PriceService : IPriceService
         _context = context;
     }
 
-    // Retourne toutes les cryptos avec leur prix actuel
     public async Task<List<CryptoDto>> GetAllCryptosAsync()
     {
         var cryptos = await _context.Cryptos.ToListAsync();
@@ -28,7 +27,6 @@ public class PriceService : IPriceService
         }).ToList();
     }
 
-    // Retourne une crypto par son symbole (ex: BBTC)
     public async Task<CryptoDto?> GetCryptoBySymbolAsync(string symbol)
     {
         var crypto = await _context.Cryptos
@@ -46,7 +44,6 @@ public class PriceService : IPriceService
         };
     }
 
-    // Retourne l'historique des prix d'une crypto
     public async Task<List<PriceHistoryDto>> GetPriceHistoryAsync(string symbol, int limit = 50)
     {
         var history = await _context.PriceHistories
@@ -64,7 +61,6 @@ public class PriceService : IPriceService
         return history;
     }
 
-    // Retourne un snapshot complet du marché (toutes les cryptos)
     public async Task<List<PriceUpdateDto>> GetSnapshotAsync()
     {
         var cryptos = await _context.Cryptos.ToListAsync();

@@ -2,48 +2,44 @@
 @rendermode InteractiveServer
 @using CryptoSim.Blazor.Services
 @inject NavigationManager Navigation
+@inject HttpClient Http
 
 <PageTitle>Historique</PageTitle>
-
 
 <div class="profile-container animate-fade-in">
     <div class="header-tabs">
         <h1 class="main-page-title text-gold">HISTORIQUE DES TRANSACTIONS</h1>
     </div>
     <div class="header-separator-bar"></div>
-    
-  
-    @* --- FILTRES DE RECHERCHE --- *@
+
     <div class="history-filters standard-card mb-4">
         <div class="filter-grid">
-            @* Recherche Rapide *@
             <div class="filter-group">
                 <label>RECHERCHE RAPIDE</label>
                 <div class="input-with-icon">
                     <i class="bi bi-search text-gold"></i>
-                    <input type="text" class="form-input" placeholder="Ex: BTC, ETH..." />
+                    <input type="text" class="form-input" placeholder="Ex: BBTC, YDX..."
+                           @bind="_search" @bind:event="oninput" />
                 </div>
             </div>
-
-            @* Type de Transaction *@
             <div class="filter-group">
                 <label>TYPE</label>
                 <div class="input-with-icon">
                     <i class="bi bi-filter-circle text-gold"></i>
-                    <select class="form-input custom-dashboard-select">
+                    <select class="form-input custom-dashboard-select" @bind="_typeFilter">
+
                         <option value="all">TOUS</option>
-                        <option value="buy" class="text-green">ACHAT</option>
-                        <option value="sell" class="text-red">VENTE</option>
+                        <option value="Buy">ACHAT</option>
+                        <option value="Sell">VENTE</option>
                     </select>
                 </div>
             </div>
-
-            @* Période *@
             <div class="filter-group">
                 <label>PÉRIODE</label>
                 <div class="input-with-icon">
                     <i class="bi bi-calendar3 text-gold"></i>
-                    <select class="form-input custom-dashboard-select">
+                    <select class="form-input custom-select custom-dashboard-select" @bind="_periodFilter">
+                        <option value="0">TOUS</option>
                         <option value="7">7 DERNIERS JOURS</option>
                         <option value="30">30 DERNIERS JOURS</option>
                     </select>
@@ -52,10 +48,8 @@
         </div>
     </div>
 
-    @* --- TABLEAU DES ORDRES --- *@
     <div class="standard-card relative-card">
         <h3 class="card-subtitle text-white">DERNIERS ORDRES EXÉCUTÉS</h3>
-        
         <div class="table-responsive">
             <table class="history-table">
                 <thead>
@@ -64,39 +58,57 @@
                         <th>ACTIF</th>
                         <th>TYPE</th>
                         <th>QUANTITÉ</th>
-                        <th>PRIX EXÉCUTION (€)</th>
-                        <th>TOTAL (€)</th>
+                        <th>PRIX EXÉCUTION</th>
+                        <th>TOTAL</th>
                         <th>STATUT</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>05 MAR 2026 14:32</td>
-                        <td>BZH <small>(BreizhCoin)</small></td>
-                        <td><span class="badge badge-sale">VENTE</span></td>
-                        <td>10.5</td>
-                        <td>105.20</td>
-                        <td>1,104.60</td>
-                        <td><span class="text-green"><i class="bi bi-check-circle"></i> EXÉCUTÉ</span></td>
-                    </tr>
-                    <tr>
-                        <td>05 MAR 2026 10:15</td>
-                        <td>CAFE <small>(Coffee-In)</small></td>
-                        <td><span class="badge badge-buy">ACHAT</span></td>
-                        <td>50</td>
-                        <td>4.75</td>
-                        <td>237.50</td>
-                        <td><span class="text-green"><i class="bi bi-check-circle"></i> EXÉCUTÉ</span></td>
-                    </tr>
-                    <tr>
-                        <td>02 MAR 2026 21:45</td>
-                        <td>DVM <small>(DevMoon)</small></td>
-                        <td><span class="badge badge-buy">ACHAT</span></td>
-                        <td>1,500</td>
-                        <td>0.14</td>
-                        <td>210.00</td>
-                        <td><span class="text-red"><i class="bi bi-x-circle"></i> REJETÉ</span></td>
-                    </tr>
+                    @if (_isLoading)
+                    {
+                        <tr><td colspan="7" class="text-center">Chargement...</td></tr>
+                    }
+                    else if (!FilteredOrders.Any())
+                    {
+                        <tr><td colspan="7" class="text-center text-muted">Aucune transaction trouvée.</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var order in FilteredOrders)
+                        {
+                            <tr>
+                                <td>@order.ExecutedAt?.ToString("dd MMM yyyy HH:mm")</td>
+                                <td>@order.CryptoSymbol</td>
+                                <td>
+                                    @if (order.Type == "Buy")
+                                    {
+                                        <span class="badge badge-buy">ACHAT</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-sale">VENTE</span>
+                                    }
+                                </td>
+                                <td>@order.Quantity</td>
+                                <td>@order.Price.ToString("N2") $</td>
+                                <td>@order.Total.ToString("N2") $</td>
+                                <td>
+                                    @if (order.Status == "Executed")
+                                    {
+                                        <span class="text-green"><i class="bi bi-check-circle"></i> EXÉCUTÉ</span>
+                                    }
+                                    else if (order.Status == "Rejected")
+                                    {
+                                        <span class="text-red"><i class="bi bi-x-circle"></i> REJETÉ</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">@order.Status.ToUpper()</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
                 </tbody>
             </table>
         </div>

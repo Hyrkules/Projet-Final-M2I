@@ -1,7 +1,6 @@
 ﻿@rendermode InteractiveServer
 @page "/Profil"
 @using CryptoSim.Blazor.Services
-@inject CryptoSim.Blazor.Services.NotificationService NotificationService
 
 <PageTitle>Profil</PageTitle>
 
@@ -22,7 +21,7 @@
             </div>
 
             <div class="info-list">
-                <div class="detail-row"><label>NOM D'UTILISATEUR</label><span>Yann_Helouri</span></div>
+                <div class="detail-row"><label>NOM D'UTILISATEUR</label><span>@AuthState.Username</span></div>
                 <div class="detail-row"><label>EMAIL</label><span>yann_helouri@cryptosim.dev</span></div>
                 <div class="detail-row"><label>RÔLE</label><span>Trader Virtuel</span></div>
                 <div class="detail-row"><label>DATE D'INSCRIPTION</label><span>12 FEV 2026</span></div>
@@ -79,7 +78,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label><i class="bi bi-shield-lock"></i> MOT DE PASSE ACTUEL</label>
-                            <input type="password" class="form-input" placeholder="Saisissez votre mot de passe actuel" />
+                            <input type="password" class="form-input" @bind="_currentPassword" placeholder="Saisissez votre mot de passe actuel" />
                         </div>
                     </div>
 
@@ -87,11 +86,11 @@
                     <div class="form-row password-grid">
                         <div class="form-group">
                             <label><i class="bi bi-key"></i> NOUVEAU MOT DE PASSE</label>
-                            <input type="password" class="form-input" placeholder="Nouveau mot de passe" />
+                            <input type="password" class="form-input" @bind="_newPassword" placeholder="Nouveau mot de passe" />
                         </div>
                         <div class="form-group">
                             <label><i class="bi bi-check2-circle"></i> CONFIRMATION</label>
-                            <input type="password" class="form-input" placeholder="Confirmez le mot de passe" />
+                            <input type="password" class="form-input" @bind="_confirmPassword" placeholder="Confirmez le mot de passe" />
                         </div>
                     </div>
 
@@ -110,11 +109,11 @@
                 <div class="form-container animate-fade-in">
                     <div class="form-group">
                         <label><i class="bi bi-person-badge"></i> NOUVEAU NOM D'UTILISATEUR</label>
-                        <input type="text" class="form-input" placeholder="Yann_Helouri" />
+                        <input type="text" class="form-input" @bind="_newUsername" placeholder="Yann_Helouri" />
                     </div>
                     <div class="form-group">
                         <label><i class="bi bi-shield-lock"></i> CONFIRMER AVEC VOTRE MOT DE PASSE</label>
-                        <input type="password" class="form-input" placeholder="Entrez votre mot de passe pour valider" />
+                        <input type="password" class="form-input" @bind="_confirmPasswordForUsername" placeholder="Entrez votre mot de passe pour valider" />
                     </div>
                     <div class="action-buttons-container">
                         <button class="btn-glass text-gold" @onclick="HandleSave">METTRE À JOUR LE NOM D'UTILISATEUR</button>
@@ -128,38 +127,5 @@
 </div>
 
 @code {
-    private bool isEditingPassword = false;
-    private bool isEditingUsername = false;
-    private bool isSuccess = false;
-
-    private void OpenEditPassword()
-    {
-        isEditingUsername = false;
-        isEditingPassword = true;
-    }
-
-    private void OpenEditUsername()
-    {
-        isEditingPassword = false;
-        isEditingUsername = true;
-    }
-
-    private void CloseAllEdits()
-    {
-        isEditingPassword = false;
-        isEditingUsername = false;
-    }
-
-
-    private void HandleSave()
-    {
-        // 1. Ici, tu ajouteras plus tard ton appel API vers AuthService
-
-        // 2. On ferme le formulaire pour revenir à l'affichage normal
-        isEditingPassword = false;
-        isEditingUsername = false;
-
-        // 3. On déclenche la notification globale
-        NotificationService.ShowSuccess("MODIFICATION ENREGISTRÉE AVEC SUCCÈS");
-    }
+    
 }
