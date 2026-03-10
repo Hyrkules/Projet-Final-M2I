@@ -52,6 +52,26 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
+    [HttpPost("balance/credit")]
+    [RequireValidToken]
+    public async Task<IActionResult> CreditBalance([FromBody] BalanceUpdateDto dto)
+    {
+        var token = GetToken();
+        var client = new Client<object, BalanceUpdateDto>(_authBaseUrl, token);
+        var result = await client.PostRequest("/api/auth/balance/credit", dto);
+        return Ok(result);
+    }
+
+    [HttpPost("balance/deduct")]
+    [RequireValidToken]
+    public async Task<IActionResult> DeductBalance([FromBody] BalanceUpdateDto dto)
+    {
+        var token = GetToken();
+        var client = new Client<object, BalanceUpdateDto>(_authBaseUrl, token);
+        var result = await client.PostRequest("/api/auth/balance/deduct", dto);
+        return Ok(result);
+    }
+
     private string GetToken()
     {
         var header = Request.Headers["Authorization"].ToString();

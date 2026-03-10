@@ -81,4 +81,24 @@ public class AuthController : ControllerBase
                ?? User.FindFirstValue("sub");
         return int.TryParse(sub, out var id) ? id : null;
     }
+
+    [HttpPost("balance/credit")]
+    [Authorize]
+    public async Task<IActionResult> CreditBalance([FromBody] BalanceUpdateDto dto)
+    {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var user = await _authService.CreditBalanceAsync(userId, dto.Amount);
+        if (user == null) return NotFound();
+        return Ok(new { balance = user.Balance });
+    }
+
+    [HttpPost("balance/deduct")]
+    [Authorize]
+    public async Task<IActionResult> DeductBalance([FromBody] BalanceUpdateDto dto)
+    {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var user = await _authService.DeductBalanceAsync(userId, dto.Amount);
+        if (user == null) return BadRequest(new { error = "Solde insuffisant." });
+        return Ok(new { balance = user.Balance });
+    }
 }
