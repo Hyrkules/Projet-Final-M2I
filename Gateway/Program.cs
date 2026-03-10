@@ -1,5 +1,4 @@
 using Gateway.Filters;
-using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,7 +39,12 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // ── Filter de validation du token ─────────────────────────────────────────────
-builder.Services.AddHttpClient("AuthService");
+builder.Services.AddHttpClient("AuthService", client =>
+{
+    client.BaseAddress = new Uri(
+        builder.Configuration["Services:AuthService"] ?? "http://localhost:5001"
+    );
+});
 builder.Services.AddScoped<TokenValidationFilter>();
 builder.Services.AddControllers(options =>
 {
@@ -49,10 +53,14 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
-        policy.WithOrigins("http://localhost:5000", "https://localhost:5000")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials()));
+        policy.WithOrigins(
+            "http://localhost:5000",    // Blazor local
+            "http://localhost:5005",    // Gateway local
+            "http://blazor:5000"        // Blazor Docker
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials()));
 
 var app = builder.Build();
 

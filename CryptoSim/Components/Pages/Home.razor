@@ -2,35 +2,33 @@
 @page "/"
 @using CryptoSim.Blazor.Services
 @inject NavigationManager Navigation
+@inject HttpClient Http
 
 <PageTitle>Home</PageTitle>
 
+
 <h1>Fichier Home.razor (CryptoSim.Blazor/Components/Pages/Home.razor)</h1>
 <p>État auth : @AuthState.IsAuthenticated</p>
+
 <div class="text-center py-5">
     <h1 class="display-3 fw-bold text-white">Prêt à <span class="text-neon">Trader</span> ?</h1>
     <p class="lead text-secondary">La simulation de crypto-monnaie la plus rapide pour Yann et Helouri.</p>
     <div class="mt-4">
         <a href="trade" class="btn btn-neon btn-lg px-5 me-3">Commencer à trader</a>
         <a href="portfolio" class="btn btn-outline-light btn-lg px-5">Voir mon solde</a>
+
     </div>
 </div>
+    <div class="header-separator-bar"></div>
 
 <div class="row g-4 mt-4">
     <div class="col-md-4">
         <div class="card bg-dark-card border-secondary p-3 text-center">
             <h5 class="text-muted">Marché Actif</h5>
-            <h2 class="text-white">12 Actifs</h2>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card bg-dark-card border-secondary p-3 text-center">
-            <h5 class="text-muted">Transactions totales</h5>
-            <h2 class="text-white">1,248</h2>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card bg-dark-card border-secondary p-3 text-center">
+            <h2 class="text-white">
+                @(_cryptoCount.HasValue ? $"{_cryptoCount} Actifs" : "Chargement...")
+            </h2>
+
             <h5 class="text-muted">Utilisateurs en ligne</h5>
             <h2 class="text-neon">42</h2>
         </div>
@@ -38,14 +36,41 @@
 </div>
 
 @code {
-    protected override void OnAfterRender(bool firstRender)
+    private int? _cryptoCount;
+    private int? _transactionCount;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender) // On ne vérifie qu'au tout premier chargement
+        if (firstRender)
         {
             if (!AuthState.IsAuthenticated)
             {
                 Navigation.NavigateTo("/login");
+                return;
             }
+
+            await LoadStatsAsync();
+            StateHasChanged();
         }
+    }
+
+    private async Task LoadStatsAsync()
+    {
+        try
+        {
+            var cryptos = await Http.GetFromJsonAsync<List<object>>("/api/market/cryptos");
+            _cryptoCount = cryptos?.Count ?? 0;
+        }
+        catch { _cryptoCount = 0; }
+
+        try
+        {
+            Http.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AuthState.Token);
+
+            var transactions = await Http.GetFromJsonAsync<List<object>>("/api/portfolio/transactions");
+            _transactionCount = transactions?.Count ?? 0;
+        }
+        catch { _transactionCount = 0; }
     }
 }

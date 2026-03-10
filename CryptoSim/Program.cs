@@ -6,6 +6,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddScoped<CryptoSim.Blazor.Services.NotificationService>();
+
+var gatewayUrl = builder.Configuration["GatewayBaseUrl"] ?? "http://localhost:5005";
+
+builder.Services.AddHttpClient("Gateway", client =>
+{
+    client.BaseAddress = new Uri(gatewayUrl);
+});
+
+builder.Services.AddScoped(sp =>
+    sp.GetRequiredService<IHttpClientFactory>().CreateClient("Gateway"));
+
+builder.Services.AddScoped<AuthService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
