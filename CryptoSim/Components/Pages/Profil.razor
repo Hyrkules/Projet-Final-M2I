@@ -1,8 +1,165 @@
 ﻿@rendermode InteractiveServer
 @page "/Profil"
 @using CryptoSim.Blazor.Services
-@inject NavigationManager Navigation
+@inject CryptoSim.Blazor.Services.NotificationService NotificationService
 
 <PageTitle>Profil</PageTitle>
 
-<h1>Page Profil</h1>
+<div class="profile-container animate-fade-in">
+    @* --- HEADER --- *@
+    <div class="header-tabs">
+        <h1 class="main-page-title text-gold">MON PROFIL UTILISATEUR</h1>
+    </div>
+    <div class="header-separator-bar"></div>
+
+    <div class="profile-grid">
+        @* --- COLONNE GAUCHE (Toujours visible) --- *@
+        <div class="standard-card">
+            <h3 class="card-subtitle text-white">INFORMATIONS PERSONNELLES</h3>
+
+            <div class="avatar-section">
+                <div class="avatar-circle">YH</div>
+            </div>
+
+            <div class="info-list">
+                <div class="detail-row"><label>NOM D'UTILISATEUR</label><span>Yann_Helouri</span></div>
+                <div class="detail-row"><label>EMAIL</label><span>yann_helouri@cryptosim.dev</span></div>
+                <div class="detail-row"><label>RÔLE</label><span>Trader Virtuel</span></div>
+                <div class="detail-row"><label>DATE D'INSCRIPTION</label><span>12 FEV 2026</span></div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-glass text-gold" @onclick="OpenEditPassword">
+                    MODIFIER LE MOT DE PASSE
+                </button>
+                <button class="btn-glass text-gold" @onclick="OpenEditUsername">MODIFIER LE NOM D'UTILISATEUR</button>
+                <button class="btn-glass secondary text-grise">ACTIVER L'AUTH. DOUBLE FACTEUR</button>
+            </div>
+        </div>
+
+        @* --- COLONNE DROITE (Dynamique) --- *@
+        <div class="standard-card relative-card">
+            @if (!isEditingPassword && !isEditingUsername)
+            {
+                <h3 class="card-subtitle text-white">RÉSUMÉ ET PERFORMANCE</h3>
+                <div class="gauge-container animate-fade-in">
+                    <div class="circular-gauge">
+                        <div class="gauge-inner">
+                            <span class="gauge-label">PERFORMANCE GLOBALE</span>
+                            <span class="gauge-value">+55.5%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-footer animate-fade-in">
+                    <div class="mini-box text-gold">
+                        <label>FOND INITIAL</label>
+                        <div class="stat-content">10,000.00 € <i class="bi bi-safe2-fill"></i></div>
+                    </div>
+                    <div class="mini-box text-gold">
+                        <label>FOND ACTUEL</label>
+                        <div class="stat-content">11,550.00 € <i class="bi bi-wallet2"></i></div>
+                    </div>
+                    <div class="mini-box highlight-green">
+                        <label>PLUS-VALUE</label>
+                        <div class="stat-content">+1,550.00 € <i class="bi bi-graph-up-arrow"></i></div>
+                    </div>
+                </div>
+            }
+            else if (isEditingPassword)
+            {
+
+                <button class="close-btn" @onclick="() => isEditingPassword = false">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+
+                <h3 class="card-subtitle text-white">MODIFIER LE MOT DE PASSE</h3>
+
+                <div class="form-container animate-fade-in">
+                    @* Ligne 1 : Mot de passe actuel *@
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="bi bi-shield-lock"></i> MOT DE PASSE ACTUEL</label>
+                            <input type="password" class="form-input" placeholder="Saisissez votre mot de passe actuel" />
+                        </div>
+                    </div>
+
+                    @* Ligne 2 : Nouveaux mots de passe côte à côte *@
+                    <div class="form-row password-grid">
+                        <div class="form-group">
+                            <label><i class="bi bi-key"></i> NOUVEAU MOT DE PASSE</label>
+                            <input type="password" class="form-input" placeholder="Nouveau mot de passe" />
+                        </div>
+                        <div class="form-group">
+                            <label><i class="bi bi-check2-circle"></i> CONFIRMATION</label>
+                            <input type="password" class="form-input" placeholder="Confirmez le mot de passe" />
+                        </div>
+                    </div>
+
+                    @* Ligne 3 : Actions *@
+                    <div class="action-buttons-container">
+                        <button class="btn-glass text-gold" @onclick="HandleSave">ENREGISTRER LES MODIFICATIONS</button>
+                        <button class="btn-cancel" @onclick="() => isEditingPassword = false">ANNULER</button>
+                    </div>
+                </div>
+            }
+            else if (isEditingUsername)
+            {
+                @* VUE 3 : FORMULAIRE PSEUDO *@
+                <button class="close-btn" @onclick="CloseAllEdits"><i class="bi bi-x-lg"></i></button>
+                <h3 class="card-subtitle text-white">MODIFIER LE NOM D'UTILISATEUR</h3>
+                <div class="form-container animate-fade-in">
+                    <div class="form-group">
+                        <label><i class="bi bi-person-badge"></i> NOUVEAU NOM D'UTILISATEUR</label>
+                        <input type="text" class="form-input" placeholder="Yann_Helouri" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="bi bi-shield-lock"></i> CONFIRMER AVEC VOTRE MOT DE PASSE</label>
+                        <input type="password" class="form-input" placeholder="Entrez votre mot de passe pour valider" />
+                    </div>
+                    <div class="action-buttons-container">
+                        <button class="btn-glass text-gold" @onclick="HandleSave">METTRE À JOUR LE NOM D'UTILISATEUR</button>
+                        <button class="btn-cancel" @onclick="CloseAllEdits">ANNULER</button>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool isEditingPassword = false;
+    private bool isEditingUsername = false;
+    private bool isSuccess = false;
+
+    private void OpenEditPassword()
+    {
+        isEditingUsername = false;
+        isEditingPassword = true;
+    }
+
+    private void OpenEditUsername()
+    {
+        isEditingPassword = false;
+        isEditingUsername = true;
+    }
+
+    private void CloseAllEdits()
+    {
+        isEditingPassword = false;
+        isEditingUsername = false;
+    }
+
+
+    private void HandleSave()
+    {
+        // 1. Ici, tu ajouteras plus tard ton appel API vers AuthService
+
+        // 2. On ferme le formulaire pour revenir à l'affichage normal
+        isEditingPassword = false;
+        isEditingUsername = false;
+
+        // 3. On déclenche la notification globale
+        NotificationService.ShowSuccess("MODIFICATION ENREGISTRÉE AVEC SUCCÈS");
+    }
+}

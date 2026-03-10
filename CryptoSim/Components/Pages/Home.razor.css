@@ -1,0 +1,67 @@
+﻿/* --- GRID DASHBOARD --- */
+.dashboard-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px !important;
+}
+
+    .stat-item i {
+        font-size: 2rem;
+        filter: drop-shadow(0 0 10px rgba(193, 164, 97, 0.2));
+    }
+
+.stat-label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.stat-value {
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+.dashboard-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 25px;
+}
+
+/* --- LISTE RÉCENTE --- */
+.recent-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.asset-name {
+    font-weight: 700;
+    color: var(--white);
+    flex-grow: 1;
+    margin-left: 15px;
+}
+
+.recent-amount {
+    font-family: 'Mono', monospace;
+    font-weight: 600;
+}
+
+/* --- PLACEHOLDER GRAPHIQUE --- */
+.chart-placeholder {
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, rgba(38, 166, 154, 0.05) 0%, transparent 70%);
+}

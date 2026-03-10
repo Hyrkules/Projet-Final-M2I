@@ -6,14 +6,16 @@
 
 <PageTitle>Home</PageTitle>
 
-<div class="text-center py-5">
-    <h1 class="display-3 fw-bold text-white">Prêt à <span class="text-neon">Trader</span> ?</h1>
-    <p class="lead text-secondary">La simulation de crypto-monnaie la plus rapide pour Yann et Helouri.</p>
-    <div class="mt-4">
-        <a href="trade" class="btn btn-neon btn-lg px-5 me-3">Commencer à trader</a>
-        <a href="portfolio" class="btn btn-outline-light btn-lg px-5">Voir mon solde</a>
+
+<div class="profile-container animate-fade-in">
+    <div class="wallet-page-header">
+        <h1 class="main-page-title text-gold">TABLEAU DE BORD</h1>
+        <div class="balance-badge">
+            <span class="label">VALEUR TOTALE</span>
+            <span class="value">11,550.00 VF</span>
+        </div>
     </div>
-</div>
+    <div class="header-separator-bar"></div>
 
 <div class="row g-4 mt-4">
     <div class="col-md-4">
@@ -31,14 +33,14 @@
                 @(_transactionCount.HasValue? _transactionCount.ToString() : "Chargement...")
             </h2>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card bg-dark-card border-secondary p-3 text-center">
-            <h5 class="text-muted">Utilisateurs en ligne</h5>
-            <h2 class="text-neon">42</h2>
+        <div class="standard-card stat-item">
+            <i class="bi bi-cpu text-gold"></i>
+            <div>
+                <span class="stat-label">ACTIFS DÉTENUS</span>
+                <span class="stat-value">12 Jetons</span>
+            </div>
         </div>
     </div>
-</div>
 
 @code {
     private int? _cryptoCount;

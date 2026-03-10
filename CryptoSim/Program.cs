@@ -1,4 +1,5 @@
 using CryptoSim.Blazor.Components;
+using CryptoSim.Blazor.Components.Pages;
 using CryptoSim.Blazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,8 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-var gatewayUrl = builder.Configuration["GatewayBaseUrl"] ?? "http://localhost:5005";
-Console.WriteLine($">>> Gateway URL: {gatewayUrl}"); // ← ajoute cette ligne
+var gatewayUrl = builder.Configuration["GatewayBaseUrl"] ?? "http://localhost:5005";tte ligne
+
+builder.Services.AddScoped<CryptoSim.Blazor.Services.NotificationService>();
 
 builder.Services.AddHttpClient("Gateway", client =>
 {

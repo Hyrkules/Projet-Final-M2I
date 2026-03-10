@@ -24,17 +24,21 @@
 }
 
 .trading-header {
-    background-color: var(--header-bg); /* Utilise la variable */
-    border-bottom: 1px solid var(--header-border);
-    color: var(--text-main);
-    transition: all 0.3s ease; /* Transition douce */
-    height: 50px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    position: sticky;
+   
+   
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(10px); /* Pour la compatibilité Safari */
+    
+    border-bottom: 1px solid rgba(42, 46, 57, 0.5);
+    position: sticky; /* Pour que le header reste en haut au scroll */
     top: 0;
-    z-index: 1020;
+    z-index: 1020; /* Assure que le header passe au-dessus du contenu */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    height: 60px; /* Ajuste la hauteur si nécessaire */
+    color: #ffffff; /* Couleur du texte par défaut */
 }
 
 .header-container {
@@ -61,7 +65,7 @@
 
 .logo-icon {
     font-size: 1.4rem;
-    color: #26a69a; /* Vert trading */
+    color: var(--neon-green); /* Vert trading */
 }
 
 .logo-text {
@@ -112,7 +116,7 @@
 }
 
     .icon-btn-trading:hover {
-        color: #26a69a;
+        color: var(--neon-green);
     }
 
 .bi-lightning-fill {
@@ -167,7 +171,7 @@
 
 .badge-status {
     font-size: 0.7rem;
-    color: #26a69a;
+    color: var(--neon-green);
     text-transform: uppercase;
     font-weight: 700;
 }
@@ -230,9 +234,6 @@
     }
 
 /* Animation d'apparition */
-.animate-fade-in {
-    animation: fadeInSlide 0.2s ease-out;
-}
 
 @keyframes fadeInSlide {
     from {
@@ -268,7 +269,6 @@
 }
 
 .user-dropdown {
-    background-color: var(--dropdown-bg);
     border: 1px solid var(--header-border);
     color: var(--text-main);
 }

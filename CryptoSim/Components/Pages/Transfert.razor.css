@@ -1,0 +1,290 @@
+﻿:root {
+    /* Palette TradingView / High-Tech */
+    --neon-green: #26a69a;
+    --neon-green-glow: rgba(0, 255, 136, 0.3);
+    --dark-bg: #0b0e14; /* Fond principal ultra sombre */
+    --card-bg: #151921; /* Fond des surfaces (Sidebar/Header/Cards) */
+    --border-color: #2a2e39; /* Bordures fines style interface de trading */
+    --text-muted: #848e9c; /* Texte secondaire (gris) */
+    --text-main: #e0e3eb; /* Texte principal (blanc cassé) */
+    --sidebar-collapsed: 70px; /* Largeur réduite */
+    --sidebar-expanded: 240px; /* Largeur au survol */
+    --gold: #c1a461;
+    --white: #ffffff;
+    --grisé: #848e9c
+}
+
+/* --- MODE SOMBRE (Par défaut) --- */
+.dark-theme {
+    --sidebar-bg: #1a1e27; /* Fond sombre */
+    --sidebar-border: #2a2e39; /* Bordure discrète */
+    --text-muted: #848e9c; /* Gris pour les icônes non actives */
+    --text-main: #ffffff; /* Blanc pour le survol */
+    --nav-hover-bg: rgba(255, 255, 255, 0.03);
+    --neon-green: #26a69a; /* Vert Trading */
+    --gold: #c1a461;
+    --white: #ffffff;
+}
+
+/* --- MODE JOUR (Surcharge) --- */
+.light-theme {
+    --sidebar-bg: #ffffff; /* Fond blanc */
+    --sidebar-border: #e0e3eb; /* Bordure claire */
+    --text-muted: #6a6d78; /* Gris plus foncé pour lisibilité */
+    --text-main: #131722; /* Texte presque noir */
+    --nav-hover-bg: #f0f3fa; /* Gris bleuté très clair au survol */
+    --neon-green: #26a69a; /* Vert trading plus "saisissant" sur blanc */
+    --gold: #c1a461;
+    --white: #ffffff;
+}
+    
+    /* --- CONTAINER & BACKGROUND --- */
+
+
+.wallet-container {
+    max-width: 1800px; /* Aligné sur le profil */
+    margin: 0 auto;
+    font-family: 'Inter', sans-serif;
+}
+
+/* --- HEADER --- */
+.wallet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.balance-badge {
+    background: rgba(193, 164, 97, 0.1);
+    border: 1px solid var(--gold);
+    padding: 10px 25px;
+    border-radius: 12px;
+}
+
+    .balance-badge .label {
+        display: block;
+        font-size: 0.65rem;
+        color: var(--gold);
+        letter-spacing: 1.5px;
+        font-weight: 700;
+    }
+
+    .balance-badge .value {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--white);
+    }
+
+/* --- GRID & CARDS --- */
+.wallet-grid {
+    display: grid;
+    grid-template-columns: 450px 1fr; /* Proche du ratio 400px/1fr du profil */
+    gap: 30px;
+    margin-top: 20px;
+}
+
+
+/* --- SUBTITLES --- */
+.card-subtitle {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 25px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(193, 164, 97, 0.2);
+    color: var(--white);
+}
+
+/* --- SUMMARY CARD DETAILS --- */
+.total-balance-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 0;
+}
+
+.currency-icon {
+    width: 80px;
+    height: 80px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    color: var(--gold);
+    background: rgba(193, 164, 97, 0.05);
+    box-shadow: 0 0 20px rgba(193, 164, 97, 0.15);
+}
+
+.balance-info {
+    text-align: center;
+}
+
+    .balance-info .amount {
+        display: block;
+        font-size: 2.4rem;
+        font-weight: 800;
+        color: var(--white);
+        text-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+
+    .balance-info .trend.up {
+        color: var(--neon-green);
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    font-size: 0.85rem;
+}
+
+    .detail-item span:first-child {
+        color: var(--text-muted);
+        font-weight: 600;
+    }
+
+    .detail-item span:last-child {
+        color: var(--white);
+        font-weight: 700;
+    }
+
+/* --- ACTION TABS --- */
+.tabs-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    background: rgba(0,0,0,0.3);
+    padding: 2px;
+    border-radius: 12px;
+    border: 1px solid var(--border-glass);
+}
+
+.tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 700;
+    transition: 0.3s;
+    letter-spacing: 1px;
+}
+
+    .tab-btn.active {
+        background: rgba(193, 164, 97, 0.15);
+        color: var(--gold);
+        border: 1px solid rgba(193, 164, 97, 0.3);
+    }
+
+/* --- FORMS & INPUTS --- */
+.form-input {
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 14px;
+    color: white !important;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+    .form-input:focus {
+        border-color: var(--gold);
+        outline: none;
+        box-shadow: 0 0 10px rgba(193, 164, 97, 0.2);
+    }
+
+.quick-amounts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 25px 0;
+}
+
+    .quick-amounts button {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border-glass);
+        color: var(--text-muted);
+        padding: 10px;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .quick-amounts button:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(193, 164, 97, 0.05);
+        }
+
+/* --- BUTTONS --- */
+.btn-glass {
+    width: 100%;
+    background: rgba(193, 164, 97, 0.1);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .btn-glass:hover {
+        background: var(--gold);
+        color: var(--white) !important;
+        box-shadow: 0 0 20px rgba(193, 164, 97, 0.3);
+    }
+
+
+.input-with-icon {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3); /* Fond sombre comme le profil */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding-left: 15px; /* Espace pour l'icône à gauche */
+    transition: 0.3s;
+}
+
+    .input-with-icon i {
+        font-size: 1.2rem;
+        margin-right: 10px; /* Espace entre l'icône et le texte */
+        filter: drop-shadow(0 0 5px rgba(193, 164, 97, 0.4));
+    }
+
+    .input-with-icon .form-input {
+        background: transparent !important; /* On enlève le fond de l'input seul */
+        border: none !important; /* On enlève la bordure de l'input seul */
+        padding: 12px 15px 12px 5px;
+        flex-grow: 1;
+        color: white !important;
+        outline: none;
+    }
+
+    /* Effet au focus sur l'ensemble du bloc */
+    .input-with-icon:focus-within {
+        border-color: var(--gold);
+        box-shadow: 0 0 10px rgba(193, 164, 97, 0.2);
+    }
+
+.form-content {
+    color: var(--text-muted);
+}
