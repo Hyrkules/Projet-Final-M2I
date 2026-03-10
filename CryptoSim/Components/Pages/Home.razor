@@ -1,26 +1,43 @@
-﻿@rendermode InteractiveServer
+@rendermode InteractiveServer
 @page "/"
 @using CryptoSim.Blazor.Services
 @inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
 @inject HttpClient Http
 
 <PageTitle>Home</PageTitle>
 
 <div class="profile-container animate-fade-in">
-    <div class="balance-badge">
-        <span class="label">VALEUR TOTALE</span>
-        <span class="value">@AuthState.Balance.ToString("N2") $</span>
+    <div class="wallet-page-header">
+        <h1 class="main-page-title text-gold">TABLEAU DE BORD</h1>
+
     </div>
 </div>
     <div class="header-separator-bar"></div>
-    <div class="row g-4 mt-4">
-        <div class="col-md-4">
-            <div class="card bg-dark-card border-secondary p-3 text-center">
-                <h5 class="text-muted">Marché Actif</h5>
-                <h2 class="text-white">
-                    @(_cryptoCount.HasValue ? $"{_cryptoCount} Actifs" : "Chargement...")
-                </h2>
+
+    @* --- 1. RÉSUMÉ RAPIDE --- *@
+    <div class="dashboard-stats-grid">
+        <div class="standard-card stat-item">
+            <i class="bi bi-wallet2 text-gold"></i>
+            <div>
+                <span class="stat-label">VALEUR TOTALE</span>
+                <span class="stat-value">@AuthState.Balance.ToString("N2") €</span>
             </div>
+        </div>
+        <div class="standard-card stat-item">
+            <i class="bi bi-graph-up-arrow text-green"></i>
+            <div>
+                <span class="stat-label">PERFORMANCE MENSUELLE</span>
+                <span class="stat-value text-green">+55.5%</span>
+            </div>
+        </div>
+        <div class="standard-card stat-item">
+            <i class="bi bi-cpu text-gold"></i>
+            <div>
+                <span class="stat-label">ACTIFS DÉTENUS</span>
+                <span class="stat-value"> @(_cryptoCount.HasValue ? $"{_cryptoCount} Actifs" : "Chargement...")</span>
+            </div>
+        </div>
     </div>
 </div>
 <div class="row g-4 mt-4">
@@ -31,19 +48,171 @@
                 @(_cryptoCount.HasValue ? $"{_cryptoCount} Actifs" : "Chargement...")
             </h2>
 
-        </div>
-        <div class="col-md-4">
-            <div class="card bg-dark-card border-secondary p-3 text-center">
-                <h5 class="text-muted">Transactions totales</h5>
-                <h2 class="text-white">
-                    @(_transactionCount.HasValue ? _transactionCount.ToString() : "Chargement...")
-                </h2>
+    <div class="dashboard-main-grid">
+        @* --- 2. APERÇU PORTEFEUILLE --- *@
+        @* Graphique en bougies *@
+        <div class="standard-card chart-container-pro grid-col-span-2">
+            <h3 class="card-subtitle text-white">COURS EN TEMPS REEL</h3>
+            @* --- HEADER DU GRAPHIQUE --- *@
+            <div class="chart-controls">
+                <div class="asset-info">
+                    <div class="input-with-icon">
+                        @*<i class="bi bi-currency-bitcoin text-gold"></i>*@
+                        <img src="@GetSelectedCryptoImage()" class="crypto-select-icon" />
+                        <select class="form-input custom-dashboard-select" @onchange="OnCryptoChanged">
+                            <option value="BTCUSDT">BabyBitcoin (BBTC)</option>
+                            <option value="SOLUSDT">PikaCoin (PIKA)</option>
+                            <option value="ETHUSDT">MoonCoin (MOON)</option>
+                        </select>
+                    </div>
+                    
+                
+          
+                <div class="price-badge-group">
+                    <span id="live-price-val" class="live-price">--.--€</span>
+                    <span id="live-price-change" class="price-change positive">0.00%</span>
+                </div>
+                </div>
+                <div class="market-stats-mini">
+                    <div class="stat">
+                        <span class="label">VOL 24H</span>
+                        <span id="live-vol-24h" class="value">--.--</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">HIGH</span>
+                        <span id="live-high" class="value text-green">--.--</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">LOW</span>
+                        <span id="live-low" class="value text-red">--.--</span>
+                    </div>
+                </div>
             </div>
-            <div class="standard-card stat-item">
-                <i class="bi bi-cpu text-gold"></i>
-                <div>
-                    <span class="stat-label">ACTIFS DÉTENUS</span>
-                    <span class="stat-value">12 Jetons</span>
+
+            @* --- LE GRAPHIQUE --- *@
+            <div id="cryptoChart" style="width: 100%; height: 350px;"></div>
+        </div>
+        
+        <div class="standard-card distribution-card">
+            <h3 class="card-subtitle text-white">RÉPARTITION DES ACTIFS</h3>
+            @* --- TABLEAU DES ORDRES --- *@
+
+            <div class="table-responsive">
+                <table class="actif-table">
+                    <thead>
+                        <tr>
+                            <th>ACTIF</th>
+                            <th>QUANTITÉ</th>
+                            <th>VALEUR</th>
+                            <th>PERFORMANCE</th>
+                            <th>Répartition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="align-crypto text-gold"><img src="images/bbtc_pacifier.png" width="56" class="crypto-icon"> <strong>BTC</strong></td>
+                            <td>0.4520</td>
+                            <td>28,450.60€</td>
+                            <td><span class="text-green">+18.05% <i class="bi bi-graph-up"></i></span></td>
+                            <td>
+                                <div class="allocation-container">
+                                    <span>45%</span>
+                                    <div class="progress-bar"><div class="progress-fill" style="width: 45%;"></div></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="align-crypto text-gold"><img src="images/pika_head.png" width="56" class="crypto-icon"> <strong>PIKA</strong></td>
+                            <td>12,500.00</td>
+                            <td>1,240.50€</td>
+                            <td><span class="text-red">-14.45% <i class="bi bi-graph-down"></i></span></td>
+                            <td>
+                                <div class="allocation-container">
+                                    <span>12%</span>
+                                    <div class="progress-bar"><div class="progress-fill" style="width: 12%;"></div></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="align-crypto text-gold"><img src="images/moon_orbit.png" width="56" class="crypto-icon"> <strong>SOL</strong></td>
+                            <td>45.80</td>
+                            <td>6,120.00€</td>
+                            <td><span class="text-green">+91.25% <i class="bi bi-graph-up"></i></span></td>
+                            <td>
+                                <div class="allocation-container">
+                                    <span>30%</span>
+                                    <div class="progress-bar"><div class="progress-fill" style="width: 30%;"></div></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="action-buttons">
+                <button class="btn-glass text-gold" @onclick='() => Navigation.NavigateTo("/trade")'>
+                   Acheter d'autres Cryptos
+                </button>
+            </div>
+        </div>
+
+        @* --- 3. DERNIERS MOUVEMENTS --- *@
+        <div class="standard-card grid-col-start-3">
+            <h3 class="card-subtitle text-white">ACTIVITÉ RÉCENTE</h3>
+            @* --- TABLEAU DES ORDRES --- *@
+
+                <div class="table-responsive">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>DATE</th>
+                                <th>ACTIF</th>
+                                <th>TYPE</th>
+                                <th>PRIX</th>
+                                <th>STATUT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>05 MAR 2026 14:32</td>
+                                <td>BZH</td>
+                                <td><span class="badge badge-sale">VENTE</span></td>
+                                <td>1,104.60</td>
+                            <td><i class="bi bi-check-circle text-green"></i></td>
+                            </tr>
+                            <tr>
+                                <td>05 MAR 2026 10:15</td>
+                                <td>CAFE</td>
+                                <td><span class="badge badge-buy">ACHAT</span></td>
+                                <td>237.50</td>
+                            <td><i class="bi bi-check-circle text-green"></i></td>
+                        </tr>
+                            <tr>
+                                <td>02 MAR 2026 21:45</td>
+                                <td>DVM</td>
+                                <td><span class="badge badge-buy">ACHAT</span></td>
+                                <td>210.00</td>
+                            <td><i class="bi bi-x-circle text-red"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            <div class="action-buttons">
+            <button class="btn-glass text-gold" @onclick='() => Navigation.NavigateTo("/Historique")'>
+                VOIR TOUT L'HISTORIQUE
+                </button>
+            </div>
+        </div>
+
+        @* --- 4. DERNIERS BLOC --- *@
+
+        <div class="standard-card grid-col-span-2">
+            <h3 class="card-subtitle text-white">PIKA DA$H - Mini jeux pour gagner des PikaCoin !</h3>
+            <div class="game-container" id="dino-game-wrapper" @onclick="FocusGame" tabindex="0">
+                <canvas id="dinoCanvas" width="800" height="300"></canvas>
+                <div id="game-overlay" class="game-overlay">
+                    <p class="text-gold">APPUYEZ SUR <strong>ESPACE</strong> POUR JOUER</p>
+                    <span id="game-message" class="text-muted small">@GameMessage</span>
+     
                 </div>
             </div>
         </div>
@@ -51,5 +220,58 @@
 </div>
 
 @code {
-    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // On attend 100ms que le CSS Glassmorphism soit bien appliqué
+            await Task.Delay(500);
+            await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart");
+
+            try
+            {
+                await JSRuntime.InvokeVoidAsync("initDinoGame");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erreur JS : {ex.Message}");
+            }
+        }
+    }
+
+ 
+    private string selectedSymbol = "BTCUSDT"; // BTC par défaut au chargement
+
+    // Renvoie le chemin de l'image détourée (à placer dans wwwroot/img/)
+    private string GetSelectedCryptoImage() => selectedSymbol switch
+    {
+        "BTCUSDT" => "images/bbtc_pacifier.png",
+        "SOLUSDT" => "images/pika_head.png",
+        "ETHUSDT" => "images/moon_orbit.png",
+        _ => "images/bbtc_pacifier.png"
+    };
+
+    private async Task OnCryptoChanged(ChangeEventArgs e)
+    {
+        selectedSymbol = e.Value.ToString(); // Met à jour l'image
+        await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart", selectedSymbol); // Met à jour le graph
+    }
+
+
+    private async Task FocusGame()
+    {
+        // On force le focus HTML via JS pour capter le clavier immédiatement
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('dino-game-wrapper').focus()");
+    }
+
+    private string GameMessage = "En attendant que les devs se bougent les fesses... Gagnez des PikaCoin !";
+
+    // Cette méthode pourra être appelée depuis le JavaScript
+    [JSInvokable]
+    public void UpdatePikaCoins(int score)
+    {
+        int totalGains = score * 1;
+        GameMessage = $"Vous avez gagné {totalGains} PikaCoin !";
+        StateHasChanged(); // Force le rafraîchissement de l'interface
+    }
 }

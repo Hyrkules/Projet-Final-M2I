@@ -26,7 +26,8 @@
                 <label>TYPE</label>
                 <div class="input-with-icon">
                     <i class="bi bi-filter-circle text-gold"></i>
-                    <select class="form-input custom-select" @bind="_typeFilter">
+                    <select class="form-input custom-dashboard-select" @bind="_typeFilter">
+
                         <option value="all">TOUS</option>
                         <option value="Buy">ACHAT</option>
                         <option value="Sell">VENTE</option>
@@ -37,7 +38,7 @@
                 <label>PÉRIODE</label>
                 <div class="input-with-icon">
                     <i class="bi bi-calendar3 text-gold"></i>
-                    <select class="form-input custom-select" @bind="_periodFilter">
+                    <select class="form-input custom-select custom-dashboard-select" @bind="_periodFilter">
                         <option value="0">TOUS</option>
                         <option value="7">7 DERNIERS JOURS</option>
                         <option value="30">30 DERNIERS JOURS</option>
