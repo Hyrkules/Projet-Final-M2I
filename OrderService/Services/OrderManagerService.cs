@@ -2,6 +2,7 @@
 using OrderService.Data;
 using OrderService.DTOs;
 using OrderService.Models;
+using static OrderService.DTOs.ExternalDTO;
 
 namespace OrderService.Services;
 
@@ -26,7 +27,6 @@ public class OrderManager : IOrderManagerService
 
     public async Task<(OrderResponseDto order, string? error)> PlaceOrderAsync(int userId, OrderRequestDto dto, string token)
     {
-        // 1. Récupérer le prix actuel depuis MarketService
         var crypto = await _marketClient.GetCryptoAsync(dto.CryptoSymbol);
         if (crypto == null)
             return (null!, $"Crypto '{dto.CryptoSymbol}' introuvable.");
@@ -78,8 +78,6 @@ public class OrderManager : IOrderManagerService
         return (true, null);
     }
 
-    // ── Logique d'achat ───────────────────────────────────────────────────────
-
     private async Task<(OrderResponseDto order, string? error)> ProcessBuyAsync(
         int userId, OrderRequestDto dto, decimal price, decimal total, DateTime now, string token)
     {
@@ -99,20 +97,17 @@ public class OrderManager : IOrderManagerService
 
         if (balance < total)
         {
-            // Solde insuffisant → ordre rejeté
             order.Status = OrderStatus.Rejected;
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
             return (MapToDto(order), $"Solde insuffisant. Disponible : {balance}$, requis : {total}$.");
         }
 
-        // 3. Exécuter l'ordre
         order.Status = OrderStatus.Executed;
         order.ExecutedAt = now;
         _context.Orders.Add(order);
         await _context.SaveChangesAsync();
 
-        // 4. Déduire le solde + créer la transaction dans PortfolioService
         await _authClient.DeductBalanceAsync(userId, total, token);
         await _portfolioClient.CreateTransactionAsync(new CreateTransactionDto
         {
@@ -127,12 +122,9 @@ public class OrderManager : IOrderManagerService
         return (MapToDto(order), null);
     }
 
-    // ── Logique de vente ──────────────────────────────────────────────────────
-
     private async Task<(OrderResponseDto order, string? error)> ProcessSellAsync(
         int userId, OrderRequestDto dto, decimal price, decimal total, DateTime now, string token)
     {
-        // 1. Vérifier que l'utilisateur possède la quantité demandée
         var holding = await _portfolioClient.GetHoldingAsync(userId, dto.CryptoSymbol, token);
 
         if (holding == null || holding.Quantity < dto.Quantity)
@@ -141,7 +133,6 @@ public class OrderManager : IOrderManagerService
             return (null!, $"Quantité insuffisante. Disponible : {available}, demandé : {dto.Quantity}.");
         }
 
-        // 2. Exécuter la vente
         var order = new Order
         {
             UserId = userId,
@@ -158,7 +149,6 @@ public class OrderManager : IOrderManagerService
         _context.Orders.Add(order);
         await _context.SaveChangesAsync();
 
-        // 3. Créditer le solde + mettre à jour le holding
         await _authClient.CreditBalanceAsync(userId, total, token);
         await _portfolioClient.CreateTransactionAsync(new CreateTransactionDto
         {
@@ -172,8 +162,6 @@ public class OrderManager : IOrderManagerService
 
         return (MapToDto(order), null);
     }
-
-    // ── Helper ────────────────────────────────────────────────────────────────
 
     private static OrderResponseDto MapToDto(Order order) => new()
     {

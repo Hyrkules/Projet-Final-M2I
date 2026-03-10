@@ -2,8 +2,6 @@
 
 namespace Gateway.DTOs;
 
-// ── Auth ──────────────────────────────────────────────────────────────────────
-
 public class LoginRequestDto
 {
     [Required]
@@ -34,8 +32,6 @@ public class AuthResponseDto
     public long ExpiresIn { get; set; }
 }
 
-// ── Market ────────────────────────────────────────────────────────────────────
-
 public class CryptoDto
 {
     public int Id { get; set; }
@@ -52,7 +48,6 @@ public class PriceHistoryDto
     public DateTime RecordedAt { get; set; }
 }
 
-// ── Orders ────────────────────────────────────────────────────────────────────
 
 public class OrderRequestDto
 {
@@ -76,7 +71,6 @@ public class OrderResponseDto
     public DateTime? ExecutedAt { get; set; }
 }
 
-// ── Portfolio ─────────────────────────────────────────────────────────────────
 
 public class PortfolioSummaryDto
 {

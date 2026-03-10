@@ -15,7 +15,6 @@ public class MarketController : ControllerBase
         _marketBaseUrl = config["Services:MarketService"] ?? "http://localhost:5002";
     }
 
-    // GET /api/market/cryptos
     [HttpGet("cryptos")]
     public async Task<IActionResult> GetAllCryptos()
     {
@@ -24,7 +23,6 @@ public class MarketController : ControllerBase
         return Ok(result);
     }
 
-    // GET /api/market/cryptos/{symbol}
     [HttpGet("cryptos/{symbol}")]
     public async Task<IActionResult> GetCrypto(string symbol)
     {
@@ -33,7 +31,6 @@ public class MarketController : ControllerBase
         return Ok(result);
     }
 
-    // GET /api/market/history/{symbol}
     [HttpGet("history/{symbol}")]
     public async Task<IActionResult> GetHistory(string symbol, [FromQuery] int limit = 50)
     {
@@ -42,7 +39,6 @@ public class MarketController : ControllerBase
         return Ok(result);
     }
 
-    // GET /api/market/snapshot
     [HttpGet("snapshot")]
     public async Task<IActionResult> GetSnapshot()
     {
