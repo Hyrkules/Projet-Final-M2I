@@ -14,8 +14,6 @@ public class MarketController : ControllerBase
         _priceService = priceService;
     }
 
-    // GET /api/market/cryptos
-    // Liste de toutes les cryptos avec prix actuel — pas d'auth requise
     [HttpGet("cryptos")]
     public async Task<IActionResult> GetAllCryptos()
     {
@@ -23,8 +21,6 @@ public class MarketController : ControllerBase
         return Ok(cryptos);
     }
 
-    // GET /api/market/cryptos/{symbol}
-    // Détails d'une crypto (ex: BBTC) — pas d'auth requise
     [HttpGet("cryptos/{symbol}")]
     public async Task<IActionResult> GetCrypto(string symbol)
     {
@@ -36,8 +32,6 @@ public class MarketController : ControllerBase
         return Ok(crypto);
     }
 
-    // GET /api/market/history/{symbol}?limit=50
-    // Historique des prix — pas d'auth requise
     [HttpGet("history/{symbol}")]
     public async Task<IActionResult> GetPriceHistory(string symbol, [FromQuery] int limit = 50)
     {
@@ -49,8 +43,6 @@ public class MarketController : ControllerBase
         return Ok(history);
     }
 
-    // GET /api/market/snapshot
-    // Snapshot complet du marché — pas d'auth requise
     [HttpGet("snapshot")]
     public async Task<IActionResult> GetSnapshot()
     {

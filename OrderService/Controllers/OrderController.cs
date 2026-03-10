@@ -18,15 +18,12 @@ public class OrderController : ControllerBase
         _orderService = orderService;
     }
 
-    // POST /api/orders
-    // Passer un ordre d'achat ou de vente
     [HttpPost]
     public async Task<IActionResult> PlaceOrder([FromBody] OrderRequestDto request)
     {
         var userId = GetCurrentUserId();
         if (userId is null) return Unauthorized();
 
-        // On transmet le token JWT pour que le service puisse appeler AuthService et PortfolioService
         var token = GetCurrentToken();
 
         var (order, error) = await _orderService.PlaceOrderAsync(userId.Value, request, token);
@@ -40,8 +37,6 @@ public class OrderController : ControllerBase
         return Ok(order);
     }
 
-    // GET /api/orders
-    // Historique des ordres de l'utilisateur connecté
     [HttpGet]
     public async Task<IActionResult> GetOrders()
     {
@@ -52,8 +47,6 @@ public class OrderController : ControllerBase
         return Ok(orders);
     }
 
-    // GET /api/orders/{id}
-    // Détails d'un ordre
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOrder(int id)
     {
@@ -67,8 +60,6 @@ public class OrderController : ControllerBase
         return Ok(order);
     }
 
-    // DELETE /api/orders/{id}
-    // Annuler un ordre en attente
     [HttpDelete("{id}")]
     public async Task<IActionResult> CancelOrder(int id)
     {
@@ -82,8 +73,6 @@ public class OrderController : ControllerBase
 
         return Ok(new { message = $"Ordre #{id} annulé." });
     }
-
-    // ── Helpers ───────────────────────────────────────────────────────────────
 
     private int? GetCurrentUserId()
     {

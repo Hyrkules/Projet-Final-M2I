@@ -38,7 +38,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// ── Filter de validation du token ─────────────────────────────────────────────
 builder.Services.AddHttpClient("AuthService", client =>
 {
     client.BaseAddress = new Uri(

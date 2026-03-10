@@ -16,7 +16,6 @@ public class AuthController : ControllerBase
         _authBaseUrl = config["Services:AuthService"] ?? "http://localhost:5001";
     }
 
-    // POST /api/auth/register
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequestDto dto)
     {
@@ -25,7 +24,6 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
-    // POST /api/auth/login
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequestDto dto)
     {
@@ -34,7 +32,6 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
-    // GET /api/auth/me
     [HttpGet("me")]
     [RequireValidToken]
     public async Task<IActionResult> Me()
@@ -45,7 +42,6 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
-    // GET /api/auth/balance
     [HttpGet("balance")]
     [RequireValidToken]
     public async Task<IActionResult> Balance()

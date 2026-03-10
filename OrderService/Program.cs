@@ -80,7 +80,6 @@ builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
-// ── Clients HTTP vers les autres microservices ────────────────────────────────
 builder.Services.AddHttpClient<IMarketServiceClient, MarketServiceClient>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["Services:MarketService"]
