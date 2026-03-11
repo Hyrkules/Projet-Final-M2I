@@ -1,15 +1,15 @@
-﻿let currentSocket = null; // Stocke le socket actuel globalement
+﻿let currentSocket = null;
 
 window.createCryptoChart = async (containerId, symbol = 'BTCUSDT') => {
+    console.log("✅ createCryptoChart lancé");
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    // 1. Nettoyage : Fermer le socket précédent s'il existe
     if (currentSocket) {
         currentSocket.close();
     }
 
-    container.innerHTML = ''; // Reset le graphique visuellement
+    container.innerHTML = '';
 
     const chart = LightweightCharts.createChart(container, {
         width: container.clientWidth,
@@ -27,7 +27,6 @@ window.createCryptoChart = async (containerId, symbol = 'BTCUSDT') => {
         borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350',
     });
 
-    // 2. Historique dynamique selon le symbole
     try {
         const response = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1h&limit=100`);
         const rawData = await response.json();
@@ -40,16 +39,17 @@ window.createCryptoChart = async (containerId, symbol = 'BTCUSDT') => {
         chart.timeScale().fitContent();
     } catch (e) { console.error("Erreur historique:", e); }
 
-    // 3. WebSocket combiné (Graphique + Stats 24h)
-    // On utilise @ticker pour avoir le vrai volume 24h et la variation précise
-    currentSocket = new WebSocket(`wss://stream.binance.com:9443/stream?streams=${symbol.toLowerCase()}@kline_1h/${symbol.toLowerCase()}@ticker`);
+    // MODIFICATION ICI : On ajoute @depth5 à la liste des streams
+    const streams = `${symbol.toLowerCase()}@kline_1h/${symbol.toLowerCase()}@ticker/${symbol.toLowerCase()}@depth5`;
+    currentSocket = new WebSocket(`wss://stream.binance.com:9443/stream?streams=${streams}`);
 
     currentSocket.onmessage = (event) => {
         const response = JSON.parse(event.data);
         const stream = response.stream;
         const data = response.data;
+       
 
-        // Mise à jour des bougies
+        // 1. Mise à jour des bougies
         if (stream.includes('@kline')) {
             const candle = data.k;
             candleSeries.update({
@@ -59,30 +59,14 @@ window.createCryptoChart = async (containerId, symbol = 'BTCUSDT') => {
             });
         }
 
-        // Mise à jour des Stats HTML (Ticker 24h)
+        // 2. Mise à jour des Stats HTML (Ticker 24h)
         if (stream.includes('@ticker')) {
-            const price = parseFloat(data.c).toFixed(2);
-            const vol24h = parseFloat(data.v);
-            const change = parseFloat(data.P).toFixed(2);
+            updateTickerStats(data);
+        }
 
-            const priceElem = document.getElementById('live-price-val');
-            const highElem = document.getElementById('live-high');
-            const lowElem = document.getElementById('live-low');
-            const volElem = document.getElementById('live-vol-24h');
-            const changeElem = document.getElementById('live-price-change');
-
-            if (priceElem) priceElem.innerText = `${price} €`;
-            if (highElem) highElem.innerText = `${parseFloat(data.h).toFixed(2)} €`;
-            if (lowElem) lowElem.innerText = `${parseFloat(data.l).toFixed(2)} €`;
-
-            if (volElem) {
-                volElem.innerText = vol24h >= 1000 ? `${(vol24h / 1000).toFixed(2)}K` : vol24h.toFixed(2);
-            }
-
-            if (changeElem) {
-                changeElem.innerText = `${change >= 0 ? '+' : ''}${change}%`;
-                changeElem.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
-            }
+        // 3. NOUVEAU : Mise à jour du Carnet d'ordres (Order Book)
+        if (stream.includes('@depth')) {
+            updateOrderBookUI(data);
         }
     };
 
@@ -91,3 +75,54 @@ window.createCryptoChart = async (containerId, symbol = 'BTCUSDT') => {
     });
     resizeObserver.observe(container);
 };
+
+// Fonctions utilitaires pour garder createCryptoChart propre
+function updateTickerStats(data) {
+    const price = parseFloat(data.c);
+    const change = parseFloat(data.P).toFixed(2);
+
+    const priceElem = document.getElementById('live-price-val');
+    const highElem = document.getElementById('live-high');
+    const lowElem = document.getElementById('live-low');
+    const volElem = document.getElementById('live-vol-24h');
+    const changeElem = document.getElementById('live-price-change');
+
+    if (priceElem) priceElem.innerText = `${price.toFixed(2)} €`;
+    if (highElem) highElem.innerText = `${parseFloat(data.h).toFixed(2)} €`;
+    if (lowElem) lowElem.innerText = `${parseFloat(data.l).toFixed(2)} €`;
+    if (volElem) {
+        const vol = parseFloat(data.v);
+        volElem.innerText = vol >= 1000 ? `${(vol / 1000).toFixed(2)}K` : vol.toFixed(2);
+    }
+    if (changeElem) {
+        changeElem.innerText = `${change >= 0 ? '+' : ''}${change}%`;
+        changeElem.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
+    }
+    if (dotNetHelper) {
+        dotNetHelper.invokeMethodAsync('UpdateCurrentPrice', price);
+    }
+}
+
+function updateOrderBookUI(data) {
+    const asksContainer = document.querySelector('.asks');
+    const bidsContainer = document.querySelector('.bids');
+    if (!asksContainer || !bidsContainer) return;
+
+    // Ventes (Asks) - On inverse pour avoir les prix bas en bas
+    asksContainer.innerHTML = data.asks.reverse().map(ask => `
+        <div class="ob-row ask-row">
+            <span class="red">${parseFloat(ask[0]).toFixed(2)}</span>
+            <span>${parseFloat(ask[1]).toFixed(4)}</span>
+            <div class="depth-bg ask-bg" style="width: ${Math.min(parseFloat(ask[1]) * 500, 100)}%"></div>
+        </div>
+    `).join('');
+
+    // Achats (Bids)
+    bidsContainer.innerHTML = data.bids.map(bid => `
+        <div class="ob-row bid-row green">
+            <span class="green">${parseFloat(bid[0]).toFixed(2)}</span>
+            <span>${parseFloat(bid[1]).toFixed(4)}</span>
+            <div class="depth-bg bid-bg" style="width: ${Math.min(parseFloat(bid[1]) * 500, 100)}%"></div>
+        </div>
+    `).join('');
+}

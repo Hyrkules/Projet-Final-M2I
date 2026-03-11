@@ -72,99 +72,6 @@
     font-weight: 600;
 }
 
-/* --- PLACEHOLDER GRAPHIQUE --- */
-.chart-placeholder {
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: radial-gradient(circle, rgba(38, 166, 154, 0.05) 0%, transparent 70%);
-}
-
-/* --- GRAPHIQUE --- */
-#cryptoChart {
-    width: 100% !important;
-    height: 400px !important; /* Force une hauteur réelle */
-    display: block;
-    position: relative;
-}
-
-.chart-container-pro {
-    padding: 20px !important;
-}
-
-.chart-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.asset-info {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-/* Version réduite du select pour tenir dans le header */
-.mini-select {
-    height: 35px !important;
-    padding: 0 35px 0 10px !important;
-    font-size: 0.8rem !important;
-    font-weight: 800;
-    min-width: 150px;
-}
-
-.price-badge-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.live-price {
-    font-size: 1.2rem;
-    font-weight: 900;
-    color: var(--white);
-    line-height: 1;
-}
-
-.price-change {
-    font-size: 0.75rem;
-    font-weight: 700;
-}
-
-    .price-change.positive {
-        color: var(--neon-green);
-    }
-
-/* Stats à droite */
-.market-stats-mini {
-    display: flex;
-    gap: 25px;
-}
-
-    .market-stats-mini .stat {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-    }
-
-    .market-stats-mini .label {
-        font-size: 0.6rem;
-        color: var(--text-muted);
-        font-weight: 800;
-    }
-
-    .market-stats-mini .value {
-        font-size: 0.85rem;
-        font-weight: 700;
-        font-family: 'Mono', monospace;
-    }
-
-.no-margin {
-    margin: 0 !important;
-}
 
 
 
@@ -231,32 +138,6 @@
 
 
 
-.input-with-icon {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Espace entre l'image et le select */
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(193, 164, 97, 0.3);
-    border-radius: 8px;
-    padding: 2px 10px 2px 5px; /* Ajustement du padding */
-}
-
-/* Style de l'image crypto détourée */
-.crypto-select-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%; /* Garde l'aspect rond si besoin */
-    object-fit: contain;
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-.custom-dashboard-select {
-    border: none;
-    background: transparent;
-    color: white;
-    font-weight: 700;
-}
 
 
 
@@ -289,12 +170,17 @@
 
     /* Style des cellules de données (Tbody td) */
     .history-table tbody td {
-        color: white; /* Texte blanc d'origine */
+        color: var(--text-main); /* Texte blanc d'origine */
         font-size: 13px;
         font-family: monospace; /* Pour que les chiffres s'alignent */
+<<<<<<< HEAD
 
         padding: 10px; 
         vertical-align: middle; 
+=======
+        padding: 10px;
+        vertical-align: middle;
+>>>>>>> edec564 (Maj light mode)
     }
 
         /* Pour le prix : Alignement à droite (par défaut pour la finance), mais centré */
@@ -321,7 +207,8 @@
 
     /* Style des cellules de données (Tbody td) */
     .actif-table tbody td {
-        color: white; /* Texte blanc d'origine */
+        color: var(--text-main);
+        /* Texte blanc d'origine */
         font-size: 13px;
         font-family: monospace; /* Pour que les chiffres s'alignent */
         vertical-align: middle;

@@ -3,9 +3,8 @@
    ========================================================================== */
 :root {
     /* Palette TradingView / High-Tech */
-    --neon-green: #26a69a;
-    --neon-green-glow: rgba(38, 166, 154, 0.3);
-    --neon-red: #ef5350;
+    --color-principale: #26a69a;
+    --color-principale-glow: rgba(38, 166, 154, 0.3);
     --gold: #c1a461;
     --white: #ffffff;
     --text-main: #e0e3eb;
@@ -21,7 +20,14 @@
     --glass-border: rgba(255, 255, 255, 0.08);
     --glass-blur: blur(12px);
     --border-glass: rgba(255, 255, 255, 0.1);
-    --text-red: #ef5350; /* Rouge pour les éléments d'alerte ou de vente */
+    --red: #ef5350; /* Rouge pour les éléments d'alerte ou de vente */
+    --green: #26a69a; /* Vert pour les éléments d'achat ou de succès */
+    --app-bg-image: url('/images/background.jpg');
+    --app-bg-color: rgba(30, 34, 45, 0.65);
+    --box-shadow: 10px 0 15px rgba(0, 0, 0, 0.4);
+    --app-border: 1px solid rgba(255, 255, 255, 0.08);
+    --subtitle: #ffffff;
+    --menu-bg: #1a1e27;
 }
 
 .light-theme {
@@ -30,6 +36,26 @@
     --text-muted: #6a6d78;
     --text-main: #131722;
     --nav-hover-bg: #f0f3fa;
+    /* Palette TradingView / High-Tech */
+    --color-principale: #a78bfa;
+    --color-principale-glow: rgba(38, 166, 154, 0.3);
+    --red: #ef5350;
+    --gold: #c1a461;
+    --white: #1e2329;
+    /* Architecture Layout */
+    --dark-bg: #f4f7f6;
+    --card-bg: #ffffff;
+    --border-color: #2a2e39;
+    /* Glassmorphism */
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.05);
+    --border-glass: rgba(255, 255, 255, 0.1);
+    --app-bg-image: url('/images/background-light.png');
+    --app-bg-color: rgba(255, 255, 255, 0.75);
+    --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --app-border: 1px solid rgba(0, 0, 0, 0.05);
+    --subtitle: #a78bfa;
+    --menu-bg: #e9eef6;
 }
 
 /* ==========================================================================
@@ -40,15 +66,17 @@ body {
     min-height: 100vh;
     font-family: 'Inter', sans-serif;
     color: var(--text-main);
-    background: var(--dark-bg) url('/images/background.jpg') no-repeat center center fixed;
-    background-size: cover;
+
 }
 
 .app-container {
     display: flex;
     height: 100vh;
+    min-height: 100vh;
     width: 100vw;
     overflow: hidden;
+    background: var(--dark-bg) var(--app-bg-image) no-repeat center center fixed;
+    background-size: cover;
 }
 
 .main-wrapper {
@@ -215,7 +243,7 @@ body {
     margin-bottom: 25px;
     padding-bottom: 12px;
     border-bottom: 1px solid rgba(193, 164, 97, 0.2);
-    color: var(--white);
+    color: var(--subtitle);
     margin-top: 0px;
 }
 
@@ -294,15 +322,15 @@ body {
 /* Cartes Glassmorphism */
 
 .standard-card {
-    background: rgba(30, 34, 45, 0.65) !important;
+    background: var(--app-bg-color);
     backdrop-filter: blur(15px) saturate(150%);
     -webkit-backdrop-filter: blur(15px) saturate(150%); /* Pour Safari */
 
     border-radius: 16px;
     padding: 30px;
     transform: translateZ(0);
-    box-shadow: 10px 0 15px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--app-shadow);
+    border: var(--app-border);
 }
 
 
@@ -315,7 +343,7 @@ body {
 
     .trade-card:hover {
         transform: translateY(-5px);
-        border-color: var(--neon-green);
+        border-color: var(--color-principale);
     }
 
 /* Séparateur Doré */
@@ -331,8 +359,8 @@ body {
     color: var(--gold) !important;
 }
 
-.text-green {
-    color: var(--neon-green) !important;
+.green {
+    color: var(--green) !important;
 }
 
 .text-white {
@@ -343,8 +371,8 @@ body {
     color: var(--text-muted) !important;
 }
 
-.text-red {
-    color: var(--text-red) !important;
+.red {
+    color: var(--red) !important;
 }
 
 
@@ -370,55 +398,141 @@ body {
         color: var(--gold) !important;
     }
 
-/* ==========================================================================
-   4. AUTHENTICATION (Login / Register)
-   ========================================================================== */
-.login-page {
+
+
+
+    /* CHARTE CRYPTO */
+
+/* --- PLACEHOLDER GRAPHIQUE --- */
+.chart-placeholder {
+    height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background: radial-gradient(circle at top right, #1e222d, #0d1017);
+    background: radial-gradient(circle, rgba(38, 166, 154, 0.05) 0%, transparent 70%);
 }
 
-.login-card {
-    max-width: 420px;
-    width: 100%;
+/* --- GRAPHIQUE --- */
+#cryptoChart {
+    width: 100% !important;
+    height: 400px !important; /* Force une hauteur réelle */
+    display: block;
+    position: relative;
 }
 
-.input-wrapper {
+.chart-container-pro {
+    padding: 20px !important;
+}
+
+.chart-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.asset-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Version réduite du select pour tenir dans le header */
+.mini-select {
+    height: 35px !important;
+    padding: 0 35px 0 10px !important;
+    font-size: 0.8rem !important;
+    font-weight: 800;
+    min-width: 150px;
+}
+
+.price-badge-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.live-price {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+}
+
+.price-change {
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+    .price-change.positive {
+        color: var(--green);
+    }
+
+/* Stats à droite */
+.market-stats-mini {
+    display: flex;
+    gap: 25px;
+}
+
+    .market-stats-mini .stat {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .market-stats-mini .label {
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        font-weight: 800;
+    }
+
+    .market-stats-mini .value {
+        font-size: 0.85rem;
+        font-weight: 700;
+        font-family: 'Mono', monospace;
+    }
+
+.no-margin {
+    margin: 0 !important;
+}
+
+
+
+.input-with-icon {
     position: relative;
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    gap: 10px; /* Espace entre l'image et le select */
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(193, 164, 97, 0.3);
+    border-radius: 8px;
+    padding: 2px 10px 2px 5px; /* Ajustement du padding */
 }
 
-    .input-wrapper i {
-        position: absolute;
-        left: 12px;
-        color: var(--text-muted);
-    }
+/* Style de l'image crypto détourée */
+.crypto-select-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; /* Garde l'aspect rond si besoin */
+    object-fit: contain;
+    background-color: rgba(255, 255, 255, 0.05);
+}
 
-    .input-wrapper input {
-        width: 100%;
-        padding: 12px 12px 12px 40px;
-        background: #131722;
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        color: var(--white);
-        transition: all 0.2s ease;
-    }
-
-        .input-wrapper input:focus {
-            outline: none;
-            border-color: var(--neon-green);
-            box-shadow: 0 0 0 2px var(--neon-green-glow);
-        }
+.custom-dashboard-select {
+    border: none;
+    background: transparent;
+    color: white;
+    font-weight: 700;
+}
+/* ==========================================================================
+   4. AUTHENTICATION (Login / Register)
+   ========================================================================== */
 
 .btn-login-neon {
     width: 100%;
     padding: 14px;
-    background: var(--neon-green);
+    background: var(--color-principale);
     border: none;
     border-radius: 6px;
     color: var(--white);
@@ -430,7 +544,7 @@ body {
 }
 
     .btn-login-neon:hover {
-        box-shadow: 0 0 20px var(--neon-green-glow);
+        box-shadow: 0 0 20px var(--color-principale-glow);
         transform: translateY(-1px);
     }
 
@@ -476,7 +590,7 @@ body {
     width: 100%;
     max-width: 1200px;
     background: var(--card-bg);
-    border-left: 4px solid var(--neon-green);
+    border-left: 4px solid var(--color-principale);
     padding: 25px 20px;
     border-radius: 8px;
     display: flex;
@@ -504,8 +618,8 @@ body {
 }
 
 .success-glow {
-    color: var(--neon-green);
-    filter: drop-shadow(0 0 5px var(--neon-green));
+    color: var(--color-principale);
+    filter: drop-shadow(0 0 5px var(--color-principale));
 }
 
 .alert-close {
@@ -563,7 +677,6 @@ STYLE AUTHENTICATION (Login / Forgot Password / Register)
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: radial-gradient(circle at top right, #1e222d, #0d1017);
     font-family: 'Inter', sans-serif;
 }
 
@@ -590,7 +703,7 @@ STYLE AUTHENTICATION (Login / Forgot Password / Register)
 
     .login-header .logo-icon {
         font-size: 3rem;
-        color: var(--neon-green);
+        color: var(--color-principale);
         display: block;
         margin-bottom: 10px;
         text-shadow: 0 0 15px rgba(38, 166, 154, 0.4);
@@ -600,7 +713,7 @@ STYLE AUTHENTICATION (Login / Forgot Password / Register)
 
     .login-header .logo-text {
         font-size: 1.8rem;
-        color: #ffffff;
+        color: var(--white);
         font-weight: 700;
         margin: 0;
     }
@@ -665,6 +778,6 @@ STYLE AUTHENTICATION (Login / Forgot Password / Register)
 
         .input-wrapper input:focus {
             outline: none;
-            border-color: var(--neon-green);
+            border-color: var(--color-principale);
             box-shadow: 0 0 0 2px rgba(38, 166, 154, 0.2);
         }

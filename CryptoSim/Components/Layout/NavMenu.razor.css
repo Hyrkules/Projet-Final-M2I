@@ -58,9 +58,9 @@
 }
 
 ::deep .nav-link.active {
-    color: var(--neon-green) !important;
+    color: var(--color-principale) !important;
     background-color: var(--nav-hover-bg) !important;
-    border-left: 3px solid var(--neon-green);
+    border-left: 3px solid var(--color-principale);
 }
 
 .sidebar-footer {

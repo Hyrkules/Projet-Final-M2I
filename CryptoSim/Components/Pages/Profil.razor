@@ -14,7 +14,7 @@
     <div class="profile-grid">
         @* --- COLONNE GAUCHE (Toujours visible) --- *@
         <div class="standard-card">
-            <h3 class="card-subtitle text-white">INFORMATIONS PERSONNELLES</h3>
+            <h3 class="card-subtitle">INFORMATIONS PERSONNELLES</h3>
 
             <div class="avatar-section">
                 <div class="avatar-circle">YH</div>
@@ -40,7 +40,7 @@
         <div class="standard-card relative-card">
             @if (!isEditingPassword && !isEditingUsername)
             {
-                <h3 class="card-subtitle text-white">RÉSUMÉ ET PERFORMANCE</h3>
+                <h3 class="card-subtitle">RÉSUMÉ ET PERFORMANCE</h3>
                 <div class="gauge-container animate-fade-in">
                     <div class="circular-gauge">
                         <div class="gauge-inner">
@@ -71,7 +71,7 @@
                     <i class="bi bi-x-lg"></i>
                 </button>
 
-                <h3 class="card-subtitle text-white">MODIFIER LE MOT DE PASSE</h3>
+                <h3 class="card-subtitle">MODIFIER LE MOT DE PASSE</h3>
 
                 <div class="form-container animate-fade-in">
                     @* Ligne 1 : Mot de passe actuel *@
@@ -105,7 +105,7 @@
             {
                 @* VUE 3 : FORMULAIRE PSEUDO *@
                 <button class="close-btn" @onclick="CloseAllEdits"><i class="bi bi-x-lg"></i></button>
-                <h3 class="card-subtitle text-white">MODIFIER LE NOM D'UTILISATEUR</h3>
+                <h3 class="card-subtitle">MODIFIER LE NOM D'UTILISATEUR</h3>
                 <div class="form-container animate-fade-in">
                     <div class="form-group">
                         <label><i class="bi bi-person-badge"></i> NOUVEAU NOM D'UTILISATEUR</label>

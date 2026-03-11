@@ -1,0 +1,190 @@
+﻿/* Layout Principal */
+.trade-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 20px;
+    padding: 0px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* Header du Graphique */
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.asset-selector-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.market-stats-footer {
+    display: flex;
+    gap: 30px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+.m-stat {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85rem;
+}
+
+    .m-stat span:first-child {
+        color: #888;
+    }
+
+/* Carnet d'Ordres */
+.order-book-container {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+}
+
+.ob-header {
+    display: flex;
+    justify-content: space-between;
+    color: #666;
+    padding-bottom: 5px;
+}
+
+.ob-row {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    padding: 2px 0;
+    z-index: 1;
+}
+
+.depth-bg {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.15;
+}
+
+.ask-bg {
+    background-color: #ff4d4d;
+}
+
+.bid-bg {
+    background-color: #00ff88;
+}
+
+.ob-spread {
+    text-align: center;
+    padding: 10px 0;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.03);
+    margin: 5px 0;
+}
+
+/* Terminal de Trading */
+.trade-tabs {
+    display: flex;
+    background: #000;
+    border-radius: 8px;
+    padding: 4px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: #888;
+    padding: 8px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.active-buy {
+    background: var(--green) !important;
+    color: white !important;
+}
+
+.active-sell {
+    background: var(--red) !important;
+    color: white !important;
+}
+
+.trade-input-group label {
+    display: block;
+    color: #888;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.input-wrapper {
+    display: flex;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+    .input-wrapper input {
+        background: transparent;
+        border: none;
+        color: gold;
+        width: 100%;
+        outline: none;
+    }
+
+.percent-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 15px 0;
+}
+
+    .percent-grid button {
+        background: #222;
+        border: 1px solid #333;
+        color: #ccc;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        padding: 5px;
+    }
+
+.order-summary {
+    background: rgba(0,0,0,0.2);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.sum-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+}
+
+.main-trade-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.btn-buy {
+    background: var(--green);
+    color: white;
+}
+
+.btn-sell {
+    background: var(--red);
+    color: white;
+}

@@ -49,7 +49,7 @@
     </div>
 
     <div class="standard-card relative-card">
-        <h3 class="card-subtitle text-white">DERNIERS ORDRES EXÉCUTÉS</h3>
+        <h3 class="card-subtitle">DERNIERS ORDRES EXÉCUTÉS</h3>
         <div class="table-responsive">
             <table class="history-table">
                 <thead>
@@ -95,11 +95,11 @@
                                 <td>
                                     @if (order.Status == "Executed")
                                     {
-                                        <span class="text-green"><i class="bi bi-check-circle"></i> EXÉCUTÉ</span>
+                                        <span class="green"><i class="bi bi-check-circle"></i> EXÉCUTÉ</span>
                                     }
                                     else if (order.Status == "Rejected")
                                     {
-                                        <span class="text-red"><i class="bi bi-x-circle"></i> REJETÉ</span>
+                                        <span class="red"><i class="bi bi-x-circle"></i> REJETÉ</span>
                                     }
                                     else
                                     {
