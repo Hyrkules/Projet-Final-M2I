@@ -272,8 +272,9 @@
 /* Style de la table elle-même */
 .history-table {
     width: 100%;
-    max-width: 600px; 
-    text-align: center; 
+
+    max-width: 600px;
+    text-align: center;
 }
 
     /* Style de l'en-tête (Thead) */
@@ -291,6 +292,7 @@
         color: white; /* Texte blanc d'origine */
         font-size: 13px;
         font-family: monospace; /* Pour que les chiffres s'alignent */
+
         padding: 10px; 
         vertical-align: middle; 
     }
@@ -348,12 +350,14 @@
     background: rgba(38, 166, 154, 0.15); /* Vert transparent d'origine */
     color: #26a69a;
 }
+
 .align-crypto {
     display: flex; /* Active Flexbox pour aligner horizontalement */
     align-items: center; /* Centre l'image et le texte verticalement sur la même ligne */
     gap: 10px; /* Ajoute un espace de 10px entre l'image et le texte */
     white-space: nowrap; /* Empêche le texte de revenir à la ligne s'il n'y a pas assez de place */
 }
+
 .actif-table td.align-crypto {
     display: flex;
     align-items: center;
@@ -399,3 +403,4 @@
 .game-active .game-overlay {
     display: none;
 }
+

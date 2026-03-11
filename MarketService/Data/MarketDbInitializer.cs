@@ -16,7 +16,7 @@ public static class MarketDbInitializer
         // Seed des cryptos custom avec prix Initiaux
         var cryptos = new List<Crypto>
         {
-            new() { Symbol = "BBTC",  Name = "BabyBitcoin",  CurrentPrice = 42_000m,  LastUpdated = now },
+            new() { Symbol = "BBTC",  Name = "BabyBitcoin",  CurrentPrice = 100_000m,  LastUpdated = now },
             new() { Symbol = "YDX",   Name = "YanDex",        CurrentPrice = 1_200m,   LastUpdated = now },
             new() { Symbol = "HELC",  Name = "HelouCoin",     CurrentPrice = 0.85m,    LastUpdated = now },
             new() { Symbol = "BZH",   Name = "BzhCoin",       CurrentPrice = 3.50m,    LastUpdated = now },

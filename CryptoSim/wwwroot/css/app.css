@@ -183,10 +183,6 @@ body {
         font-size: 0.9rem;
     }
 
-
-
-
-    /* --- BADGES (Styles repris de ton menu) --- */
 .badge {
     padding: 4px 10px;
     border-radius: 4px;
@@ -239,11 +235,11 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Effet d'illumination au focus */
-.input-with-icon:focus-within {
-    border-color: #c1a461;
-    box-shadow: 0 0 15px rgba(193, 164, 97, 0.15);
-}
+    /* Effet d'illumination au focus */
+    .input-with-icon:focus-within {
+        border-color: #c1a461;
+        box-shadow: 0 0 15px rgba(193, 164, 97, 0.15);
+    }
 
 /* Le Select */
 .custom-dashboard-select {
@@ -672,4 +668,3 @@ STYLE AUTHENTICATION (Login / Forgot Password / Register)
             border-color: var(--neon-green);
             box-shadow: 0 0 0 2px rgba(38, 166, 154, 0.2);
         }
-

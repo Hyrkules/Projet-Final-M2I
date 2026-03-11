@@ -14,19 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Gateway")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d72bb5407fbb419088e717f4b3510e73183750dc")]
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b69a9659b3a902df11db8683397bf4f370c654b3")]
->>>>>>> bb3c043 (Fix/Fixing many files architectures + seems that cherry was not pushed correctly)
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c79f80c093178cb0ed6bf8d9369c125f9aa919ff")]
->>>>>>> fac3be0 (Je comprends plus rien)
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b69a9659b3a902df11db8683397bf4f370c654b3")]
->>>>>>> c79f80c093178cb0ed6bf8d9369c125f9aa919ff
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8624f7af4c30f27d0e1354557f6fc92fccd8c78c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Gateway")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Gateway")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

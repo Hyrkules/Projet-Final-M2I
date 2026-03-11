@@ -59,6 +59,7 @@ public class PortfolioManagerService : IPortfolioManagerService
             result.Add(new HoldingDto
             {
                 CryptoSymbol = holding.CryptoSymbol,
+                CryptoName = crypto?.Name ?? holding.CryptoSymbol,
                 Quantity = holding.Quantity,
                 AverageBuyPrice = holding.AverageBuyPrice,
                 CurrentPrice = currentPrice,

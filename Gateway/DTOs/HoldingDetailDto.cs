@@ -1,15 +1,15 @@
-﻿namespace PortfolioService.DTOs
+﻿namespace Gateway.DTOs
 {
-    public class HoldingDto
+    public class HoldingDetailDto
     {
         public string CryptoSymbol { get; set; } = string.Empty;
         public string CryptoName { get; set; } = string.Empty;
         public decimal Quantity { get; set; }
         public decimal AverageBuyPrice { get; set; }
         public decimal CurrentPrice { get; set; }
-        public decimal CurrentValue { get; set; }       // Quantity * CurrentPrice
-        public decimal ProfitLoss { get; set; }         // CurrentValue - (Quantity * AverageBuyPrice)
-        public decimal ProfitLossPercent { get; set; }  // % de gain/perte
+        public decimal CurrentValue { get; set; }
+        public decimal ProfitLoss { get; set; }
+        public decimal ProfitLossPercent { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
 }
