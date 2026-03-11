@@ -42,8 +42,6 @@ public partial class Home
         {
             if (!AuthState.IsAuthenticated)
             {
-                await LoadStatsAsync();
-                StateHasChanged();
                 Navigation.NavigateTo("/login");
                 return;
             }
@@ -94,12 +92,13 @@ public partial class Home
                 new AuthenticationHeaderValue("Bearer", AuthState.Token);
 
             var raw = await Http.GetStringAsync("/api/portfolio/holdings");
+            Console.WriteLine($">>> Holdings JSON: {raw}"); // ← ici uniquement
+
             var holdings = System.Text.Json.JsonSerializer.Deserialize<List<HoldingDto>>(raw,
-    new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             _holdings = holdings ?? new();
             _cryptoCount = _holdings.Count;
 
-            // Calcul de l'allocation
             var totalValue = _holdings.Sum(h => h.CurrentValue);
             if (totalValue > 0)
             {
@@ -107,7 +106,7 @@ public partial class Home
                     h.AllocationPercent = Math.Round(h.CurrentValue / totalValue * 100, 0);
             }
         }
-        catch (Exception ex) { Console.WriteLine($">>> Erreur: {ex.Message}"); _cryptoCount = 0; }
+        catch (Exception ex) { Console.WriteLine($">>> Erreur holdings: {ex.Message}"); _cryptoCount = 0; }
 
         try
         {
@@ -141,6 +140,17 @@ public partial class Home
         {
             _performance = 0;
         }
+
+        try
+        {
+            var raw = await Http.GetStringAsync("/api/portfolio/performance");
+            Console.WriteLine($">>> Performance JSON: {raw}"); // ← ici
+            var perf = System.Text.Json.JsonSerializer.Deserialize<PerformanceDto>(raw,
+                new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            _performance = perf?.ProfitLossPercent ?? 0;
+            Console.WriteLine($">>> Performance value: {_performance}"); // ← et ici
+        }
+        catch (Exception ex) { Console.WriteLine($">>> Erreur performance: {ex.Message}"); _performance = 0; }
     }
 
     private class PerformanceDto

@@ -73,58 +73,6 @@
         background: rgba(255, 255, 255, 0.02);
     }
 
-/* --- BADGES --- */
-.badge {
-    padding: 8px;
-    border-radius: 10px;
-}
-.badge-buy {
-    background: rgba(38, 166, 154, 0.1);
-    color: var(--neon-green);
-    border: 1px solid rgba(38, 166, 154, 0.2);
-}
-
-.badge-sale {
-    background: rgba(239, 83, 80, 0.1);
-    color: #ef5350;
-    border: 1px solid rgba(239, 83, 80, 0.2);
-}
-
-
-/* --- AMÉLIORATION DES INPUTS DANS L'HISTORIQUE --- */
-.input-with-icon {
-    display: flex;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.25); /* Fond sombre subtil */
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 2px 12px;
-    height: 45px; /* On force une hauteur confortable */
-    transition: all 0.3s ease;
-}
-
-    .input-with-icon:focus-within {
-        border-color: var(--gold);
-        box-shadow: 0 0 10px rgba(193, 164, 97, 0.15);
-    }
-
-    .input-with-icon i {
-        font-size: 1.1rem;
-        margin-right: 10px;
-        color: var(--gold);
-    }
-
-    .input-with-icon .form-input {
-        flex-grow: 1; /* L'input prend toute la place restante */
-        background: transparent !important;
-        border: none !important;
-        color: var(--white) !important;
-        height: 100%;
-        width: 100%;
-        outline: none;
-        font-size: 0.9rem;
-    }
-
 /* Style spécifique pour les options des menus déroulants */
 .custom-select option {
     background-color: #1a1e27; /* Fond sombre pour les choix */

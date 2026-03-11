@@ -1,7 +1,7 @@
 ﻿/* ==========================================================================
    STRUCTURE DU HEADER (Style TradingView)
    ========================================================================== */
-/* --- DÉFInitION DES THÈMES --- */
+/* --- DÉFINITION DES THÈMES --- */
 
 /* Mode Sombre (par défaut) */
 .dark-theme {
@@ -24,21 +24,17 @@
 }
 
 .trading-header {
-   
-   
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(10px); /* Pour la compatibilité Safari */
-    
-    border-bottom: 1px solid rgba(42, 46, 57, 0.5);
-    position: sticky; /* Pour que le header reste en haut au scroll */
-    top: 0;
-    z-index: 1020; /* Assure que le header passe au-dessus du contenu */
+    background-color: var(--header-bg); /* Utilise la variable */
+    border-bottom: 1px solid var(--header-border);
+    color: var(--text-main);
+    transition: all 0.3s ease; /* Transition douce */
+    height: 50px;
+    width: 100%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    height: 60px; /* Ajuste la hauteur si nécessaire */
-    color: #ffffff; /* Couleur du texte par défaut */
+    position: sticky;
+    top: 0;
+    z-index: 1020;
 }
 
 .header-container {
@@ -65,7 +61,7 @@
 
 .logo-icon {
     font-size: 1.4rem;
-    color: var(--neon-green); /* Vert trading */
+    color: #26a69a; /* Vert trading */
 }
 
 .logo-text {
@@ -116,7 +112,7 @@
 }
 
     .icon-btn-trading:hover {
-        color: var(--neon-green);
+        color: #26a69a;
     }
 
 .bi-lightning-fill {
@@ -129,7 +125,7 @@
     display: inline-block;
 }
 
-.user-avatar-Initial {
+.user-avatar-initial {
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -145,7 +141,7 @@
     transition: all 0.2s;
 }
 
-    .user-avatar-Initial:hover {
+    .user-avatar-initial:hover {
         border-color: #848e9c;
     }
 
@@ -171,7 +167,7 @@
 
 .badge-status {
     font-size: 0.7rem;
-    color: var(--neon-green);
+    color: #26a69a;
     text-transform: uppercase;
     font-weight: 700;
 }
@@ -234,6 +230,9 @@
     }
 
 /* Animation d'apparition */
+.animate-fade-in {
+    animation: fadeInSlide 0.2s ease-out;
+}
 
 @keyframes fadeInSlide {
     from {
@@ -269,6 +268,7 @@
 }
 
 .user-dropdown {
+    background-color: var(--dropdown-bg);
     border: 1px solid var(--header-border);
     color: var(--text-main);
 }

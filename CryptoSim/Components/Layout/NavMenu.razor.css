@@ -15,11 +15,11 @@
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Survol de la sidebar (l'ombre change aussi !) */
-.sidebar-trading:hover {
-    width: var(--sidebar-expanded);
-    /* Ombre plus douce en mode clair, forte en mode sombre */
-}
+    /* Survol de la sidebar (l'ombre change aussi !) */
+    .sidebar-trading:hover {
+        width: var(--sidebar-expanded);
+        /* Ombre plus douce en mode clair, forte en mode sombre */
+    }
 
 /* On utilise ::deep car .nav-link est généré par le composant enfant <NavLink> */
 ::deep .nav-link {
@@ -50,7 +50,6 @@
 .sidebar-trading:hover .nav-text {
     opacity: 1;
     transform: translateX(0);
-
 }
 
 ::deep .nav-link:hover {

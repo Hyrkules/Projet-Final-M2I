@@ -28,19 +28,7 @@
 
 
 
-.relative-card {
-    position: relative;
-}
 
-.card-subtitle {
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 25px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(193, 164, 97, 0.2);
-}
 
 /* Avatar & Info */
 .avatar-section {
@@ -79,37 +67,6 @@
     .detail-row span {
         color: #fff;
         font-size: 0.9rem;
-    }
-
-/* Buttons & Close */
-.action-buttons {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.btn-glass {
-    background: rgba(193, 164, 97, 0.1);
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-    .btn-glass:hover {
-        background: var(--gold);
-        color: var(--white) !important;
-    }
-
-    .btn-glass.secondary {
-        border-color: #444;
-        color: var(--text-muted);
-        background: transparent;
     }
 
 
