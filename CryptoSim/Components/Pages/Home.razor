@@ -1,4 +1,4 @@
-﻿@rendermode InteractiveServer
+@rendermode InteractiveServer
 @page "/"
 @using CryptoSim.Blazor.Services
 
@@ -7,6 +7,7 @@
 <div class="profile-container animate-fade-in">
     <div class="wallet-page-header">
         <h1 class="main-page-title text-gold">TABLEAU DE BORD</h1>
+
     </div>
     <div class="header-separator-bar"></div>
 
@@ -20,6 +21,7 @@
             </div>
         </div>
         <div class="standard-card stat-item">
+
             <i class="bi @(_performance >= 0 ? "bi-graph-up-arrow text-green" : "bi-graph-down-arrow text-red")"></i>
             <div>
                 <span class="stat-label">PERFORMANCE GLOBALE</span>

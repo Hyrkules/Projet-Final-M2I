@@ -1,4 +1,5 @@
 ﻿using CryptoSim.Blazor.Services;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Net.Http.Headers;

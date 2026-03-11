@@ -272,6 +272,7 @@
 /* Style de la table elle-même */
 .history-table {
     width: 100%;
+
     max-width: 600px;
     text-align: center;
 }
@@ -291,8 +292,9 @@
         color: white; /* Texte blanc d'origine */
         font-size: 13px;
         font-family: monospace; /* Pour que les chiffres s'alignent */
-        padding: 10px;
-        vertical-align: middle;
+
+        padding: 10px; 
+        vertical-align: middle; 
     }
 
         /* Pour le prix : Alignement à droite (par défaut pour la finance), mais centré */
@@ -401,3 +403,4 @@
 .game-active .game-overlay {
     display: none;
 }
+
