@@ -39,7 +39,6 @@
             </div>
         </div>
     </div>
-</div>
 <div class="row g-4 mt-4">
     <div class="col-md-4">
         <div class="card bg-dark-card border-secondary p-3 text-center">
@@ -47,6 +46,8 @@
             <h2 class="text-white">
                 @(_cryptoCount.HasValue ? $"{_cryptoCount} Actifs" : "Chargement...")
             </h2>
+        </div>
+    </div>
 
     <div class="dashboard-main-grid">
         @* --- 2. APERÇU PORTEFEUILLE --- *@
@@ -220,24 +221,7 @@
 </div>
 
 @code {
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            // On attend 100ms que le CSS Glassmorphism soit bien appliqué
-            await Task.Delay(500);
-            await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart");
-
-            try
-            {
-                await JSRuntime.InvokeVoidAsync("initDinoGame");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Erreur JS : {ex.Message}");
-            }
-        }
-    }
+    
 
  
     private string selectedSymbol = "BTCUSDT"; // BTC par défaut au chargement

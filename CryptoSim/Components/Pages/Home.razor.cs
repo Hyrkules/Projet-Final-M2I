@@ -1,4 +1,5 @@
 ﻿using CryptoSim.Blazor.Services;
+using Microsoft.JSInterop;
 
 namespace CryptoSim.Blazor.Components.Pages
 {
@@ -11,14 +12,18 @@ namespace CryptoSim.Blazor.Components.Pages
         {
             if (firstRender)
             {
-                if (!AuthState.IsAuthenticated)
-                {
-                    Navigation.NavigateTo("/login");
-                    return;
-                }
+                // On attend 100ms que le CSS Glassmorphism soit bien appliqué
+                await Task.Delay(500);
+                await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart");
 
-                await LoadStatsAsync();
-                StateHasChanged();
+                try
+                {
+                    await JSRuntime.InvokeVoidAsync("initDinoGame");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erreur JS : {ex.Message}");
+                }
             }
         }
 
