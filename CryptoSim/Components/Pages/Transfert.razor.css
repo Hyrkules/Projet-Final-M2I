@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿:root {
     /* Palette TradingView / High-Tech */
     --neon-green: #26a69a;
@@ -39,6 +40,9 @@
 }
 
 /* --- CONTAINER & BACKGROUND --- */
+=======
+﻿    /* --- CONTAINER & BACKGROUND --- */
+>>>>>>> edec564 (Maj light mode)
 
 
 .wallet-container {
@@ -123,7 +127,7 @@
     }
 
     .balance-info .trend.up {
-        color: var(--neon-green);
+        color: var(--color-principale);
         font-size: 0.9rem;
         font-weight: 700;
     }

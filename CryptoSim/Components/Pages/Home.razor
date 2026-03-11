@@ -1,5 +1,5 @@
-@rendermode InteractiveServer
 @page "/"
+@rendermode InteractiveServer
 @using CryptoSim.Blazor.Services
 
 <PageTitle>Home</PageTitle>
@@ -202,20 +202,22 @@
             </div>
         </div>
 
-            @* --- 5. MINI JEU --- *@
-            <div class="standard-card grid-col-span-2">
-                <h3 class="card-subtitle text-white">PIKA DA$H - Mini jeux pour gagner des PikaCoin !</h3>
-                <div class="game-container" id="dino-game-wrapper" @onclick="FocusGame" tabindex="0">
-                    <canvas id="dinoCanvas" width="800" height="300"></canvas>
-                    <div id="game-overlay" class="game-overlay">
-                        <p class="text-gold">APPUYEZ SUR <strong>ESPACE</strong> POUR JOUER</p>
-                        <span id="game-message" class="text-muted small">@GameMessage</span>
-                    </div>
+
+        @* --- 4. DERNIERS BLOC --- *@
+
+        <div class="standard-card grid-col-span-2">
+            <h3 class="card-subtitle">PIKA DA$H - Mini jeux pour gagner des PikaCoin !</h3>
+            <div class="game-container" id="dino-game-wrapper" @onclick="FocusGame" tabindex="0">
+                <canvas id="dinoCanvas" width="800" height="300"></canvas>
+                <div id="game-overlay" class="game-overlay">
+                    <p class="text-gold">APPUYEZ SUR <strong>ESPACE</strong> POUR JOUER</p>
+                    <span id="game-message" class="text-muted small">@GameMessage</span>
                 </div>
             </div>
     </div>
-        
 </div>
 
+
+    
 @code {
 }

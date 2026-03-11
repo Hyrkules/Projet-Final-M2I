@@ -123,14 +123,14 @@
         // Mise à jour du message
         const messageElement = document.getElementById('game-message');
         if (messageElement) {
-            messageElement.innerHTML = `VOUS AVEZ GAGNÉ ${score * 10} PIKACOIN ! <br> <span style="font-size:0.8em; color:gray;">Attendez un instant... Pikachu se repose</span>`;
+            messageElement.innerHTML = `VOUS AVEZ GAGNÉ ${score * 1 } PIKACOIN ! <br> <span style="font-size:0.8em; color:gray;">Attendez un instant... Pikachu se repose</span>`;
         }
 
         // --- NOUVEAU : Débloquer après 1.5 seconde ---
         setTimeout(() => {
             canRestart = true;
             if (messageElement) {
-                messageElement.innerHTML = `<br><br> <span style="font-size:0.8em; color:gray;" PIKA EST PRÊT !</span>`;
+                messageElement.innerHTML = `<span style="font-size:0.8em; color:gray;"> PIKA EST PRÊT !</span>`;
             }
         }, 4000); // 1500ms = 1.5s
 

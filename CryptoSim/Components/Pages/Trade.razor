@@ -1,7 +1,224 @@
-﻿@rendermode InteractiveServer
-@page "/Trade"
+﻿@page "/trade"
+@rendermode InteractiveServer
 @using CryptoSim.Blazor.Services
 @inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
 
-<PageTitle>Trade</PageTitle>    
-<h1>Page Trade</h1>
+<PageTitle>Trade - @selectedSymbol</PageTitle>
+
+<div class="profile-container animate-fade-in">
+    <div class="wallet-page-header">
+        <h1 class="main-page-title text-gold">ACHAT / VENTE DE CRYPTO</h1>
+    </div>
+</div>
+
+<div class="header-separator-bar"></div>
+
+<div class="trade-main-grid">
+    @* --- COLONNE GAUCHE : GRAPHIQUE --- *@
+    <div class="standard-card chart-container-pro grid-col-span-2">
+        <h3 class="card-subtitle">COURS EN TEMPS RÉEL</h3>
+        <div class="chart-controls">
+            <div class="asset-info">
+                <div class="input-with-icon">
+                    <img src="@GetSelectedCryptoImage()" class="crypto-select-icon" />
+                    <select class="form-input custom-dashboard-select" @onchange="OnCryptoChanged">
+                        <option value="BTCUSDT">BabyBitcoin (BBTC)</option>
+                        <option value="SOLUSDT">PikaCoin (PIKA)</option>
+                        <option value="ETHUSDT">MoonCoin (MOON)</option>
+                    </select>
+                </div>
+                <div class="price-badge-group">
+                    <span id="live-price-val" class="live-price">--.--€</span>
+                    <span id="live-price-change" class="price-change positive">0.00%</span>
+                </div>
+                <div class="market-stats-mini">
+                    <div class="stat">
+                        <span class="label">VOL 24H</span>
+                        <span id="live-vol-24h" class="value">--.--</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">HIGH</span>
+                        <span id="live-high" class="value green">--.--</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">LOW</span>
+                        <span id="live-low" class="value red">--.--</span>
+                    </div>
+                </div>
+            </div>
+            @* ... Stats mini identiques ... *@
+        </div>
+        <div id="cryptoChart" style="width: 100%; height: 350px;"></div>
+    </div>
+
+    @* --- COLONNE DROITE : ORDERBOOK & TERMINAL --- *@
+    <div class="trade-right-panel">
+        @* --- CARNET D'ORDRES (JS gère le remplissage) --- *@
+        <div class="standard-card order-book-card">
+            <h3 class="card-subtitle">CARNET D'ORDRES</h3>
+            <div class="order-book-container">
+                <div class="ob-spread"><span class="red">VENTES</span></div>
+                <div class="asks"></div>
+                <div class="ob-spread"><span class="green">ACHATS</span></div>
+                <div class="bids"></div>
+            </div>
+        </div>
+
+        @* --- TERMINAL D'ACHAT/VENTE FONCTIONNEL --- *@
+        <div class="standard-card trade-terminal">
+            <div class="trade-tabs">
+                <button class="tab-btn @(TradeMode == "BUY" ? "active-buy" : "")" @onclick='() => SwitchMode("BUY")'>ACHAT</button>
+                <button class="tab-btn @(TradeMode == "SELL" ? "active-sell" : "")" @onclick='() => SwitchMode("SELL")'>VENTE</button>
+            </div>
+
+            <div class="terminal-body">
+                <div class="balance-info">
+                    <span>Disponible:</span>
+                    <span class="text-gold">
+                        @if (TradeMode == "BUY")
+                        {
+                            @($"{FakeEurBalance.ToString("N2")} €")
+                        }
+                        else
+                        {
+
+                            @($"{FakeCryptoBalance.ToString("N4")} {GetBaseAsset()}")
+                        }
+                    </span>
+                </div>
+
+                <div class="trade-input-group">
+                    <label>Quantité à @(TradeMode == "BUY" ? "dépenser" : "vendre")</label>
+                    <div class="input-wrapper">
+                        <input type="number" @bind="TradeAmount" @bind:event="oninput" placeholder="0.00" step="0.01" />
+                        <span class="unit">@(TradeMode == "BUY" ? "€" : GetBaseAsset())</span>
+                    </div>
+                </div>
+
+                <div class="percent-grid">
+                    <button @onclick="() => SetAmount(25)">25%</button>
+                    <button @onclick="() => SetAmount(50)">50%</button>
+                    <button @onclick="() => SetAmount(75)">75%</button>
+                    <button @onclick="() => SetAmount(100)">MAX</button>
+                </div>
+
+                <div class="order-summary">
+                    <div class="sum-row">
+                        <span>Estimation reçue:</span>
+                        <span class="text-white">@EstimatedTotal.ToString(TradeMode == "BUY" ? "N6" : "N2") @(TradeMode == "BUY" ? GetBaseAsset() : "€")</span>
+                    </div>
+                    <div class="sum-row">
+                        <span>Frais (0.1%):</span>
+                        <span>@((TradeAmount * 0.001).ToString("N4")) @(TradeMode == "BUY" ? "€" : GetBaseAsset())</span>
+                    </div>
+                </div>
+
+                <button class="main-trade-btn @(TradeMode == "BUY" ? "btn-buy" : "btn-sell")"
+                        @onclick="ExecuteTrade"
+                        disabled="@(TradeAmount <= 0)">
+                    @(TradeMode == "BUY" ? "CONFIRMER L'ACHAT" : "CONFIRMER LA VENTE")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private string selectedSymbol = "BTCUSDT";
+
+    private string GetSelectedCryptoImage() => selectedSymbol switch
+    {
+        "BTCUSDT" => "images/bbtc_pacifier.png",
+        "SOLUSDT" => "images/pika_head.png",
+        "ETHUSDT" => "images/moon_orbit.png",
+        _ => "images/bbtc_pacifier.png"
+    };
+
+    private async Task OnCryptoChanged(ChangeEventArgs e)
+    {
+        selectedSymbol = e.Value.ToString();
+        // TradeAmount = 0;
+        await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart", selectedSymbol);
+    }
+
+
+    private string TradeMode = "BUY";
+    private double TradeAmount = 0;
+    private double CurrentPrice =1000; // Sera mis à jour par le JS
+
+    // Données fictives pour la démo
+    private double FakeEurBalance = 12450.00;
+    private double FakeCryptoBalance = 0.4521;
+
+    // Calcul dynamique de l'estimation selon le mode
+    private double EstimatedTotal => (TradeAmount > 0 && CurrentPrice > 0)
+        ? (TradeMode == "BUY" ? (TradeAmount / CurrentPrice) : (TradeAmount * CurrentPrice))
+        : 0;
+
+
+    [JSInvokable]
+    public void UpdateCurrentPrice(double price)
+    {
+        CurrentPrice = price;
+        StateHasChanged(); // Rafraîchit l'UI (estimation)
+    }
+
+    private string GetBaseAsset() => selectedSymbol.Replace("BTCUSDT", "BBTC").Replace("SOLUSDT", "PIKA").Replace("ETHUSDT", "MOON");
+
+    private void SwitchMode(string mode)
+    {
+        TradeMode = mode;
+        TradeAmount = 0; // Reset l'input au changement
+        StateHasChanged();
+    }
+
+   
+
+    private void SetAmount(int percent)
+    {
+        double balance = TradeMode == "BUY" ? FakeEurBalance : FakeCryptoBalance;
+        TradeAmount = balance * (percent / 100.0);
+        StateHasChanged();
+    }
+
+    private void ExecuteTrade()
+    {
+        if (TradeAmount <= 0) return;
+
+        // Simulation de l'impact sur le solde
+        if (TradeMode == "BUY")
+        {
+            FakeEurBalance -= TradeAmount;
+            FakeCryptoBalance += EstimatedTotal;
+        }
+        else
+        {
+            FakeCryptoBalance -= TradeAmount;
+            FakeEurBalance += EstimatedTotal;
+        }
+        
+        Console.WriteLine($"Ordre {TradeMode} de {TradeAmount} exécuté à {CurrentPrice}€");
+        TradeAmount = 0; // Reset après succès
+    }
+
+   
+
+    public class OrderEntry { public double Price { get; set; } public double Quantity { get; set; } }
+
+ 
+ 
+
+    // Pour l'input manuel, ajoute cette méthode pour l'estimation en temps réel
+    private void OnInputAmount(ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(), out var result))
+        {
+            TradeAmount = result;
+            StateHasChanged();
+        }
+    }
+}
+
