@@ -173,14 +173,10 @@
         color: var(--text-main); /* Texte blanc d'origine */
         font-size: 13px;
         font-family: monospace; /* Pour que les chiffres s'alignent */
-<<<<<<< HEAD
 
         padding: 10px; 
         vertical-align: middle; 
-=======
-        padding: 10px;
-        vertical-align: middle;
->>>>>>> edec564 (Maj light mode)
+
     }
 
         /* Pour le prix : Alignement à droite (par défaut pour la finance), mais centré */

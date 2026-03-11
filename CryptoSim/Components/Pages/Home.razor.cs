@@ -44,10 +44,6 @@ public partial class Home
         {
             if (!AuthState.IsAuthenticated)
             {
-<<<<<<< HEAD
-                Navigation.NavigateTo("/login");
-                return;
-=======
                 // On attend 100ms que le CSS Glassmorphism soit bien appliqué
                 await Task.Delay(500);
                 await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart");
@@ -60,10 +56,8 @@ public partial class Home
                 {
                     Console.WriteLine($"Erreur JS : {ex.Message}");
                 }
->>>>>>> edec564 (Maj light mode)
             }
 
-<<<<<<< HEAD
             await LoadStatsAsync();
 
             await Task.Delay(500);
@@ -81,29 +75,7 @@ public partial class Home
 
             StateHasChanged();
         }
-=======
-        //private async Task LoadStatsAsync()
-        //{
-        //    try
-        //    {
-        //        // Nombre de cryptos depuis MarketService
-        //        var cryptos = await Http.GetFromJsonAsync<List<object>>("/api/market/cryptos");
-        //        _cryptoCount = cryptos?.Count ?? 0;
-        //    }
-        //    catch { _cryptoCount = 0; }
 
-        //    try
-        //    {
-        //        // Nombre de transactions depuis PortfolioService
-        //        Http.DefaultRequestHeaders.Authorization =
-        //            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AuthState.Token);
-
-        //        var transactions = await Http.GetFromJsonAsync<List<object>>("/api/portfolio/transactions");
-        //        _transactionCount = transactions?.Count ?? 0;
-        //    }
-        //    catch { _transactionCount = 0; }
-        //}
->>>>>>> edec564 (Maj light mode)
     }
 
     private async Task OnCryptoChanged(ChangeEventArgs e)
