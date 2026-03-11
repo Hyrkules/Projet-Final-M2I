@@ -7,22 +7,39 @@
 <PageTitle>Home</PageTitle>
 
 <div class="profile-container animate-fade-in">
-    <div class="balance-badge">
-        <span class="label">VALEUR TOTALE</span>
-        <span class="value">@AuthState.Balance.ToString("N2") $</span>
+    <div class="wallet-page-header">
+        <h1 class="main-page-title text-gold">TABLEAU DE BORD</h1>
     </div>
 </div>
-    <div class="header-separator-bar"></div>
-    <div class="row g-4 mt-4">
-        <div class="col-md-4">
-            <div class="card bg-dark-card border-secondary p-3 text-center">
-                <h5 class="text-muted">Marché Actif</h5>
-                <h2 class="text-white">
-                    @(_cryptoCount.HasValue ? $"{_cryptoCount} Actifs" : "Chargement...")
-                </h2>
-            </div>
+<div class="header-separator-bar"></div>
+
+@* --- 1. RÉSUMÉ RAPIDE --- *@
+<div class="dashboard-stats-grid">
+    <div class="standard-card stat-item">
+        <i class="bi bi-wallet2 text-gold"></i>
+        <div>
+            <span class="stat-label">VALEUR TOTALE</span>
+            <span class="stat-value">@AuthState.Balance.ToString("N2") €</span>
+        </div>
+    </div>
+    <div class="standard-card stat-item">
+        <i class="bi @(_performance >= 0 ? "bi-graph-up-arrow text-green" : "bi-graph-down-arrow text-red")"></i>
+        <div>
+            <span class="stat-label">PERFORMANCE GLOBALE</span>
+            <span class="stat-value @(_performance >= 0 ? "text-green" : "text-red")">
+                @(_performance >= 0 ? "+" : "")@_performance.ToString("N2")%
+            </span>
+        </div>
+    </div>
+    <div class="standard-card stat-item">
+        <i class="bi bi-cpu text-gold"></i>
+        <div>
+            <span class="stat-label">ACTIFS DÉTENUS</span>
+            <span class="stat-value">@(_cryptoCount.HasValue ? $"{_cryptoCount} Actifs" : "Chargement...")</span>
+        </div>
     </div>
 </div>
+
 <div class="row g-4 mt-4">
     <div class="col-md-4">
         <div class="card bg-dark-card border-secondary p-3 text-center">
@@ -32,18 +49,177 @@
             </h2>
 
         </div>
-        <div class="col-md-4">
-            <div class="card bg-dark-card border-secondary p-3 text-center">
-                <h5 class="text-muted">Transactions totales</h5>
-                <h2 class="text-white">
-                    @(_transactionCount.HasValue ? _transactionCount.ToString() : "Chargement...")
-                </h2>
+
+    </div>
+
+    <div class="dashboard-main-grid">
+        <div class="standard-card chart-container-pro grid-col-span-2">
+            <h3 class="card-subtitle text-white">COURS EN TEMPS REEL</h3>
+            <div class="chart-controls">
+                <div class="asset-info">
+                    <div class="input-with-icon">
+                        <img src="@GetSelectedCryptoImage()" class="crypto-select-icon" />
+                        <select class="form-input custom-dashboard-select" @onchange="OnCryptoChanged">
+                            <option value="BTCUSDT">BabyBitcoin (BBTC)</option>
+                            <option value="SOLUSDT">PikaCoin (PIKA)</option>
+                            <option value="ETHUSDT">MoonCoin (MOON)</option>
+                        </select>
+                    </div>
+                    <div class="price-badge-group">
+                        <span id="live-price-val" class="live-price">--.--€</span>
+                        <span id="live-price-change" class="price-change positive">0.00%</span>
+                    </div>
+                </div>
+                <div class="market-stats-mini">
+                    <div class="stat">
+                        <span class="label">VOL 24H</span>
+                        <span id="live-vol-24h" class="value">--.--</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">HIGH</span>
+                        <span id="live-high" class="value text-green">--.--</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">LOW</span>
+                        <span id="live-low" class="value text-red">--.--</span>
+                    </div>
+                </div>
             </div>
-            <div class="standard-card stat-item">
-                <i class="bi bi-cpu text-gold"></i>
-                <div>
-                    <span class="stat-label">ACTIFS DÉTENUS</span>
-                    <span class="stat-value">12 Jetons</span>
+            <div id="cryptoChart" style="width: 100%; height: 350px;"></div>
+        </div>
+
+        <div class="standard-card distribution-card">
+            <h3 class="card-subtitle text-white">RÉPARTITION DES ACTIFS</h3>
+            <div class="table-responsive">
+                <table class="actif-table">
+                    <thead>
+                        <tr>
+                            <th>ACTIF</th>
+                            <th>QUANTITÉ</th>
+                            <th>VALEUR</th>
+                            <th>PERFORMANCE</th>
+                            <th>RÉPARTITION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!_holdings.Any())
+                        {
+                            <tr><td colspan="5" class="text-center text-muted">Aucun actif détenu.</td></tr>
+                        }
+                        else
+                        {
+                            @foreach (var h in _holdings)
+                            {
+                                <tr>
+                                    <td class="align-crypto text-gold">
+                                        <img src="@GetCryptoImage(h.CryptoSymbol)" width="56" class="crypto-icon" />
+                                        <strong>@h.CryptoSymbol</strong>
+                                    </td>
+                                    <td>@h.Quantity.ToString("N4")</td>
+                                    <td>@h.CurrentValue.ToString("N2")&nbsp;$</td>
+                                    <td>
+                                        @if (h.ProfitLossPercent >= 0)
+                                        {
+                                            <span class="text-green">+@h.ProfitLossPercent.ToString("N2")% <i class="bi bi-graph-up"></i></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-red">@h.ProfitLossPercent.ToString("N2")% <i class="bi bi-graph-down"></i></span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="allocation-container">
+                                            <span>@h.AllocationPercent.ToString("N0")%</span>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: @h.AllocationPercent%;"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="action-buttons">
+                <button class="btn-glass text-gold" @onclick='() => Navigation.NavigateTo("/trade")'>
+                    Acheter d'autres Cryptos
+                </button>
+            </div>
+        </div>
+        <div>
+            <div class="standard-card grid-col-start-3">
+                <h3 class="card-subtitle text-white">ACTIVITÉ RÉCENTE</h3>
+                <div class="table-responsive">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>DATE</th>
+                                <th>ACTIF</th>
+                                <th>TYPE</th>
+                                <th>PRIX</th>
+                                <th>STATUT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!_recentOrders.Any())
+                            {
+                                <tr><td colspan="5" class="text-center text-muted">Aucune transaction.</td></tr>
+                            }
+                            else
+                            {
+                                @foreach (var order in _recentOrders)
+                                {
+                                    <tr>
+                                        <td>@order.ExecutedAt?.ToString("dd MMM HH:mm")</td>
+                                        <td>@order.CryptoSymbol</td>
+                                        <td>
+                                            @if (order.Type == "Buy")
+                                            {
+                                                <span class="badge badge-buy">ACHAT</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-sale">VENTE</span>
+                                            }
+                                        </td>
+                                        <td>@order.Total.ToString("N2")&nbsp;$</td>
+                                        <td>
+                                            @if (order.Status == "Executed")
+                                            {
+                                                <i class="bi bi-check-circle text-green"></i>
+                                            }
+                                            else if (order.Status == "Rejected")
+                                            {
+                                                <i class="bi bi-x-circle text-red"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="bi bi-clock text-muted"></i>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-glass text-gold" @onclick='() => Navigation.NavigateTo("/Historique")'>
+                        VOIR TOUT L'HISTORIQUE
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="standard-card grid-col-span-2">
+            <h3 class="card-subtitle text-white">PIKA DA$H - Mini jeux pour gagner des PikaCoin !</h3>
+            <div class="game-container" id="dino-game-wrapper" @onclick="FocusGame" tabindex="0">
+                <canvas id="dinoCanvas" width="800" height="300"></canvas>
+                <div id="game-overlay" class="game-overlay">
+                    <p class="text-gold">APPUYEZ SUR <strong>ESPACE</strong> POUR JOUER</p>
+                    <span id="game-message" class="text-muted small">@GameMessage</span>
+
                 </div>
             </div>
         </div>
@@ -53,3 +229,4 @@
 @code {
     
 }
+

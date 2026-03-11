@@ -3,6 +3,7 @@
     public class HoldingDto
     {
         public string CryptoSymbol { get; set; } = string.Empty;
+        public string CryptoName { get; set; } = string.Empty;
         public decimal Quantity { get; set; }
         public decimal AverageBuyPrice { get; set; }
         public decimal CurrentPrice { get; set; }
