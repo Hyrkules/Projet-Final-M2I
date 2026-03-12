@@ -1,31 +1,6 @@
 ﻿/* ==========================================================================
    STRUCTURE DU HEADER (Style TradingView)
    ========================================================================== */
-<<<<<<< HEAD
-/* --- DÉFINITION DES THÈMES --- */
-
-/* Mode Sombre (par défaut) */
-.dark-theme {
-    --header-bg: #1a1e27;
-    --header-border: #2a2e39;
-    --text-main: #e0e3eb;
-    --text-muted: #848e9c;
-    --dropdown-bg: #1a1e27;
-    --hover-bg: #2a2e39;
-}
-
-/* Mode Jour (Surcharge) */
-.light-theme {
-    --header-bg: #ffffff;
-    --header-border: #e0e3eb;
-    --text-main: #131722;
-    --text-muted: #6a6d78;
-    --dropdown-bg: #ffffff;
-    --hover-bg: #f0f3fa;
-}
-=======
->>>>>>> edec564 (Maj light mode)
-
 .trading-header {
     background-color: var(--header-bg); /* Utilise la variable */
     border-bottom: 1px solid var(--header-border);
@@ -64,11 +39,7 @@
 
 .logo-icon {
     font-size: 1.4rem;
-<<<<<<< HEAD
-    color: #26a69a; /* Vert trading */
-=======
     color: var(--color-principale); /* Vert trading */
->>>>>>> edec564 (Maj light mode)
 }
 
 .logo-text {
@@ -119,11 +90,8 @@
 }
 
     .icon-btn-trading:hover {
-<<<<<<< HEAD
-        color: #26a69a;
-=======
+
         color: var(--color-principale);
->>>>>>> edec564 (Maj light mode)
     }
 
 .bi-lightning-fill {
