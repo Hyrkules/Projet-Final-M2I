@@ -17,8 +17,13 @@ Plateforme de trading de cryptomonnaies fictives en environnement simulé, const
 ```
 ┌─────────────────────────────────────┐
 │       Blazor Frontend (5000)        │
+└─────────────────┬───────────────────┘
+                  │ HTTP   
+                  ▼ 
+┌─────────────────────────────────────┐
+│            Gateway (5005)           │
 └────┬────────┬────────┬────────┬─────┘
-     │ HTTP   │ HTTP   │ HTTP   │ HTTP
+     │        │        │        │  
      ▼        ▼        ▼        ▼
 ┌────────┐ ┌────────┐ ┌───────────┐ ┌───────┐
 │  Auth  │ │ Market │ │ Portfolio │ │ Order │
@@ -53,7 +58,7 @@ Plateforme de trading de cryptomonnaies fictives en environnement simulé, const
 ### Démarrage
 
 ```bash
-git clone https://github.com/ton-org/cryptosim.git
+git clone https://github.com/Hyrkules/Projet-Final-M2I.git
 cd cryptosim
 docker compose up --build
 ```
