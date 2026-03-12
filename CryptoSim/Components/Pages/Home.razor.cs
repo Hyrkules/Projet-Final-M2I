@@ -98,14 +98,13 @@ public partial class Home
 
     private async Task LoadStatsAsync()
     {
+        Http.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", AuthState.Token);
+
         try
         {
-            Http.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", AuthState.Token);
-
-            var holdings = System.Text.Json.JsonSerializer.Deserialize<List<HoldingDto>>("/api/portfolio/holdings",
-                new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            _holdings = holdings ?? new();
+            _holdings = await Http.GetFromJsonAsync<List<HoldingDto>>("/api/portfolio/holdings",
+                new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
             _cryptoCount = _holdings.Count;
 
             var totalValue = _holdings.Sum(h => h.CurrentValue);
@@ -115,13 +114,10 @@ public partial class Home
                     h.AllocationPercent = Math.Round(h.CurrentValue / totalValue * 100, 0);
             }
         }
-        catch (Exception ex) {}
+        catch (Exception ex) { Console.WriteLine($">>> Erreur holdings: {ex.Message}"); }
 
         try
         {
-            Http.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", AuthState.Token);
-
             var transactions = await Http.GetFromJsonAsync<List<object>>("/api/portfolio/transactions");
             _transactionCount = transactions?.Count ?? 0;
         }
@@ -129,9 +125,6 @@ public partial class Home
 
         try
         {
-            Http.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", AuthState.Token);
-
             var orders = await Http.GetFromJsonAsync<List<OrderDto>>("/api/orders");
             _recentOrders = orders?.OrderByDescending(o => o.ExecutedAt).Take(5).ToList() ?? new();
         }
@@ -139,23 +132,13 @@ public partial class Home
 
         try
         {
-
-            var perf = System.Text.Json.JsonSerializer.Deserialize<PerformanceDto>("/api/portfolio/performance",
+            var perf = await Http.GetFromJsonAsync<PerformanceDto>("/api/portfolio/performance",
                 new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             _performance = perf?.ProfitLossPercent ?? 0;
         }
-        catch (Exception ex)
-        {
-            _performance = 0;
-        }
+        catch (Exception ex) { _performance = 0; }
 
-        try
-        {
-            var perf = System.Text.Json.JsonSerializer.Deserialize<PerformanceDto>("/api/portfolio/performance",
-                new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            _performance = perf?.ProfitLossPercent ?? 0;
-        }
-        catch (Exception ex) {}
+        StateHasChanged();
     }
 
     private static DateTime ToParisTime(DateTime utcDate)
