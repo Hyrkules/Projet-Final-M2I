@@ -93,7 +93,7 @@ namespace CryptoSim.Blazor.Components.Pages
 
             // ✅ Calcul correct de la quantité selon le mode
             double quantity = TradeMode == "BUY"
-                ? TradeAmount / CurrentPrice   // € → crypto
+                ? TradeAmount / CurrentPrice   // $ → crypto
                 : TradeAmount;                 // déjà en crypto
 
             Console.WriteLine($">>> ExecuteTrade | Mode: {TradeMode} | Amount: {TradeAmount} | Quantity calculée: {quantity} | Price: {CurrentPrice}");

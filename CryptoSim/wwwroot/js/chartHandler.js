@@ -87,9 +87,9 @@ function updateTickerStats(data) {
     const volElem = document.getElementById('live-vol-24h');
     const changeElem = document.getElementById('live-price-change');
 
-    if (priceElem) priceElem.innerText = `${price.toFixed(2)} €`;
-    if (highElem) highElem.innerText = `${parseFloat(data.h).toFixed(2)} €`;
-    if (lowElem) lowElem.innerText = `${parseFloat(data.l).toFixed(2)} €`;
+    if (priceElem) priceElem.innerText = `${price.toFixed(2)} $`;
+    if (highElem) highElem.innerText = `${parseFloat(data.h).toFixed(2)} $`;
+    if (lowElem) lowElem.innerText = `${parseFloat(data.l).toFixed(2)} $`;
     if (volElem) {
         const vol = parseFloat(data.v);
         volElem.innerText = vol >= 1000 ? `${(vol / 1000).toFixed(2)}K` : vol.toFixed(2);

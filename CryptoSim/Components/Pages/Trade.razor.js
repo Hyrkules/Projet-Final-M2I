@@ -9,7 +9,7 @@ function updateTickerStats(data) {
     
     // Mise à jour du DOM
     const priceElem = document.getElementById('live-price-val');
-    if (priceElem) priceElem.innerText = `${price.toFixed(2)} €`;
+    if (priceElem) priceElem.innerText = `${price.toFixed(2)} $`;
 
     // Correction de l'erreur : On vérifie si dotNetHelper existe avant de l'appeler
     if (dotNetHelper) {

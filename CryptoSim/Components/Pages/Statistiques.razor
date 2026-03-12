@@ -31,7 +31,7 @@
             <i class="bi bi-wallet2 text-gold"></i>
             <div>
                 <span class="stat-label">VALEUR TOTALE PORTEFEUILLE</span>
-                <span class="stat-value monospace">@AuthState.Balance.ToString("N2") €</span>
+                <span class="stat-value monospace">@AuthState.Balance.ToString("N2") $</span>
                 <span class="stat-trend text-green"><i class="bi bi-arrow-up"></i> +4.8% (24h)</span>
             </div>
         </div>
@@ -42,7 +42,7 @@
             <div>
                 <span class="stat-label">PROFIT / PERTE TOTAL</span>
                 <span class="stat-value monospace @(TotalProfitLoss >= 0 ? "text-green" : "text-red")">
-                    @(TotalProfitLoss >= 0 ? "+" : "")@TotalProfitLoss.ToString("N2") €
+                    @(TotalProfitLoss >= 0 ? "+" : "")@TotalProfitLoss.ToString("N2") $
                 </span>
                 <span class="stat-trend @(TotalProfitLossPercent >= 0 ? "text-green" : "text-red")">
                     <i class="bi @(TotalProfitLossPercent >= 0 ? "bi-arrow-up" : "bi-arrow-down")"></i>
@@ -81,53 +81,71 @@
             <div id="portfolioPerformanceChart" style="width: 100%; height: 400px;"></div>
         </div>
 
-        @* --- 5. ZONE ACTIVITÉ RÉCENTE (S'étale sur 1 colonne) --- *@
-        <div class="standard-card recent-activity-card">
-            <h3 class="card-subtitle text-white">ACTIVITÉ RÉCENTE</h3>
-            <div class="table-responsive">
-                <table class="recent-history-table">
-                    <thead>
-                        <tr>
-                            <th>DATE</th>
-                            <th>ACTIF</th>
-                            <th>TYPE</th>
-                            <th>TOTAL</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (!RecentOrders.Any())
-                        {
-                            <tr>
-                                <td colspan="4" class="text-center text-muted">Aucune transaction récente.</td>
-                            </tr>
-                        }
-                        else
-                        {
-                            @foreach (var order in RecentOrders)
-                            {
-                                <tr>
-                                    @* Date Formatée *@
-                                    <td>@order.ExecutedAt?.ToString("dd MMM HH:mm")</td>
-                                    @* Symbole Crypto *@
-                                    <td>@order.CryptoSymbol</td>
-                                    @* Type Achat/Vente (Badge Dynamique) *@
-                                    <td>
-                                        @if (order.Type == "Buy")
-                                        {
-                                            <span class="badge-stats badge-stats-buy">ACHAT</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge-stats badge-stats-sale">VENTE</span>
-                                        }
-                                    </td>
-                                    @* Prix Total *@
-                                    <td class="monospace">@order.Total.ToString("N2")&nbsp;€</td>
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                </table>
+        @* --- 5. ZONE RÉSUMÉ ANALYTIQUE (KPIs Avancés) --- *@
+        <div class="standard-card analytic-summary-card">
+            <h3 class="card-subtitle text-white">RÉSUMÉ ANALYTIQUE</h3>
+            <div class="kpi-vertical-list">
+        
+                @* Taux de Réussite (Win Rate) *@
+                <div class="kpi-item">
+                    <div class="kpi-info">
+                        <span class="kpi-label">WIN RATE (TAUX DE RÉUSSITE)</span>
+                        <span class="kpi-value text-green">68.5%</span>
+                    </div>
+                    <div class="stats-progress-bar mini">
+                        <div class="stats-progress-fill bg-green" style="width: 68.5%;"></div>
+                    </div>
+                </div>
+
+                @* Profit Moyen par Trade *@
+                <div class="kpi-item">
+                    <div class="kpi-info">
+                        <span class="kpi-label">PROFIT MOYEN / TRADE</span>
+                        <span class="kpi-value text-gold">+142.20 $</span>
+                    </div>
+                </div>
+
+                @* Drawdown Maximum (Risque) *@
+                <div class="kpi-item">
+                    <div class="kpi-info">
+                        <span class="kpi-label">DRAWDOWN MAX (RISQUE)</span>
+                        <span class="kpi-value text-red">-12.4%</span>
+                    </div>
+                    <div class="stats-progress-bar mini">
+                        <div class="stats-progress-fill bg-red" style="width: 12.4%;"></div>
+                    </div>
+                </div>
+
+                @* --- 1. MEILLEUR TRADE --- *@
+                <div class="kpi-item highlight-kpi">
+                    <i class="bi bi-trophy text-gold"></i>
+                    <div class="kpi-content-grid">
+                        <span class="kpi-label">MEILLEUR TRADE (ROI)</span>
+                        <span class="kpi-value text-white">BabyBitcoin (BBTC)</span>
+                        <span class="kpi-subtext text-green">+45.2% total profit</span>
+                    </div>
+                </div>
+
+                @* --- 2. PLUS GROS GAIN --- *@
+                <div class="kpi-item highlight-kpi">
+                    <i class="bi bi-cash-coin text-gold"></i>
+                    <div class="kpi-content-grid">
+                        <span class="kpi-label">PLUS GROS GAIN</span>
+                        <span class="kpi-value text-white">+10 000.00 $</span>
+                        <span class="kpi-subtext text-green">+45.2%</span>
+                    </div>
+                </div>
+
+                @* --- 3. DURÉE DE DÉTENTION --- *@
+                <div class="kpi-item highlight-kpi">
+                    <i class="bi bi-hourglass-split text-gold"></i>
+                    <div class="kpi-content-grid">
+                        <span class="kpi-label">DURÉE DE DÉTENTION MOYENNE</span>
+                        <span class="kpi-value text-white">18.5 Jours</span>
+                        <span class="kpi-subtext text-muted">Swing Trader</span>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -166,9 +184,9 @@
                                     @* Quantité Monospace *@
                                     <td class="monospace">@h.Quantity.ToString("N4")</td>
                                     @* Valeur Acquisition Monospace *@
-                                    <td class="monospace">@h.AcquisitionValue.ToString("N2")&nbsp;€</td>
+                                    <td class="monospace">@h.AcquisitionValue.ToString("N2")&nbsp;$</td>
                                     @* Valeur Actuelle Monospace *@
-                                    <td class="monospace">@h.CurrentValue.ToString("N2")&nbsp;€</td>
+                                    <td class="monospace">@h.CurrentValue.ToString("N2")&nbsp;$</td>
                                     @* Performance Dynamique (Couleur & Icône) *@
                                     <td>
                                         @if (h.ProfitLossPercent >= 0)

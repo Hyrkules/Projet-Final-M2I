@@ -168,3 +168,15 @@
 .form-content {
     color: var(--text-muted);
 }
+
+
+.form-input::-webkit-outer-spin-button,
+.form-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.form-input[type=number] {
+    -moz-appearance: textfield;
+}
