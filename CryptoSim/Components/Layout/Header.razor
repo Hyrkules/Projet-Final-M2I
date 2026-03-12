@@ -1,6 +1,7 @@
 @inject NavigationManager Navigation
 @using CryptoSim.Blazor.Services
 @rendermode InteractiveServer
+@implements IDisposable
 
 <header class="trading-header shadow-sm">
     <div class="header-container">
@@ -102,5 +103,22 @@
         // Votre logique de déconnexion ici
         isMenuOpen = false;
         Navigation.NavigateTo("/login");
+    }
+
+
+    // Logique pour mettre à jour le solde en temps réel
+    protected override void OnInitialized()
+    {
+        AuthState.OnBalanceChanged += OnBalanceUpdated;
+    }
+
+    private void OnBalanceUpdated()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        AuthState.OnBalanceChanged -= OnBalanceUpdated;
     }
 }
