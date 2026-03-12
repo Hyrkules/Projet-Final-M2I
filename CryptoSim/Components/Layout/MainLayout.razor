@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @using CryptoSim.Blazor.Services
 @inject NotificationService Notification
+@inject NavigationManager Navigation
 
 <div class="@(IsDark ? "dark-theme" : "light-theme") app-container">
     <NavMenu />
@@ -42,6 +43,9 @@
 
     protected override void OnInitialized()
     {
+        if (!AuthState.IsAuthenticated)
+            Navigation.NavigateTo("/login");
+
         Notification.OnShow += (msg) => InvokeAsync(StateHasChanged);
     }
 }
