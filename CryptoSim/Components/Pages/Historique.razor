@@ -77,7 +77,7 @@
                         @foreach (var order in FilteredOrders)
                         {
                             <tr>
-                                <td>@order.ExecutedAt?.ToString("dd MMM yyyy HH:mm")</td>
+                                <td>@order.CreatedAt?.ToString("dd MMM yyyy HH:mm")</td>
                                 <td>@order.CryptoSymbol</td>
                                 <td>
                                     @if (order.Type == "Buy")
