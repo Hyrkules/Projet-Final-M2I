@@ -100,12 +100,6 @@ builder.Services.AddDbContext<AuthDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
-builder.Services.AddCors(options =>
-    options.AddPolicy("AllowFrontend", policy =>
-        policy.WithOrigins("http://localhost:5000", "https://localhost:5000")
-              .AllowAnyHeader()
-              .AllowAnyMethod()));
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

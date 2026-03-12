@@ -87,12 +87,6 @@ builder.Services.AddHttpClient<IMarketServiceClient, MarketServiceClient>(client
     client.BaseAddress = new Uri(marketServiceUrl);
 });
 
-builder.Services.AddCors(options =>
-    options.AddPolicy("AllowFrontend", policy =>
-        policy.WithOrigins("http://localhost:5000", "https://localhost:5000")
-              .AllowAnyHeader()
-              .AllowAnyMethod()));
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -111,7 +105,6 @@ if (app.Environment.IsDevelopment())
     app.MapGet("/", () => Results.Redirect("/swagger"));
 }
 
-app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

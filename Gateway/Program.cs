@@ -50,17 +50,6 @@ builder.Services.AddControllers(options =>
     options.Filters.AddService<TokenValidationFilter>();
 });
 
-builder.Services.AddCors(options =>
-    options.AddPolicy("AllowFrontend", policy =>
-        policy.WithOrigins(
-            "http://localhost:5000",    // Blazor local
-            "http://localhost:5005",    // Gateway local
-            "http://blazor:5000"        // Blazor Docker
-        )
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials()));
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -73,7 +62,6 @@ if (app.Environment.IsDevelopment())
     app.MapGet("/", () => Results.Redirect("/swagger"));
 }
 
-app.UseCors("AllowFrontend");
 app.MapControllers();
 
 app.Run();

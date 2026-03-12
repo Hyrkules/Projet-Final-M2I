@@ -98,12 +98,6 @@ builder.Services.AddHttpClient<IPortfolioServiceClient, PortfolioServiceClient>(
         ?? "http://localhost:5003");
 });
 
-builder.Services.AddCors(options =>
-    options.AddPolicy("AllowFrontend", policy =>
-        policy.WithOrigins("http://localhost:5000", "https://localhost:5000")
-              .AllowAnyHeader()
-              .AllowAnyMethod()));
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -122,7 +116,6 @@ if (app.Environment.IsDevelopment())
     app.MapGet("/", () => Results.Redirect("/swagger"));
 }
 
-app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

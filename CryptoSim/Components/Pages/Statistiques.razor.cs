@@ -1,104 +1,230 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using CryptoSim.Blazor.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Net.Http.Headers;
 
 namespace CryptoSim.Blazor.Components.Pages
 {
     public partial class Statistiques
     {
-        [Inject]
-        public IJSRuntime JSRuntime { get; set; } = default!;
+        [Inject] public IJSRuntime JSRuntime { get; set; } = default!;
+        [Inject] public HttpClient Http { get; set; } = default!;
+        [Inject] public NavigationManager Navigation { get; set; } = default!;
 
         // ==========================================================================
         // 1. ÉTATS ET DONNÉES
         // ==========================================================================
-        private dynamic AuthState = new { Balance = 12500.50, IsAuthenticated = true, Token = "123" };
-        private decimal TotalProfitLoss = 1250.75m;
-        private decimal TotalProfitLossPercent = 10.12m;
-        private int CryptoCount = 4;
-        private int MaxAvailableCryptos = 10;
+        private decimal TotalProfitLoss = 0;
+        private decimal TotalProfitLossPercent = 0;
+        private int CryptoCount = 0;
+        private int MaxAvailableCryptos = 0;
         private string SelectedTimeFrame = "1M";
+        private decimal TotalPortfolioValue => (decimal)AuthState.Balance + Holdings.Sum(h => h.CurrentValue);
 
-        private List<Holding> Holdings = new List<Holding>
-        {
-            new Holding { CryptoSymbol = "BBTC", Quantity = 0.05m, AcquisitionValue = 2500.00m, CurrentValue = 3125.00m, ProfitLossPercent = 25.00m, AllocationPercent = 35 },
-            new Holding { CryptoSymbol = "PIKA", Quantity = 1500.00m, AcquisitionValue = 3000.00m, CurrentValue = 3150.00m, ProfitLossPercent = 5.00m, AllocationPercent = 25 },
-            new Holding { CryptoSymbol = "MOON", Quantity = 10.00m, AcquisitionValue = 4000.00m, CurrentValue = 3800.00m, ProfitLossPercent = -5.00m, AllocationPercent = 20 },
-        };
-
-        private List<RecentOrder> RecentOrders = new List<RecentOrder>
-        {
-            new RecentOrder { ExecutedAt = DateTime.Now.AddDays(-1), CryptoSymbol = "BBTC", Type = "Buy", Total = 500.00m },
-            new RecentOrder { ExecutedAt = DateTime.Now.AddDays(-2), CryptoSymbol = "PIKA", Type = "Sale", Total = 1250.50m },
-            new RecentOrder { ExecutedAt = DateTime.Now.AddDays(-5), CryptoSymbol = "MOON", Type = "Buy", Total = 1000.00m }
-        };
+        private List<HoldingDto> Holdings = new();
+        private List<OrderDto> RecentOrders = new();
+        private List<TransactionDto> _transactions = new();
 
         // ==========================================================================
-        // 2. FONCTIONS DE RÉCUPÉRATION
-        // ==========================================================================
-        private string GetCryptoImage(string symbol) => $"/images/{symbol.ToLower()}.png";
-
-        // ==========================================================================
-        // 3. CYCLES DE VIE ET INTERACTIONS
+        // 2. CYCLE DE VIE
         // ==========================================================================
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                // Un petit délai assure que le DOM est totalement prêt pour Chart.js
-                await Task.Delay(100);
+                if (!AuthState.IsAuthenticated)
+                {
+                    Navigation.NavigateTo("/login");
+                    return;
+                }
 
-                // --- 1. GRAPHIQUE CAMEMBERT ---
+                await LoadDataAsync();
+                await RenderChartsAsync();
+                StateHasChanged();
+            }
+        }
+
+        // ==========================================================================
+        // 3. CHARGEMENT DES DONNÉES
+        // ==========================================================================
+        private async Task LoadDataAsync()
+        {
+            Http.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", AuthState.Token);
+
+            // Holdings
+            try
+            {
+                var holdings = await Http.GetFromJsonAsync<List<HoldingDto>>("/api/portfolio/holdings",
+                    new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                Holdings = holdings ?? new();
+                CryptoCount = Holdings.Count;
+
+                var totalValue = Holdings.Sum(h => h.CurrentValue);
+                foreach (var h in Holdings)
+                    h.AllocationPercent = totalValue > 0
+                        ? Math.Round(h.CurrentValue / totalValue * 100, 0) : 0;
+            }
+            catch (Exception ex) { Console.WriteLine($">>> Erreur holdings: {ex.Message}"); }
+
+            // Performance
+            try
+            {
+                var perf = await Http.GetFromJsonAsync<PerformanceDto>("/api/portfolio/performance",
+                    new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                TotalProfitLoss = perf?.TotalProfitLoss ?? 0;
+                TotalProfitLossPercent = perf?.ProfitLossPercent ?? 0;
+            }
+            catch (Exception ex) { Console.WriteLine($">>> Erreur performance: {ex.Message}"); }
+
+            // Transactions (pour le graphique de performance)
+            try
+            {
+                _transactions = await Http.GetFromJsonAsync<List<TransactionDto>>("/api/portfolio/transactions",
+                    new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
+            }
+            catch (Exception ex) { Console.WriteLine($">>> Erreur transactions: {ex.Message}"); }
+
+            // Ordres récents
+            try
+            {
+                var orders = await Http.GetFromJsonAsync<List<OrderDto>>("/api/orders",
+                    new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                RecentOrders = orders?
+                    .Where(o => o.Status == "Executed")
+                    .OrderByDescending(o => o.ExecutedAt)
+                    .Take(5).ToList() ?? new();
+            }
+            catch (Exception ex) { Console.WriteLine($">>> Erreur orders: {ex.Message}"); }
+
+            try
+            {
+                var cryptos = await Http.GetFromJsonAsync<List<object>>("/api/market/cryptos");
+                MaxAvailableCryptos = cryptos?.Count ?? 3;
+            }
+            catch { MaxAvailableCryptos = 3; }
+        }
+
+        // ==========================================================================
+        // 4. GRAPHIQUES
+        // ==========================================================================
+        private async Task RenderChartsAsync()
+        {
+            await Task.Delay(100);
+
+            // Camembert - Répartition des actifs
+            if (Holdings.Any())
+            {
                 var pieData = new
                 {
                     labels = Holdings.Select(h => h.CryptoSymbol).ToArray(),
-                    values = new[] { 55, 25, 20 }, // À remplacer par h.AllocationPercent plus tard
-                    offset = new[] { 40, 0, 0 }
+                    values = Holdings.Select(h => (double)h.AllocationPercent).ToArray(),
                 };
-                var pieColors = new[] { "#26a69a", "#2196f3", "#673ab7" };
+                var pieColors = new[] { "#26a69a", "#2196f3", "#673ab7", "#f59e0b" };
                 await JSRuntime.InvokeVoidAsync("createPieChart", pieData, pieColors);
-
-                // --- 2. GRAPHIQUE PERFORMANCE ---
-                await LoadPerformanceChart();
             }
+
+            // Graphique de performance historique
+            await LoadPerformanceChart();
         }
 
         private async Task LoadPerformanceChart()
         {
-            var perfData = new
+            // On reconstitue la courbe de valeur du portefeuille à partir des transactions
+            var filtered = FilterTransactionsByTimeFrame(_transactions, SelectedTimeFrame);
+
+            if (!filtered.Any())
             {
-                dates = new[] { "01 Mar", "03 Mar", "05 Mar", "07 Mar", "09 Mar", "11 Mar", "12 Mar" },
-                values = new[] { 10200, 10800, 10500, 11200, 11900, 12100, 12500 }
+                await JSRuntime.InvokeVoidAsync("createLineChart", new
+                {
+                    dates = new[] { "Aucune donnée" },
+                    values = new[] { 0 }
+                });
+                return;
+            }
+
+            // Cumul du total investi dans le temps
+            var sorted = filtered.OrderBy(t => t.ExecutedAt).ToList();
+            decimal cumul = 10_000m; // solde de départ
+            var dates = new List<string>();
+            var values = new List<decimal>();
+
+            foreach (var t in sorted)
+            {
+                cumul += t.Type == "Buy" ? -t.Total : t.Total;
+                dates.Add(t.ExecutedAt.ToString("dd MMM"));
+                values.Add(Math.Round(cumul, 2));
+            }
+
+            await JSRuntime.InvokeVoidAsync("createLineChart", new
+            {
+                dates = dates.ToArray(),
+                values = values.ToArray()
+            });
+        }
+
+        private List<TransactionDto> FilterTransactionsByTimeFrame(List<TransactionDto> transactions, string timeFrame)
+        {
+            var cutoff = timeFrame switch
+            {
+                "1J" => DateTime.UtcNow.AddDays(-1),
+                "1S" => DateTime.UtcNow.AddDays(-7),
+                "1M" => DateTime.UtcNow.AddMonths(-1),
+                _ => DateTime.MinValue // TOUS
             };
-            await JSRuntime.InvokeVoidAsync("createLineChart", perfData);
+            return transactions.Where(t => t.ExecutedAt >= cutoff).ToList();
         }
 
         private async Task SetTimeFrame(string timeFrame)
         {
             SelectedTimeFrame = timeFrame;
-            // Appel JS pour rafraîchir le graphique
             await LoadPerformanceChart();
-            StateHasChanged(); // Force Blazor à mettre à jour les classes CSS des boutons
+            StateHasChanged();
         }
 
+        private string GetCryptoImage(string symbol) => symbol switch
+        {
+            "BBTC" => "images/bbtc_pacifier.png",
+            "PIKA" => "images/pika_head.png",
+            "MOON" => "images/moon_orbit.png",
+            _ => "images/bbtc_pacifier.png"
+        };
+
         // ==========================================================================
-        // 4. CLASSES DE DONNÉES
+        // 5. DTOs
         // ==========================================================================
-        public class Holding
+        private class HoldingDto
         {
             public string CryptoSymbol { get; set; } = string.Empty;
             public decimal Quantity { get; set; }
-            public decimal AcquisitionValue { get; set; }
+            public decimal AcquisitionValue => Quantity * AverageBuyPrice;
+            public decimal AverageBuyPrice { get; set; }
             public decimal CurrentValue { get; set; }
             public decimal ProfitLossPercent { get; set; }
-            public int AllocationPercent { get; set; }
+            public decimal AllocationPercent { get; set; }
         }
 
-        public class RecentOrder
+        private class PerformanceDto
         {
-            public DateTime? ExecutedAt { get; set; }
+            public decimal TotalProfitLoss { get; set; }
+            public decimal ProfitLossPercent { get; set; }
+        }
+
+        private class TransactionDto
+        {
             public string CryptoSymbol { get; set; } = string.Empty;
             public string Type { get; set; } = string.Empty;
             public decimal Total { get; set; }
+            public DateTime ExecutedAt { get; set; }
+        }
+
+        private class OrderDto
+        {
+            public string CryptoSymbol { get; set; } = string.Empty;
+            public string Type { get; set; } = string.Empty;
+            public decimal Total { get; set; }
+            public string Status { get; set; } = string.Empty;
+            public DateTime? ExecutedAt { get; set; }
         }
     }
 }
