@@ -1,7 +1,5 @@
 ﻿using CryptoSim.Blazor.Services;
-using Microsoft.AspNetCore.Components;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 
 namespace CryptoSim.Blazor.Components.Pages;
 
@@ -43,14 +41,10 @@ public partial class Historique
             Http.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", AuthState.Token);
 
-            var raw = await Http.GetStringAsync("/api/orders");
-            Console.WriteLine($">>> Orders JSON: {raw}"); // ✅ on voit le vrai nom du champ
-
-            var result = System.Text.Json.JsonSerializer.Deserialize<List<OrderDto>>(raw,
-                new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var result = await Http.GetFromJsonAsync<List<OrderDto>>("/api/orders",
+    new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             _orders = result ?? new();
         }
-        catch (Exception ex) { Console.WriteLine($">>> Erreur: {ex.Message}"); _orders = new(); }
         finally { _isLoading = false; }
     }
 

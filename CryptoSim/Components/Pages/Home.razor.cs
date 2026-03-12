@@ -103,10 +103,7 @@ public partial class Home
             Http.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", AuthState.Token);
 
-            var raw = await Http.GetStringAsync("/api/portfolio/holdings");
-            Console.WriteLine($">>> Holdings JSON: {raw}"); // ← ici uniquement
-
-            var holdings = System.Text.Json.JsonSerializer.Deserialize<List<HoldingDto>>(raw,
+            var holdings = System.Text.Json.JsonSerializer.Deserialize<List<HoldingDto>>("/api/portfolio/holdings",
                 new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             _holdings = holdings ?? new();
             _cryptoCount = _holdings.Count;
@@ -118,7 +115,7 @@ public partial class Home
                     h.AllocationPercent = Math.Round(h.CurrentValue / totalValue * 100, 0);
             }
         }
-        catch (Exception ex) { Console.WriteLine($">>> Erreur holdings: {ex.Message}"); _cryptoCount = 0; }
+        catch (Exception ex) {}
 
         try
         {
@@ -143,8 +140,7 @@ public partial class Home
         try
         {
 
-            var raw = await Http.GetStringAsync("/api/portfolio/performance");
-            var perf = System.Text.Json.JsonSerializer.Deserialize<PerformanceDto>(raw,
+            var perf = System.Text.Json.JsonSerializer.Deserialize<PerformanceDto>("/api/portfolio/performance",
                 new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             _performance = perf?.ProfitLossPercent ?? 0;
         }
@@ -155,14 +151,11 @@ public partial class Home
 
         try
         {
-            var raw = await Http.GetStringAsync("/api/portfolio/performance");
-            Console.WriteLine($">>> Performance JSON: {raw}"); // ← ici
-            var perf = System.Text.Json.JsonSerializer.Deserialize<PerformanceDto>(raw,
+            var perf = System.Text.Json.JsonSerializer.Deserialize<PerformanceDto>("/api/portfolio/performance",
                 new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             _performance = perf?.ProfitLossPercent ?? 0;
-            Console.WriteLine($">>> Performance value: {_performance}"); // ← et ici
         }
-        catch (Exception ex) { Console.WriteLine($">>> Erreur performance: {ex.Message}"); _performance = 0; }
+        catch (Exception ex) {}
     }
 
     private static DateTime ToParisTime(DateTime utcDate)
