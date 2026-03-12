@@ -168,6 +168,9 @@ public class PortfolioManagerService : IPortfolioManagerService
         {
             holding.Quantity -= dto.Quantity;
             holding.UpdatedAt = now;
+
+            if (holding.Quantity <= 0)
+                _context.Holdings.Remove(holding);
         }
 
         await _context.SaveChangesAsync();
