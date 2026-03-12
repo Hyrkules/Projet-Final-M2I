@@ -32,8 +32,11 @@
                     </div>
                     @if (isMenuOpen)
                     {
-                        <div class="user-dropdown 
-">
+                        <div class="user-dropdown">
+                            <div class="dropdown-user-info">
+                                <strong>@AuthState.Username</strong>
+                                <div class="badge-status">@AuthState.Role</div>
+                            </div>
                             <div class="dropdown-user-info">
                                 <strong>@AuthState.Username</strong>
                             </div>
