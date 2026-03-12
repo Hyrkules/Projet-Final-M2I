@@ -1,5 +1,5 @@
 ﻿/* --- GRID DASHBOARD --- */
-.dashboard-stats-grid {
+.statistiques-stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
@@ -30,7 +30,7 @@
     font-weight: 800;
 }
 
-.dashboard-main-grid {
+.statistiques-main-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 25px;

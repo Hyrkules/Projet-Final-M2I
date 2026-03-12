@@ -270,7 +270,7 @@ body {
     }
 
 /* Le Select */
-.custom-dashboard-select {
+.custom-statistiques-select {
     background: transparent;
     border: none;
     color: white;
@@ -295,17 +295,17 @@ body {
 }
 
 /* Menu déroulant (Options) */
-.custom-dashboard-select option {
-    background-color: #1a1e23; /* Fond sombre dashboard */
+.custom-statistiques-select option {
+    background-color: #1a1e23; /* Fond sombre statistiques */
     color: white;
     padding: 15px;
     font-weight: 500;
 }
 
     /* Simulation du surbrillance bleu lors de la sélection */
-    .custom-dashboard-select option:hover,
-    .custom-dashboard-select option:focus,
-    .custom-dashboard-select option:checked {
+    .custom-statistiques-select option:hover,
+    .custom-statistiques-select option:focus,
+    .custom-statistiques-select option:checked {
         background: #1e62d0 !important; /* Le bleu vif de tes captures */
         color: white !important;
     }
@@ -507,7 +507,7 @@ body {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(193, 164, 97, 0.3);
     border-radius: 8px;
-    padding: 2px 10px 2px 5px; /* Ajustement du padding */
+    padding: 2px 10px 2px 15px; /* Ajustement du padding */
 }
 
 /* Style de l'image crypto détourée */
@@ -519,7 +519,7 @@ body {
     background-color: rgba(255, 255, 255, 0.05);
 }
 
-.custom-dashboard-select {
+.custom-statistiques-select {
     border: none;
     background: transparent;
     color: white;

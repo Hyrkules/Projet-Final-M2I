@@ -42,10 +42,10 @@ namespace CryptoSim.Blazor.Components.Pages
 
         private string GetSelectedCryptoImage() => selectedSymbol switch
         {
-            "BTCUSDT" => "images/bbtc_pacifier.png",
-            "SOLUSDT" => "images/pika_head.png",
-            "ETHUSDT" => "images/moon_orbit.png",
-            _ => "images/bbtc_pacifier.png"
+            "BTCUSDT" => "images/BBTC.png",
+            "SOLUSDT" => "images/PIKA.png",
+            "ETHUSDT" => "images/MOON.png",
+            _ => "images/BBTC.png"
         };
 
         private async Task OnCryptoChanged(ChangeEventArgs e)

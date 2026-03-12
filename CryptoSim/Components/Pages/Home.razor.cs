@@ -1,8 +1,6 @@
 ﻿using CryptoSim.Blazor.Services;
 using Microsoft.JSInterop;
-
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -24,18 +22,18 @@ public partial class Home
 
     private string GetSelectedCryptoImage() => selectedSymbol switch
     {
-        "BTCUSDT" => "images/bbtc_pacifier.png",
-        "SOLUSDT" => "images/pika_head.png",
-        "ETHUSDT" => "images/moon_orbit.png",
-        _ => "images/bbtc_pacifier.png"
+        "BTCUSDT" => "images/BBTC.png",
+        "SOLUSDT" => "images/PIKA.png",
+        "ETHUSDT" => "images/MOON.png",
+        _ => "images/BBTC.png"
     };
 
     private string GetCryptoImage(string symbol) => symbol switch
     {
-        "BBTC" => "images/bbtc_pacifier.png",
-        "PIKA" => "images/pika_head.png",
-        "MOON" => "images/moon_orbit.png",
-        _ => "images/bbtc_pacifier.png"
+        "BBTC" => "images/BBTC.png",
+        "PIKA" => "images/PIKA.png",
+        "MOON" => "images/MOON.png",
+        _ => "images/BBTC.png"
     };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
