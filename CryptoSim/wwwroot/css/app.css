@@ -7,7 +7,7 @@
     --color-principale-glow: rgba(38, 166, 154, 0.3);
     --gold: #c1a461;
     --white: #ffffff;
-    --text-main: #e0e3eb;
+    --text-main: #a6a6a6;
     --text-muted: #848e9c;
     /* Architecture Layout */
     --dark-bg: #0b0e14;
@@ -34,7 +34,7 @@
     --sidebar-bg: #ffffff;
     --sidebar-border: #e0e3eb;
     --text-muted: #6a6d78;
-    --text-main: #131722;
+    --text-main: #b8bdc3;
     --nav-hover-bg: #f0f3fa;
     /* Palette TradingView / High-Tech */
     --color-principale: #a78bfa;
