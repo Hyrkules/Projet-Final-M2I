@@ -172,6 +172,7 @@ public class OrderManager : IOrderManagerService
         Price = order.Price,
         Total = order.Total,
         Status = order.Status.ToString(),
+        CreatedAt = order.CreatedAt,
         ExecutedAt = order.ExecutedAt
     };
 }

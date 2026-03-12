@@ -1,7 +1,7 @@
 ﻿using CryptoSim.Blazor.Services;
 using Microsoft.AspNetCore.Components;
-using System.Net.Http.Json;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace CryptoSim.Blazor.Components.Pages;
 
@@ -15,11 +15,11 @@ public partial class Historique
     private int _periodFilter = 0;
 
     private IEnumerable<OrderDto> FilteredOrders => _orders
-        .Where(o => string.IsNullOrEmpty(_search) ||
-                    o.CryptoSymbol.Contains(_search, StringComparison.OrdinalIgnoreCase))
-        .Where(o => _typeFilter == "all" || o.Type == _typeFilter)
-        .Where(o => _periodFilter == 0 ||
-                    o.ExecutedAt >= DateTime.UtcNow.AddDays(-_periodFilter));
+    .Where(o => string.IsNullOrEmpty(_search) ||
+                o.CryptoSymbol.Contains(_search, StringComparison.OrdinalIgnoreCase))
+    .Where(o => _typeFilter == "all" || o.Type == _typeFilter)
+    .Where(o => _periodFilter == 0 ||
+                o.CreatedAt >= DateTime.UtcNow.AddDays(-_periodFilter));
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -43,10 +43,14 @@ public partial class Historique
             Http.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", AuthState.Token);
 
-            var result = await Http.GetFromJsonAsync<List<OrderDto>>("/api/orders");
+            var raw = await Http.GetStringAsync("/api/orders");
+            Console.WriteLine($">>> Orders JSON: {raw}"); // ✅ on voit le vrai nom du champ
+
+            var result = System.Text.Json.JsonSerializer.Deserialize<List<OrderDto>>(raw,
+                new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             _orders = result ?? new();
         }
-        catch { _orders = new(); }
+        catch (Exception ex) { Console.WriteLine($">>> Erreur: {ex.Message}"); _orders = new(); }
         finally { _isLoading = false; }
     }
 
@@ -58,6 +62,6 @@ public partial class Historique
         public decimal Price { get; set; }
         public decimal Total { get; set; }
         public string Status { get; set; } = string.Empty;
-        public DateTime? ExecutedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 }
