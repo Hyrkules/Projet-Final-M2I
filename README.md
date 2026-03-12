@@ -1,21 +1,76 @@
-Read me à faire et à remettre en forme :
+# CryptoSim 💹
 
-Projet Final M2I avec pour objectif de développer un microservice de marché mettant en application ce qu'on a appris lors de notre formation.
-Language : C#, Blazor, MySQL...
-Outils : Visual Studio, Docker, Git/GitHub...
-Méthode : Design Pattern, Container, MicroService...
+Plateforme de trading de cryptomonnaies fictives en environnement simulé, construite avec une architecture microservices .NET.
 
-'Je récupère main et je mets à jour mon projet local'
-git checkout main
-git pull origin main
+## Fonctionnalités
 
-'Je crée ma branche et je me place dedans'
-git checkout -b Back-Feat/...
+- Authentification via JWT
+- Prix de cryptos fictives mis à jour en temps réel
+- Passage d'ordres d'achat / vente
+- Gestion d'un portefeuille virtuel (solde, actifs, performance)
+- Historique des transactions et des cours
 
-'Je travaille sur ma branche'
-git status
-git add .
-git commit -m ""
+## Architecture
 
-'Je pousse sur git'
-git push --force-with-lease
+5 services indépendants, chacun avec sa propre base de données :
+
+```
+┌─────────────────────────────────────┐
+│       Blazor Frontend (5000)        │
+└────┬────────┬────────┬────────┬─────┘
+     │ HTTP   │ HTTP   │ HTTP   │ HTTP
+     ▼        ▼        ▼        ▼
+┌────────┐ ┌────────┐ ┌───────────┐ ┌───────┐
+│  Auth  │ │ Market │ │ Portfolio │ │ Order │
+│  5001  │ │  5002  │ │   5003    │ │  5004 │
+└────────┘ └────────┘ └───────────┘ └───────┘
+  users_db  market_db  portfolio_db  orders_db
+```
+
+| Service | Responsabilité |
+|---|---|
+| **AuthService** | Inscription, connexion, émission JWT |
+| **MarketService** | Génération des prix, historique des cours |
+| **PortfolioService** | Portefeuille, transactions, performance |
+| **OrderService** | Passage et suivi des ordres |
+| **Blazor Frontend** | Interface utilisateur |
+
+## Stack technique
+
+- **Frontend** : Blazor Server (.NET 8)
+- **Backend** : ASP.NET Core Web API (.NET 8)
+- **Base de données** : PostgreSQL
+- **Auth** : JWT (HMAC-SHA256)
+- **Conteneurisation** : Docker & Docker Compose
+
+## Lancement
+
+### Prérequis
+
+- Docker Desktop
+- Git
+
+### Démarrage
+
+```bash
+git clone https://github.com/ton-org/cryptosim.git
+cd cryptosim
+docker compose up --build
+```
+
+L'application est accessible sur **http://localhost:5000**
+
+La Swagger UI de la Gateway est accessible sur **http://localhost:5005/swagger**
+
+## Commandes utiles
+
+```bash
+# Relancer un service spécifique
+docker compose up --build cryptosim-gateway
+
+# Suivre les logs en temps réel
+docker logs cryptosim-blazor -f
+
+# Arrêter tous les services
+docker compose down
+```
