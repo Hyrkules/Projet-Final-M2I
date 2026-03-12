@@ -162,7 +162,7 @@
                                 @foreach (var order in _recentOrders)
                                 {
                                     <tr>
-                                        <td>@order.ExecutedAt?.ToString("dd MMM HH:mm")</td>
+                                    <td>@(order.ExecutedAt.HasValue? ToParisTime(order.ExecutedAt.Value).ToString("dd MMM HH:mm") : "-")</td>
                                         <td>@order.CryptoSymbol</td>
                                         <td>
                                             @if (order.Type == "Buy")

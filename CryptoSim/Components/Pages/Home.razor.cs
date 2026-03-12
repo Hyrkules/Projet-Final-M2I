@@ -165,6 +165,12 @@ public partial class Home
         catch (Exception ex) { Console.WriteLine($">>> Erreur performance: {ex.Message}"); _performance = 0; }
     }
 
+    private static DateTime ToParisTime(DateTime utcDate)
+    {
+        var parisZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Paris");
+        return TimeZoneInfo.ConvertTimeFromUtc(utcDate, parisZone);
+    }
+
     private class PerformanceDto
     {
         public decimal ProfitLossPercent { get; set; }

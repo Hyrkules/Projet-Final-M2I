@@ -54,6 +54,12 @@ public partial class Historique
         finally { _isLoading = false; }
     }
 
+    private static DateTime ToParisTime(DateTime utcDate)
+    {
+        var parisZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Paris");
+        return TimeZoneInfo.ConvertTimeFromUtc(utcDate, parisZone);
+    }
+
     private class OrderDto
     {
         public string CryptoSymbol { get; set; } = string.Empty;
