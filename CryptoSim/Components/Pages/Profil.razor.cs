@@ -117,4 +117,20 @@ public partial class Profil
         CloseAllEdits();
         NotificationService.ShowSuccess("MODIFICATION ENREGISTRÉE AVEC SUCCÈS");
     }
+
+    // --- LOGIQUE DE CALCUL DU SOLDE ---
+    private decimal FondInitial => 10000m;
+
+    private decimal Difference => AuthState.Balance - FondInitial;
+    private bool IsPositive => Difference >= 0;
+
+    private string StatusClass => IsPositive ? "green" : "red";
+    private string StatusLabel => IsPositive ? "PLUS-VALUE" : "MOINS-VALUE";
+    private string IconClass => IsPositive ? "bi-graph-up-arrow" : "bi-graph-down-arrow";
+
+
+    // Calcul du pourcentage : ((Actuel - Initial) / Initial) * 100
+    private decimal PerformancePercentage => FondInitial != 0
+        ? (Difference / FondInitial) * 100
+        : 0;
 }
