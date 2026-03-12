@@ -12,7 +12,7 @@
     <div class="header-separator-bar"></div>
 
     @* --- 1. RÉSUMÉ RAPIDE --- *@
-    <div class="dashboard-stats-grid">
+    <div class="statistiques-stats-grid">
         <div class="standard-card stat-item">
             <i class="bi bi-wallet2 text-gold"></i>
             <div>
@@ -39,7 +39,7 @@
         </div>
     </div>
 
-        <div class="dashboard-main-grid">
+        <div class="statistiques-main-grid">
             @* --- 2. GRAPHIQUE --- *@
             <div class="standard-card chart-container-pro grid-col-span-2">
                 <h3 class="card-subtitle">COURS EN TEMPS REEL</h3>
@@ -47,7 +47,7 @@
                     <div class="asset-info">
                         <div class="input-with-icon">
                             <img src="@GetSelectedCryptoImage()" class="crypto-select-icon" />
-                            <select class="form-input custom-dashboard-select" @onchange="OnCryptoChanged">
+                            <select class="form-input custom-statistiques-select" @onchange="OnCryptoChanged">
                                 <option value="BTCUSDT">BabyBitcoin (BBTC)</option>
                                 <option value="SOLUSDT">PikaCoin (PIKA)</option>
                                 <option value="ETHUSDT">MoonCoin (MOON)</option>

@@ -1,0 +1,222 @@
+﻿@page "/statistiques"
+@rendermode InteractiveServer
+@using CryptoSim.Blazor.Services
+@inject NavigationManager Navigation
+
+<PageTitle>CryptoSim - Statistiques Détaillées</PageTitle>
+
+<div class="stats-page-container animate-fade-in">
+    @* --- HEADER DE LA PAGE --- *@
+    <div class="page-header-tradingview">
+        <h1 class="main-page-title text-gold">STATISTIQUES DÉTAILLÉES</h1>
+        <div class="header-actions">
+            <div class="input-with-icon">
+                <i class="bi bi-calendar3 text-gold"></i>
+        
+                <select class="form-input custom-statistiques-select">
+                    <option value="24h">24 Dernières Heures</option>
+                    <option value="7j">7 Derniers Jours</option>
+                    <option value="1m">Dernier Mois</option>
+                    <option value="tous">Tout le Temps</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="header-separator-bar"></div>
+
+    @* --- 1. GRILLE DE WIDGETS DE STATISTIQUES (Stats-Grid) --- *@
+    <div class="stats-grid-dashboard">
+        @* Widget Valeur Totale du Portefeuille *@
+        <div class="standard-card stat-item-card">
+            <i class="bi bi-wallet2 text-gold"></i>
+            <div>
+                <span class="stat-label">VALEUR TOTALE PORTEFEUILLE</span>
+                <span class="stat-value monospace">@AuthState.Balance.ToString("N2") €</span>
+                <span class="stat-trend text-green"><i class="bi bi-arrow-up"></i> +4.8% (24h)</span>
+            </div>
+        </div>
+
+        @* Widget Profit/Perte Total *@
+        <div class="standard-card stat-item-card">
+            <i class="bi bi-cash-stack text-gold"></i>
+            <div>
+                <span class="stat-label">PROFIT / PERTE TOTAL</span>
+                <span class="stat-value monospace @(TotalProfitLoss >= 0 ? "text-green" : "text-red")">
+                    @(TotalProfitLoss >= 0 ? "+" : "")@TotalProfitLoss.ToString("N2") €
+                </span>
+                <span class="stat-trend @(TotalProfitLossPercent >= 0 ? "text-green" : "text-red")">
+                    <i class="bi @(TotalProfitLossPercent >= 0 ? "bi-arrow-up" : "bi-arrow-down")"></i>
+                    @TotalProfitLossPercent.ToString("N2")%
+                </span>
+            </div>
+        </div>
+
+        @* Widget Actifs Détenus *@
+        <div class="standard-card stat-item-card">
+            <i class="bi bi-cpu text-gold"></i>
+            <div>
+                <span class="stat-label">NOMBRE D'ACTIFS DÉTENUS</span>
+                <span class="stat-value monospace">@CryptoCount</span>
+
+                <span class="stat-trend text-muted">Sur @MaxAvailableCryptos disponibles</span>
+            </div>
+        </div>
+    </div>
+
+    @* --- GRILLE PRINCIPALE (Graphs et Tableaux) --- *@
+    <div class="stats-main-dashboard-grid">
+        @* --- 2. GRAPHIQUE DE PERFORMANCE HISTORIQUE (S'étale sur 2 colonnes) --- *@
+        <div class="standard-card performance-chart-container grid-col-span-2">
+            <h3 class="card-subtitle text-white">PERFORMANCE HISTORIQUE DU PORTEFEUILLE</h3>
+            <div class="chart-controls-wrapper">
+                @* Filtres de temps pour le graphique *@
+                <div class="time-filters">
+                    <button class="filter-btn @(SelectedTimeFrame == "1J" ? "active" : "")" @onclick='() => SetTimeFrame("1J")'>1J</button>
+                    <button class="filter-btn @(SelectedTimeFrame == "1S" ? "active" : "")" @onclick='() => SetTimeFrame("1S")'>1S</button>
+                    <button class="filter-btn @(SelectedTimeFrame == "1M" ? "active" : "")" @onclick='() => SetTimeFrame("1M")'>1M</button>
+                    <button class="filter-btn @(SelectedTimeFrame == "TOUS" ? "active" : "")" @onclick='() => SetTimeFrame("TOUS")'>TOUS</button>
+                </div>
+            </div>
+            @* Conteneur réel pour le graphique (Performance) *@
+            <div id="portfolioPerformanceChart" style="width: 100%; height: 400px;"></div>
+        </div>
+
+        @* --- 5. ZONE ACTIVITÉ RÉCENTE (S'étale sur 1 colonne) --- *@
+        <div class="standard-card recent-activity-card">
+            <h3 class="card-subtitle text-white">ACTIVITÉ RÉCENTE</h3>
+            <div class="table-responsive">
+                <table class="recent-history-table">
+                    <thead>
+                        <tr>
+                            <th>DATE</th>
+                            <th>ACTIF</th>
+                            <th>TYPE</th>
+                            <th>TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!RecentOrders.Any())
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">Aucune transaction récente.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var order in RecentOrders)
+                            {
+                                <tr>
+                                    @* Date Formatée *@
+                                    <td>@order.ExecutedAt?.ToString("dd MMM HH:mm")</td>
+                                    @* Symbole Crypto *@
+                                    <td>@order.CryptoSymbol</td>
+                                    @* Type Achat/Vente (Badge Dynamique) *@
+                                    <td>
+                                        @if (order.Type == "Buy")
+                                        {
+                                            <span class="badge-stats badge-stats-buy">ACHAT</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge-stats badge-stats-sale">VENTE</span>
+                                        }
+                                    </td>
+                                    @* Prix Total *@
+                                    <td class="monospace">@order.Total.ToString("N2")&nbsp;€</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* --- 4. TABLEAU DES ACTIFS (S'étale sur 2 colonnes) --- *@
+        <div class="standard-card assets-table-card grid-col-span-2">
+            <h3 class="card-subtitle text-white">VOS ACTIFS</h3>
+            <div class="table-responsive">
+                <table class="assets-data-table">
+                    <thead>
+                        <tr>
+                            <th>ACTIF</th>
+                            <th>QUANTITÉ</th>
+                            <th>VALEUR ACQUISITION</th>
+                            <th>VALEUR ACTUELLE</th>
+                            <th>PERFORMANCE</th>
+                            <th>RÉPARTITION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Holdings.Any())
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">Aucun actif détenu.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var h in Holdings)
+                            {
+                                <tr>
+                                    @* Alignement Crypto & Icône *@
+                                    <td class="align-crypto text-gold">
+                                        <img src="@GetCryptoImage(h.CryptoSymbol)" width="56" class="crypto-icon" alt="@h.CryptoSymbol Icon" />
+                                        <strong>@h.CryptoSymbol</strong>
+                                    </td>
+                                    @* Quantité Monospace *@
+                                    <td class="monospace">@h.Quantity.ToString("N4")</td>
+                                    @* Valeur Acquisition Monospace *@
+                                    <td class="monospace">@h.AcquisitionValue.ToString("N2")&nbsp;€</td>
+                                    @* Valeur Actuelle Monospace *@
+                                    <td class="monospace">@h.CurrentValue.ToString("N2")&nbsp;€</td>
+                                    @* Performance Dynamique (Couleur & Icône) *@
+                                    <td>
+                                        @if (h.ProfitLossPercent >= 0)
+                                        {
+                                            <span class="text-green">
+                                                +@h.ProfitLossPercent.ToString("N2")% <i class="bi bi-graph-up"></i>
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-red">
+                                                @h.ProfitLossPercent.ToString("N2")% <i class="bi bi-graph-down"></i>
+                                            </span>
+                                        }
+                                    </td>
+                                    @* Barre de Répartition *@
+                                    <td>
+                                        <div class="allocation-bar-wrapper">
+                                            <span>@h.AllocationPercent.ToString("N0")%</span>
+                                            <div class="stats-progress-bar">
+                                                <div class="stats-progress-fill" style="width: @h.AllocationPercent%;"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @* --- 3. RÉPARTITION DES ACTIFS (Camembert) --- *@
+        <div class="standard-card asset-allocation-card">
+            <h3 class="card-subtitle text-white">RÉPARTITION DU PORTEFEUILLE</h3>
+            
+            @* AJUSTEMENT HTML : J'ai ajouté le canvas avec l'ID, et un conteneur parent
+               pour que Chart.js gère bien la taille responsive. *@
+            <div class="chart-container" style="position: relative; width: 100%; height: 100%;">
+                <canvas id="assetAllocationPieChart" style="margin:10px;"></canvas>
+            </div>
+            
+            @* Visuel de l'exemple *@
+            
+        </div>
+        
+    </div>
+</div>
+
+@code {
+  
+}
