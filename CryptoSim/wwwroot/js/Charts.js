@@ -128,7 +128,7 @@ window.createLineChart = (data) => {
                     bodyColor: '#fff',
                     bodyFont: { weight: 'bold' },
                     callbacks: {
-                        label: (context) => ` ${context.parsed.y.toLocaleString()} €`
+                        label: (context) => ` ${context.parsed.y.toLocaleString()} $`
                     }
                 }
             },
@@ -141,7 +141,7 @@ window.createLineChart = (data) => {
                     grid: { color: 'rgba(132, 142, 156, 0.1)' },
                     ticks: {
                         color: '#848e9c',
-                        callback: (value) => value + ' €'
+                        callback: (value) => value + ' $'
                     }
                 }
             }
