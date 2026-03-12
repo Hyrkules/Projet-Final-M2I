@@ -8,14 +8,10 @@ namespace AuthService.Services
 {
     public class AuthService : IAuthService
     {
-        // IConfiguration => accès à appsettings.json
-        // Injecté automatiquement par ASP.NET via le constructeur
         private readonly IConfiguration _config;
 
-        // DbContext pour accéder à la base users_db
         private readonly AuthDbContext _context;
 
-        // JwtService pour générer les tokens
         private readonly IJwtService _jwtService;
 
         public AuthService(IConfiguration config, AuthDbContext context, IJwtService jwtService)
@@ -28,24 +24,21 @@ namespace AuthService.Services
         // Inscription : crée un compte et retourne un JWT
         public async Task<AuthResponse> RegisterAsync(RegisterRequestDto dto)
         {
-            // Vérification unicité du username
             var existingUsername = await _context.Users.FirstOrDefaultAsync(u => u.Username == dto.Username);
             if (existingUsername != null)
                 throw new InvalidOperationException("Ce nom d'utilisateur est déjà pris.");
 
-            // Vérification unicité de l'email
             var existingEmail = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (existingEmail != null)
                 throw new InvalidOperationException("Cette adresse e-mail est déjà utilisée.");
 
-            // Création de l'utilisateur avec mot de passe hashé
             var user = new User
             {
                 Username = dto.Username,
                 PasswordHash = PasswordService.HashPassword(dto.Password),
                 Email = dto.Email,
                 Role = Role.User,
-                Balance = 10_000m,  // solde virtuel de départ
+                Balance = 10_000m,  
                 CreatedAt = DateTime.UtcNow
             };
 

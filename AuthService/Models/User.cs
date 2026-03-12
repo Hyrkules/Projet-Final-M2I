@@ -9,7 +9,7 @@ namespace AuthService.Models
         public string PasswordHash { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public Role Role { get; set; } = Role.User;
-        public decimal Balance { get; set; } = 10_000m; // solde virtuel en $
+        public decimal Balance { get; set; } = 10_000m;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

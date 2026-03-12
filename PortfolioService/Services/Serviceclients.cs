@@ -1,6 +1,4 @@
-﻿using System.Net.Http.Json;
-
-namespace PortfolioService.Services;
+﻿namespace PortfolioService.Services;
 
 public class CryptoPrice
 {
