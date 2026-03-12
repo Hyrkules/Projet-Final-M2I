@@ -17,9 +17,12 @@
             </div>
             <div class="action-icons">
                 <button class="icon-btn-trading" @onclick="HandleToggle" title="Changer le thème">
-                    @if (_localDark) {
+                    @if (_localDark)
+                    {
                         <i class="bi bi-moon-stars"></i>
-                    } else {
+                    }
+                    else
+                    {
                         <i class="bi bi-sun"></i>
                     }
                 </button>
@@ -27,18 +30,26 @@
                     <i class="bi bi-bell-fill"></i>
                 </button>
                 <div class="avatar-wrapper">
-                    <div class="user-avatar-Initial" @onclick="ToggleMenu">
+                    @* CORRECTION ICI :
+                       1. La classe est "user-avatar-initial" (minuscule).
+                       2. Ajout de tabindex="0" pour rendre la div focusable.
+                       3. Ajout de @onblur pour fermer le menu quand on clique ailleurs. *@
+                    <div class="user-avatar-initial"
+                         @onclick="ToggleMenu"
+                         @onblur="CloseMenu"
+                         tabindex="0"
+                         title="Menu utilisateur">
                         <span>@_Initial</span>
                     </div>
+
+           
                     @if (isMenuOpen)
                     {
-                        <div class="user-dropdown">
+                        <div class="user-dropdown show animate-fade-in">
                             <div class="dropdown-user-info">
-                                <strong>@AuthState.Username</strong>
-                                <div class="badge-status">@AuthState.Role</div>
-                            </div>
-                            <div class="dropdown-user-info">
-                                <strong>@AuthState.Username</strong>
+                                < div class= "dropdown-username" > @AuthState.Username </ div >
+                                < div class= "badge-status" > @AuthState.Role </ div >
+                                <div class="badge-status">Utilisateur</div>
                             </div>
                             <hr class="dropdown-divider" />
                             <NavLink href="profil" class="dropdown-link" @onclick="CloseMenu">
@@ -64,6 +75,9 @@
     private bool _localDark = true;
     private bool isMenuOpen = false;
 
+    // Pour tester : 
+    //private dynamic AuthState = new { Username = "Utilisateur Démo", Balance = 1250.50, IsAuthenticated = true, Token = "123" };
+
     private string _Initial => string.IsNullOrEmpty(AuthState.Username)
         ? "?"
         : AuthState.Username[0].ToString().ToUpper();
@@ -75,15 +89,18 @@
     }
 
     private void ToggleMenu() => isMenuOpen = !isMenuOpen;
-    private void CloseMenu() => isMenuOpen = false;
+    
+    // Ajout d'un délai pour CloseMenu pour permettre aux clics sur les liens du menu de fonctionner avant la fermeture
+    private async Task CloseMenu()
+    {
+        await Task.Delay(150);
+        isMenuOpen = false;
+        StateHasChanged();
+    }
 
     private void Logout()
     {
-        AuthState.IsAuthenticated = false;
-        AuthState.Token = string.Empty;
-        AuthState.Username = string.Empty;
-        AuthState.Balance = 0;
-
+        // Votre logique de déconnexion ici
         isMenuOpen = false;
         Navigation.NavigateTo("/login");
     }

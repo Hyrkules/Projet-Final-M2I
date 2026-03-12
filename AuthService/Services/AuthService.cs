@@ -99,5 +99,30 @@ namespace AuthService.Services
                 ExpiresIn = 1440 * 60  // 24h en secondes
         };
         }
+
+        public async Task<bool> ChangePasswordAsync(int userId, string currentPassword, string newPassword)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null || !PasswordService.VerifyPassword(currentPassword, user.PasswordHash))
+                return false;
+
+            user.PasswordHash = PasswordService.HashPassword(newPassword);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> ChangeUsernameAsync(int userId, string newUsername, string password)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null || !PasswordService.VerifyPassword(password, user.PasswordHash))
+                return false;
+
+            var exists = await _context.Users.AnyAsync(u => u.Username == newUsername && u.Id != userId);
+            if (exists) return false;
+
+            user.Username = newUsername;
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

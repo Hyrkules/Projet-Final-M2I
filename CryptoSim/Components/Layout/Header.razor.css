@@ -1,24 +1,31 @@
 ﻿/* ==========================================================================
-   STRUCTURE DU HEADER (Style TradingView)
+   1. STRUCTURE DU HEADER (Style TradingView & Glassmorphism)
    ========================================================================== */
-
 .trading-header {
-    background-color: var(--header-bg); /* Utilise la variable */
-    border-bottom: 1px solid var(--header-border);
+    /* Fond semi-transparent avec flou d'arrière-plan pour l'effet "verre" */
+    background-color: var(--app-bg-color) !important;
+    backdrop-filter: blur(15px) saturate(150%);
+    -webkit-backdrop-filter: blur(15px) saturate(150%); /* Pour Safari */
+    /* Bordure subtile semi-transparente pour le contour */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     color: var(--text-main);
-    transition: all 0.3s ease; /* Transition douce */
-    height: 50px;
+    transition: background-color 0.3s ease; /* Transition douce lors du changement de thème */
+    /* Hauteur légèrement augmentée pour un meilleur espacement */
+    height: 75px;
     width: 100%;
     display: flex;
     align-items: center;
+    /* Maintien en haut de l'écran */
     position: sticky;
     top: 0;
     z-index: 1020;
+    /* Légère ombre pour le détacher du contenu */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .header-container {
     width: 100%;
-    padding: 0 15px;
+    padding: 0 25px; /* Plus d'espace sur les côtés */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -35,138 +42,187 @@
     text-decoration: none !important;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px; /* Espace ajusté */
 }
 
 .logo-icon {
-    font-size: 1.4rem;
-    color: var(--color-principale); /* Vert trading */
+    font-size: 1.6rem; /* Icône un peu plus grande */
+    color: var(--color-principale); /* Vert trading iconique */
+    filter: drop-shadow(0 0 5px var(--color-principale-glow)); /* Effet de néon */
 }
 
 .logo-text {
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: #e0e3eb;
+    font-weight: 700; /* Texte plus épais */
+    font-size: 1.2rem; /* Taille augmentée */
+    letter-spacing: 0.5px;
+    color: var(--text-main); /* Dynamique selon le thème */
 }
 
-/* --- ZONE DROITE (Solde & Actions) --- */
+/* ==========================================================================
+   2. ZONE DROITE (Solde & Actions)
+   ========================================================================== */
 .user-section {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 25px; /* Plus d'espace entre les éléments */
 }
 
+/* Affichage du Solde */
 .balance-display {
     display: flex;
-    align-items: baseline;
-    gap: 6px;
+    align-items: center; /* Aligné verticalement au centre */
+    gap: 8px; /* Espace ajusté */
+    padding: 6px 14px;
+    background-color: rgba(255, 255, 255, 0.03); /* Léger fond pour le démarquer */
+    border-radius: 6px;
+    border: 1px solid var(--header-border); /* Dynamique selon le thème */
 }
 
 .balance-amount {
-    font-weight: 600;
-    font-size: 1rem;
-    color: #e0e3eb;
+    font-weight: 700; /* Plus épais */
+    font-size: 1.1rem; /* Taille augmentée */
+    font-family: 'Mono', monospace; /* Police monospace pour les chiffres, style trading */
+    color: var(--text-main); /* Dynamique */
 }
 
 .balance-currency {
-    color: #848e9c;
+    color: var(--text-muted); /* Dynamique */
     font-size: 0.85rem;
-    font-weight: 500;
+    font-weight: 600;
 }
 
+/* Boutons d'Action & Icônes Thème */
 .action-icons {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px; /* Espace ajusté */
 }
 
 .icon-btn-trading {
     background: none;
     border: none;
-    color: #848e9c;
-    font-size: 1.2rem;
-    padding: 4px;
+    color: var(--text-muted); /* Dynamique */
+    font-size: 1.4rem; /* Icônes un peu plus grandes */
+    padding: 6px; /* Plus grande zone de clic */
     cursor: pointer;
-    transition: color 0.2s;
+    border-radius: 4px; /* Pour le fond au survol */
+    transition: all 0.2s ease;
 }
 
+    /* Effet au survol des icônes d'action */
     .icon-btn-trading:hover {
-
-        color: var(--color-principale);
+        background-color: var(--hover-bg); /* Fond semi-transparent */
+        color: var(--text-main); /* S'éclaire au survol */
     }
 
+/* Icône Dépôt (Violet) */
 .bi-lightning-fill {
-    color: #8355ff; /* Violet dépôt */
+    color: #8355ff; /* Violet dépôt iconique */
+    filter: drop-shadow(0 0 3px rgba(131, 85, 255, 0.4)); /* Effet de néon subtil */
 }
 
-/* --- AVATAR & WRAPPER --- */
+/* ==========================================================================
+   3. AVATAR & DROPDOWN PROFIL (Glassmorphism & Style cohérent)
+   ========================================================================== */
+
+/* Wrapper de l'Avatar */
 .avatar-wrapper {
     position: relative;
     display: inline-block;
 }
 
+/* Initiales de l'Avatar - CORRECTION ICI pour en faire un cercle parfaitement cliquable */
 .user-avatar-initial {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background-color: #313a48;
+    width: 40px; /* Taille légèrement augmentée pour un meilleur rendu */
+    height: 40px;
+    border-radius: 50%; /* Forme circulaire */
+    /* Couleur de fond neutre sombre cohérente avec le thème pour garantir la zone cliquable */
+    background-color: var(--color-principale);
+    border: 1px solid var(--header-border); /* Dynamique */
+
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #e0e3eb;
-    font-weight: 600;
-    font-size: 0.9rem;
+    color: #e0e3eb; /* Dynamique */
+    font-weight: 700; /* Plus épais */
+    font-size: 1.1rem; /* Taille augmentée */
+
     cursor: pointer;
-    border: 1px solid transparent;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
+    outline: none; /* Supprime le contour par défaut au focus */
 }
 
-    .user-avatar-initial:hover {
-        border-color: #848e9c;
+    /* Effet au survol et au focus de l'avatar */
+    .user-avatar-initial:hover, .user-avatar-initial:focus {
+        border-color: var(--color-principale); /* S'illumine en vert trading */
+        box-shadow: 0 0 20px color-mix(in srgb, var(--text-main) 60%, transparent);
     }
 
-/* ==========================================================================
-   DROPDOWN MENU (Profil)
-   ========================================================================== */
+/* --- LE MENU DÉROULANT (Glassmorphism étendu) --- */
 .user-dropdown {
     position: absolute;
-    top: 45px;
+    top: 55px; /* Ajusté par rapport à la hauteur du header et de l'avatar */
     right: 0;
-    width: 220px;
-    background-color: var(--menu-bg); /* Fond sombre identique au header */
-    border: 1px solid #2a2e39;
-    border-radius: 4px;
-    padding: 8px 0;
+    width: 240px; /* Largeur augmentée pour le confort */
+    /* Glassmorphism étendu identique à la sidebar */
+    background-color: var(--app-bg-color) !important;
+    /* Bordures subtiles semi-transparentes */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px) saturate(150%);
+
+    border-radius: 8px; /* Coins plus arrondis pour le style */
+
+    padding: 10px 0;
     z-index: 2000;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    /* Ombre forte pour le détacher du header */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    /* L'affichage est géré par Blazor (@if), on gère juste l'état ici */
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
 }
 
+/* Infos utilisateur dans le dropdown */
 .dropdown-user-info {
     padding: 8px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
-.badge-status {
-    font-size: 0.7rem;
+/* Style pour le nom d'utilisateur dans le dropdown */
+.dropdown-username {
+    font-weight: 600;
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
 
+/* Badge de statut (ex: PREMIUM) */
+.badge-status {
+    font-size: 0.75rem; /* Taille augmentée */
     color: var(--color-principale);
     text-transform: uppercase;
-    font-weight: 700;
+    font-weight: 800; /* Plus épais */
+    letter-spacing: 0.5px;
 }
 
+/* Séparateur dans le menu */
 .dropdown-divider {
-    border-top: 1px solid #2a2e39;
-    margin: 8px 0;
+    border-top: 1px solid var(--header-border); /* Dynamique */
+    margin: 10px 0;
 }
 
 /* --- LIENS DU MENU (NavLink & Buttons) --- */
 ::deep .dropdown-link {
     display: flex !important;
     align-items: center !important;
-    gap: 12px !important;
-    padding: 10px 16px !important;
-    color: #b2b5be !important;
+    gap: 15px !important; /* Espace ajusté pour les icônes */
+    padding: 12px 18px !important; /* Paddings augmentés pour le confort */
+
+    color: var(--text-muted) !important; /* Dynamique */
+
     text-decoration: none !important;
-    font-size: 0.85rem !important;
+    font-size: 0.9rem !important; /* Taille augmentée */
     transition: all 0.2s ease !important;
     background: transparent !important; /* Supprime le fond blanc des boutons */
     border: none !important;
@@ -175,39 +231,32 @@
     cursor: pointer !important;
 }
 
+    /* Effet au survol des liens du dropdown */
     ::deep .dropdown-link:hover {
-        background-color: #2a2e39 !important;
-        color: #ffffff !important;
+        background-color: var(--hover-bg) !important; /* Fond semi-transparent dynamique */
+        color: var(--text-main) !important; /* S'éclaire au survol */
     }
 
+    /* Icônes dans les liens du dropdown */
     ::deep .dropdown-link i {
-        font-size: 1.1rem;
-        color: #848e9c;
+        font-size: 1.2rem; /* Taille augmentée */
+        color: var(--text-muted); /* Dynamique */
+        min-width: 25px; /* Aligne les icônes horizontalement */
+        text-align: center;
     }
 
-/* Couleur spéciale Déconnexion */
+/* Couleur spéciale Déconnexion (Gris très clair au lieu de rouge) */
 ::deep .logout-text {
-    /* On utilise la même couleur que les autres liens pour ne pas attirer l'œil inutilement */
-    color: #b2b5be !important;
-    margin-top: 4px;
-    border-top: 1px solid #2a2e39 !important; /* Petit séparateur subtil juste pour ce bouton */
-    padding-top: 12px !important;
+    color: var(--text-muted) !important;
+    margin-top: 6px;
+    border-top: 1px solid var(--header-border) !important; /* Petit séparateur subtil juste pour ce bouton */
+    padding-top: 14px !important;
 }
 
+    /* Au survol de la déconnexion */
     ::deep .logout-text:hover {
-        /* Au survol, on utilise un gris plus clair ou une légère teinte bleutée au lieu du rouge */
         background-color: rgba(255, 255, 255, 0.05) !important;
-        color: #ffffff !important;
-    }
-
-    /* Optionnel : si tu veux une icône légèrement orangée pour l'alerte sans que ce soit agressif */
-    ::deep .logout-text i {
-        color: #848e9c; /* Couleur neutre par défaut */
-        transition: color 0.2s;
-    }
-
-    ::deep .logout-text:hover i {
-        color: #e0e3eb; /* S'éclaire simplement au survol */
+        color: var(--text-main) !important;
     }
 
 /* Animation d'apparition */
@@ -227,44 +276,18 @@
     }
 }
 
+/* ==========================================================================
+   4. ICÔNES THÈME (Ajustement des Couleurs)
+   ========================================================================= */
 
-/* MODE JOUR/NUIT */
-
+/* Mode Jour - Icône Soleil (Jaune chaud) */
 .bi-sun {
-    color: #ffb800; /* Jaune chaud pour le soleil */
+    color: #ffb800;
     filter: drop-shadow(0 0 5px rgba(255, 184, 0, 0.4));
 }
 
+/* Mode Nuit - Icône Lune (Violet doux) */
 .bi-moon-stars {
-    color: #a78bfa; /* Violet doux pour la lune */
+    color: #a78bfa;
     filter: drop-shadow(0 0 5px rgba(167, 139, 250, 0.4));
-}
-
-.logo-text, .balance-amount {
-    color: var(--text-main);
-}
-
-.icon-btn-trading {
-    color: var(--text-muted);
-}
-
-.user-dropdown {
-    background-color: var(--dropdown-bg);
-    border: 1px solid var(--header-border);
-    color: var(--text-main);
-}
-
-::deep .dropdown-link {
-    color: var(--text-muted) !important;
-}
-
-    ::deep .dropdown-link:hover {
-        background-color: var(--hover-bg) !important;
-        color: var(--text-main) !important;
-    }
-
-/* On n'oublie pas le fond de l'application */
-.app-container {
-    background-color: var(--header-bg);
-    min-height: 100vh;
 }

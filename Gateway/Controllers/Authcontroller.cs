@@ -72,6 +72,26 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
+    [HttpPost("change-password")]
+    [RequireValidToken]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
+    {
+        var token = GetToken();
+        var client = new Client<object, ChangePasswordDto>(_authBaseUrl, token);
+        var result = await client.PostRequest("/api/auth/change-password", dto);
+        return Ok(result);
+    }
+
+    [HttpPost("change-username")]
+    [RequireValidToken]
+    public async Task<IActionResult> ChangeUsername([FromBody] ChangeUsernameDto dto)
+    {
+        var token = GetToken();
+        var client = new Client<object, ChangeUsernameDto>(_authBaseUrl, token);
+        var result = await client.PostRequest("/api/auth/change-username", dto);
+        return Ok(result);
+    }
+
     private string GetToken()
     {
         var header = Request.Headers["Authorization"].ToString();

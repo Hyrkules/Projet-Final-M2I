@@ -101,4 +101,30 @@ public class AuthController : ControllerBase
         if (user == null) return BadRequest(new { error = "Solde insuffisant." });
         return Ok(new { balance = user.Balance });
     }
+
+    [Authorize]
+    [HttpPost("change-password")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
+    {
+        var userId = GetCurrentUserId();
+        if (userId is null) return Unauthorized();
+
+        var success = await _authService.ChangePasswordAsync(userId.Value, dto.CurrentPassword, dto.NewPassword);
+        if (!success) return BadRequest(new { message = "Mot de passe actuel incorrect." });
+
+        return Ok(new { message = "Mot de passe modifié avec succès." });
+    }
+
+    [Authorize]
+    [HttpPost("change-username")]
+    public async Task<IActionResult> ChangeUsername([FromBody] ChangeUsernameDto dto)
+    {
+        var userId = GetCurrentUserId();
+        if (userId is null) return Unauthorized();
+
+        var success = await _authService.ChangeUsernameAsync(userId.Value, dto.NewUsername, dto.Password);
+        if (!success) return BadRequest(new { message = "Mot de passe incorrect ou nom d'utilisateur déjà pris." });
+
+        return Ok(new { message = "Nom d'utilisateur modifié avec succès." });
+    }
 }
