@@ -17,12 +17,8 @@ public static class MarketDbInitializer
         var cryptos = new List<Crypto>
         {
             new() { Symbol = "BBTC",  Name = "BabyBitcoin",  CurrentPrice = 100_000m,  LastUpdated = now },
-            new() { Symbol = "YDX",   Name = "YanDex",        CurrentPrice = 1_200m,   LastUpdated = now },
-            new() { Symbol = "HELC",  Name = "HelouCoin",     CurrentPrice = 0.85m,    LastUpdated = now },
-            new() { Symbol = "BZH",   Name = "BzhCoin",       CurrentPrice = 3.50m,    LastUpdated = now },
             new() { Symbol = "MOON",  Name = "MoonCoin",      CurrentPrice = 0.0042m,  LastUpdated = now },
             new() { Symbol = "PIKA",  Name = "PikaCoin",      CurrentPrice = 12.75m,   LastUpdated = now },
-            new() { Symbol = "404",   Name = "NotCoinFound",  CurrentPrice = 404m,     LastUpdated = now },
         };
 
         context.Cryptos.AddRange(cryptos);
