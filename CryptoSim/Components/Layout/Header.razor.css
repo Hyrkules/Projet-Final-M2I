@@ -1,6 +1,7 @@
 ﻿/* ==========================================================================
    STRUCTURE DU HEADER (Style TradingView)
    ========================================================================== */
+
 .trading-header {
     background-color: var(--header-bg); /* Utilise la variable */
     border-bottom: 1px solid var(--header-border);
