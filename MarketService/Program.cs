@@ -8,6 +8,17 @@ using Projet_CryptoSim.MarketService.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(options =>
+    options.AddPolicy("AllowFrontend", policy =>
+        policy.WithOrigins(
+            "http://localhost:5000",
+            "http://localhost:5005",
+            "http://blazor:5000"
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials()));
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -82,6 +93,8 @@ builder.Services.AddDbContext<MarketdbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
+
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -99,6 +112,9 @@ if (app.Environment.IsDevelopment())
     });
     app.MapGet("/", () => Results.Redirect("/swagger"));
 }
+
+
+app.UseCors("AllowBlazor"); 
 
 app.UseAuthentication();
 app.UseAuthorization();

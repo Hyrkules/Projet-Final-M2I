@@ -49,4 +49,6 @@ public class MarketController : ControllerBase
         var snapshot = await _priceService.GetSnapshotAsync();
         return Ok(snapshot);
     }
+
+
 }

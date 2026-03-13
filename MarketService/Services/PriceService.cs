@@ -29,18 +29,35 @@ public class PriceService : IPriceService
 
     public async Task<CryptoDto?> GetCryptoBySymbolAsync(string symbol)
     {
-        var crypto = await _context.Cryptos
-            .FirstOrDefaultAsync(c => c.Symbol.ToUpper() == symbol.ToUpper());
-
+        // 1. Récupérer l'état actuel de la crypto
+        var crypto = await _context.Cryptos.FirstOrDefaultAsync(c => c.Symbol == symbol);
         if (crypto == null) return null;
 
+        // 2. Définir la fenêtre de temps (24h)
+        var dateLimite = DateTime.UtcNow.AddDays(-1);
+
+        // 3. Calculer les stats depuis la table History
+        var stats24h = await _context.PriceHistories // Remplace par le nom de ta table historique
+            .Where(h => h.CryptoSymbol == symbol && h.RecordedAt >= dateLimite)
+            .GroupBy(h => h.CryptoSymbol)
+            .Select(g => new
+            {
+                High = g.Max(x => x.Price),
+                Low = g.Min(x => x.Price),
+                Vol = g.Sum(x => x.Price * 0.1m) // Simulation de volume (ex: 10% du prix cumulé)
+            })
+            .FirstOrDefaultAsync();
+
+        // 4. Retourner le DTO complet
         return new CryptoDto
         {
-            Id = crypto.Id,
             Symbol = crypto.Symbol,
-            Name = crypto.Name,
             CurrentPrice = crypto.CurrentPrice,
-            LastUpdated = crypto.LastUpdated
+            LastUpdated = crypto.LastUpdated,
+            // Si pas d'historique (ex: nouvelle crypto), on met le prix actuel par défaut
+            High24h = stats24h?.High ?? crypto.CurrentPrice,
+            Low24h = stats24h?.Low ?? crypto.CurrentPrice,
+            Volume24h = stats24h?.Vol ?? 0
         };
     }
 
