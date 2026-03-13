@@ -1,14 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MarketService.DTOs;
+using Microsoft.EntityFrameworkCore;
 using Projet_CryptoSim.MarketService.Data;
-using Projet_CryptoSim.MarketService.DTOs;
 
 namespace Projet_CryptoSim.MarketService.Services;
 
 public class PriceService : IPriceService
 {
-    private readonly MarketDbContext _context;
+    private readonly MarketdbContext _context;
 
-    public PriceService(MarketDbContext context)
+    public PriceService(MarketdbContext context)
     {
         _context = context;
     }

@@ -1,4 +1,4 @@
-﻿using static OrderService.DTOs.ExternalDTO;
+﻿using static OrderService.DTOs.ExternalDto;
 
 namespace OrderService.Services
 {

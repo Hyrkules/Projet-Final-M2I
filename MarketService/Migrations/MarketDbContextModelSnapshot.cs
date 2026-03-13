@@ -10,8 +10,8 @@ using Projet_CryptoSim.MarketService.Data;
 
 namespace MarketService.Migrations
 {
-    [DbContext(typeof(MarketDbContext))]
-    partial class MarketDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(MarketdbContext))]
+    partial class MarketdbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

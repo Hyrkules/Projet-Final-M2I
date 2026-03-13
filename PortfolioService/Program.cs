@@ -74,7 +74,7 @@ builder.Services.AddAuthorization();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("ConnectionString:DefaultConnection est manquant !");
 
-builder.Services.AddDbContext<PortfolioDbContext>(options =>
+builder.Services.AddDbContext<PortfoliodbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
@@ -91,7 +91,7 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<PortfolioDbContext>();
+    var db = scope.ServiceProvider.GetRequiredService<PortfoliodbContext>();
     db.Database.Migrate();
 }
 

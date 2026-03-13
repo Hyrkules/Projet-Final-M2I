@@ -11,7 +11,7 @@ using Projet_CryptoSim.MarketService.Data;
 
 namespace MarketService.Migrations
 {
-    [DbContext(typeof(MarketDbContext))]
+    [DbContext(typeof(MarketdbContext))]
     [Migration("20260306132555_InitialCreate")]
     partial class InitialCreate
     {

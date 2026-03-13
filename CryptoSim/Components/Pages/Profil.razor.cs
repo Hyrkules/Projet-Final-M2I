@@ -118,8 +118,8 @@ public partial class Profil
 
             if (!response.IsSuccessStatusCode)
             {
-                _error = "Mot de passe actuel incorrect.";
                 _isLoading = false;
+                NotificationService.ShowError("Mot de passe actuel incorrect.");
                 return;
             }
         }
@@ -140,8 +140,8 @@ public partial class Profil
 
             if (!response.IsSuccessStatusCode)
             {
-                _error = "Mot de passe incorrect ou nom d'utilisateur déjà pris.";
                 _isLoading = false;
+                NotificationService.ShowError("Mot de passe incorrect ou nom d'utilisateur déjà pris.");
                 return;
             }
 

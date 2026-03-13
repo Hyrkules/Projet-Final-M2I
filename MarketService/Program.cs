@@ -77,7 +77,7 @@ builder.Services.AddAuthorization();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("ConnectionString:DefaultConnection est manquant !");
 
-builder.Services.AddDbContext<MarketDbContext>(options =>
+builder.Services.AddDbContext<MarketdbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
@@ -86,8 +86,8 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<MarketDbContext>();
-    MarketDbInitializer.Initialize(context);
+    var context = scope.ServiceProvider.GetRequiredService<MarketdbContext>();
+    MarketdbInitializer.Initialize(context);
 }
 
 if (app.Environment.IsDevelopment())

@@ -1,11 +1,11 @@
 ﻿using AuthService.Models;
 using Projet_CryptoSim.AuthService.Data;
 
-namespace AuthService.Controllers
+namespace AuthService.Data
 {
-    public class AuthDbInitializer
+    public class AuthdbInitializer
     {
-        public static void Initialize(AuthDbContext context)
+        public static void Initialize(AuthdbContext context)
         {
             context.Database.EnsureCreated();
 

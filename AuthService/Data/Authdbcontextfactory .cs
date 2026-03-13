@@ -4,9 +4,9 @@ using Projet_CryptoSim.AuthService.Data;
 
 namespace Projet_CryptoSim.AuthService.Data
 {
-    public class Authdbcontextfactory : IDesignTimeDbContextFactory<AuthDbContext>
+    public class AuthdbContextfactory : IDesignTimeDbContextFactory<AuthdbContext>
     {
-        public AuthDbContext CreateDbContext(string[] args)
+        public AuthdbContext CreateDbContext(string[] args)
         {
             // Lit appsettings.json pour récupérer la connection string
             var config = new ConfigurationBuilder()
@@ -17,10 +17,10 @@ namespace Projet_CryptoSim.AuthService.Data
             var connectionString = config.GetConnectionString("DefaultConnection")
                 ?? throw new InvalidOperationException("ConnectionString 'DefaultConnection' manquante.");
 
-            var optionsBuilder = new DbContextOptionsBuilder<AuthDbContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<AuthdbContext>();
             optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
-            return new AuthDbContext(optionsBuilder.Options);
+            return new AuthdbContext(optionsBuilder.Options);
         }
     }
 }

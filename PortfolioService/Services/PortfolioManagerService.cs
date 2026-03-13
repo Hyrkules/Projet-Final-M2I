@@ -7,10 +7,10 @@ namespace PortfolioService.Services;
 
 public class PortfolioManagerService : IPortfolioManagerService
 {
-    private readonly PortfolioDbContext _context;
+    private readonly PortfoliodbContext _context;
     private readonly IMarketServiceClient _marketClient;
 
-    public PortfolioManagerService(PortfolioDbContext context, IMarketServiceClient marketClient)
+    public PortfolioManagerService(PortfoliodbContext context, IMarketServiceClient marketClient)
     {
         _context = context;
         _marketClient = marketClient;

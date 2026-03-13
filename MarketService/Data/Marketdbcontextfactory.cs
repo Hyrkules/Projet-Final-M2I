@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace Projet_CryptoSim.MarketService.Data;
 
-public class MarketDbContextFactory : IDesignTimeDbContextFactory<MarketDbContext>
+public class MarketdbContextFactory : IDesignTimeDbContextFactory<MarketdbContext>
 {
-    public MarketDbContext CreateDbContext(string[] args)
+    public MarketdbContext CreateDbContext(string[] args)
     {
         var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -15,9 +15,9 @@ public class MarketDbContextFactory : IDesignTimeDbContextFactory<MarketDbContex
         var connectionString = config.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException("ConnectionString 'DefaultConnection' manquante.");
 
-        var optionsBuilder = new DbContextOptionsBuilder<MarketDbContext>();
+        var optionsBuilder = new DbContextOptionsBuilder<MarketdbContext>();
         optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
-        return new MarketDbContext(optionsBuilder.Options);
+        return new MarketdbContext(optionsBuilder.Options);
     }
 }

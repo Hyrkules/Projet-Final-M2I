@@ -12,9 +12,9 @@ namespace Projet_CryptoSim.AuthService.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
-    private readonly AuthDbContext _db;
+    private readonly AuthdbContext _db;
 
-    public AuthController(IAuthService authService, AuthDbContext db)
+    public AuthController(IAuthService authService, AuthdbContext db)
     {
         _authService = authService;
         _db = db;

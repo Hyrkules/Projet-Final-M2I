@@ -1,7 +1,7 @@
 ﻿let currentSocket = null;
 
 window.createCryptoChart = async (containerId, symbol = 'BTCUSDT') => {
-    console.log("✅ createCryptoChart lancé");
+    console.log(" createCryptoChart lancé");
     const container = document.getElementById(containerId);
     if (!container) return;
 

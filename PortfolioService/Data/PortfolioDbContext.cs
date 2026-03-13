@@ -3,7 +3,7 @@ using PortfolioService.Models;
 
 namespace PortfolioService.Data;
 
-public class PortfolioDbContext(DbContextOptions<PortfolioDbContext> options) : DbContext(options)
+public class PortfoliodbContext(DbContextOptions<PortfoliodbContext> options) : DbContext(options)
 {
     public DbSet<Holding> Holdings => Set<Holding>();
     public DbSet<Transaction> Transactions => Set<Transaction>();

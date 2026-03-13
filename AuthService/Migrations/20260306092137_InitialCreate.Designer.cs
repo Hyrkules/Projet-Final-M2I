@@ -11,7 +11,7 @@ using Projet_CryptoSim.AuthService.Data;
 
 namespace AuthService.Migrations
 {
-    [DbContext(typeof(AuthDbContext))]
+    [DbContext(typeof(AuthdbContext))]
     [Migration("20260306092137_InitialCreate")]
     partial class InitialCreate
     {

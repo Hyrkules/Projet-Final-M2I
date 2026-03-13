@@ -10,11 +10,11 @@ namespace AuthService.Services
     {
         private readonly IConfiguration _config;
 
-        private readonly AuthDbContext _context;
+        private readonly AuthdbContext _context;
 
         private readonly IJwtService _jwtService;
 
-        public AuthService(IConfiguration config, AuthDbContext context, IJwtService jwtService)
+        public AuthService(IConfiguration config, AuthdbContext context, IJwtService jwtService)
         {
             _config = config;
             _context = context;
@@ -22,7 +22,7 @@ namespace AuthService.Services
         }
 
         // Inscription : crée un compte et retourne un JWT
-        public async Task<AuthResponse> RegisterAsync(RegisterRequestDto dto)
+        public async Task<AuthResponseDto> RegisterAsync(RegisterRequestDto dto)
         {
             var existingUsername = await _context.Users.FirstOrDefaultAsync(u => u.Username == dto.Username);
             if (existingUsername != null)
@@ -49,7 +49,7 @@ namespace AuthService.Services
         }
 
         // Connexion : vérifie les credentials et retourne un JWT
-        public async Task<AuthResponse> LoginAsync(LoginRequestDto dto)
+        public async Task<AuthResponseDto> LoginAsync(LoginRequestDto dto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == dto.Username);
 
@@ -80,15 +80,17 @@ namespace AuthService.Services
 
         // ── Helpers ──────────────────────────────────────────────────────────────
 
-        private AuthResponse BuildAuthResponse(User user)
+        private AuthResponseDto BuildAuthResponse(User user)
         {
             var token = _jwtService.GenerateToken(user);
 
-            return new AuthResponse{
+            return new AuthResponseDto{
                 Token = token,
                 Username = user.Username,
+                Email = user.Email,
                 Role = user.Role.ToString(),
                 Balance = user.Balance,
+                CreatedAt = user.CreatedAt,
                 ExpiresIn = 1440 * 60  // 24h en secondes
         };
         }

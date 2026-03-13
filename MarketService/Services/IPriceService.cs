@@ -1,4 +1,4 @@
-﻿using Projet_CryptoSim.MarketService.DTOs;
+﻿using MarketService.DTOs;
 
 namespace Projet_CryptoSim.MarketService.Services;
 
