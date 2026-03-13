@@ -87,8 +87,10 @@ namespace AuthService.Services
             return new AuthResponse{
                 Token = token,
                 Username = user.Username,
+                Email = user.Email,
                 Role = user.Role.ToString(),
                 Balance = user.Balance,
+                CreatedAt = user.CreatedAt,
                 ExpiresIn = 1440 * 60  // 24h en secondes
         };
         }

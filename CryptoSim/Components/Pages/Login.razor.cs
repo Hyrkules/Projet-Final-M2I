@@ -29,6 +29,8 @@ namespace CryptoSim.Blazor.Components.Pages
             AuthState.Balance = result.Balance;
             AuthState.IsAuthenticated = true;
             AuthState.Role = result.Role;
+            AuthState.Email = result.Email;
+            AuthState.CreatedAt = result.CreatedAt;
 
             Navigation.NavigateTo("/");
         }

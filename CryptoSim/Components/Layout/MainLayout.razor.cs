@@ -17,7 +17,8 @@ namespace CryptoSim.Blazor.Components.Layout
             if (!AuthState.IsAuthenticated)
                 Navigation.NavigateTo("/login");
 
-            Notification.OnShow += (msg) => InvokeAsync(StateHasChanged);
+            Notification.OnShow += (msg, isError) => InvokeAsync(StateHasChanged);
+
         }
     }
 }
