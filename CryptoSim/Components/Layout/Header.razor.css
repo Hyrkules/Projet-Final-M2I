@@ -25,7 +25,7 @@
 
 .header-container {
     width: 100%;
-    padding: 0 25px; /* Plus d'espace sur les côtés */
+    padding: 25px 25px; /* Plus d'espace sur les côtés */
     display: flex;
     justify-content: space-between;
     align-items: center;
