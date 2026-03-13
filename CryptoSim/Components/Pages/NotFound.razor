@@ -1,4 +1,29 @@
 ﻿@page "/not-found"
 @layout MainLayout
 
-<h3>Not Found - PAGE NOT FOUND</h3>
+<PageTitle>PIKAPIKA - Page introuvable</PageTitle>
+
+<div class="profile-container animate-fade-in">
+    <h2 class="card-subtitle text-center">
+        Cette page n'existe pas... Profitez-en pour tester
+        <span class="text-gold">PIKA DA$H</span> et gagner des PikaCoin !
+    </h2>
+    <div class="standard-card" style="
+        max-width: 860px;
+        margin: 2rem auto;
+        padding: 2rem;
+        ">
+        <div class="game-container" id="dino-game-wrapper" @onclick="FocusGame" tabindex="0">
+            <canvas id="dinoCanvas" width="800" height="300"></canvas>
+            <div id="game-overlay" class="game-overlay">
+                <p class="text-gold">APPUYEZ SUR <strong>ESPACE</strong> POUR JOUER</p>
+                <span id="game-message" class="text-muted small">@GameMessage</span>
+            </div>
+        </div>
+    </div>
+</div>
+   
+@code {
+}
+
+
