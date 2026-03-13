@@ -7,7 +7,7 @@ namespace CryptoSim.Blazor.Components.Pages
 {
     public partial class Trade
     {
-        // ✅ Un seul OnAfterRenderAsync
+        //  Un seul OnAfterRenderAsync
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
@@ -34,10 +34,8 @@ namespace CryptoSim.Blazor.Components.Pages
         private double FakeEurBalance = 0;
         private double FakeCryptoBalance = 0;
 
-        // ✅ Champs nécessaires à LoadStatsAsync
+        //  Champs nécessaires à LoadStatsAsync
         private List<HoldingDto> _holdings = new();
-        private int _cryptoCount = 0;
-        private int _transactionCount = 0;
         private List<OrderDto> _recentOrders = new();
 
         private string GetSelectedCryptoImage() => selectedSymbol switch
@@ -91,7 +89,7 @@ namespace CryptoSim.Blazor.Components.Pages
         {
             if (TradeAmount <= 0) return;
 
-            // ✅ Calcul correct de la quantité selon le mode
+            //  Calcul correct de la quantité selon le mode
             double quantity = TradeMode == "BUY"
                 ? TradeAmount / CurrentPrice   // $ → crypto
                 : TradeAmount;                 // déjà en crypto
@@ -107,7 +105,7 @@ namespace CryptoSim.Blazor.Components.Pages
                 {
                     CryptoSymbol = GetBaseAsset(),
                     Type = TradeMode == "BUY" ? "Buy" : "Sell",
-                    Quantity = quantity,       // ✅ quantité réelle en crypto
+                    Quantity = quantity,       //  quantité réelle en crypto
                     Price = CurrentPrice
                 };
 
@@ -118,7 +116,7 @@ namespace CryptoSim.Blazor.Components.Pages
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine(">>> Ordre accepté ✅");
+                    Console.WriteLine(">>> Ordre accepté ");
                     TradeAmount = 0;
                     await LoadStatsAsync();
                 }
@@ -134,7 +132,7 @@ namespace CryptoSim.Blazor.Components.Pages
             }
         }
 
-        // ✅ Copié du même pattern que Home
+        //  Copié du même pattern que Home
         private async Task LoadStatsAsync()
         {
 
@@ -173,7 +171,7 @@ namespace CryptoSim.Blazor.Components.Pages
             }
 
             StateHasChanged();
-            Console.WriteLine(">>> LoadStatsAsync terminé ✅");
+            Console.WriteLine(">>> LoadStatsAsync terminé ");
         }
 
         private class HoldingDto

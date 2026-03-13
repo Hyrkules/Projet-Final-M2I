@@ -10,8 +10,8 @@ using OrderService.Data;
 
 namespace OrderService.Migrations
 {
-    [DbContext(typeof(OrderDbContext))]
-    partial class OrderDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(OrderdbContext))]
+    partial class OrderdbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

@@ -2,19 +2,19 @@
 using OrderService.Data;
 using OrderService.DTOs;
 using OrderService.Models;
-using static OrderService.DTOs.ExternalDTO;
+using static OrderService.DTOs.ExternalDto;
 
 namespace OrderService.Services;
 
 public class OrderManager : IOrderManagerService
 {
-    private readonly OrderDbContext _context;
+    private readonly OrderdbContext _context;
     private readonly IMarketServiceClient _marketClient;
     private readonly IAuthServiceClient _authClient;
     private readonly IPortfolioServiceClient _portfolioClient;
 
     public OrderManager(
-        OrderDbContext context,
+        OrderdbContext context,
         IMarketServiceClient marketClient,
         IAuthServiceClient authClient,
         IPortfolioServiceClient portfolioClient)

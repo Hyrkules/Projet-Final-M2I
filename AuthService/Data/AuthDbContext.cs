@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Projet_CryptoSim.AuthService.Data
 {
-    public class AuthDbContext : DbContext
+    public class AuthdbContext : DbContext
     {
-        public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options)
+        public AuthdbContext(DbContextOptions<AuthdbContext> options) : base(options)
         {
         }
         public DbSet<User> Users { get; set; }

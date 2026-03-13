@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace PortfolioService.Data;
 
-public class PortfolioDbContextFactory : IDesignTimeDbContextFactory<PortfolioDbContext>
+public class PortfoliodbContextFactory : IDesignTimeDbContextFactory<PortfoliodbContext>
 {
-    public PortfolioDbContext CreateDbContext(string[] args)
+    public PortfoliodbContext CreateDbContext(string[] args)
     {
         var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -15,9 +15,9 @@ public class PortfolioDbContextFactory : IDesignTimeDbContextFactory<PortfolioDb
         var connectionString = config.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException("ConnectionString 'DefaultConnection' manquante.");
 
-        var optionsBuilder = new DbContextOptionsBuilder<PortfolioDbContext>();
+        var optionsBuilder = new DbContextOptionsBuilder<PortfoliodbContext>();
         optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
-        return new PortfolioDbContext(optionsBuilder.Options);
+        return new PortfoliodbContext(optionsBuilder.Options);
     }
 }

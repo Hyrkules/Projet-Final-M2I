@@ -10,8 +10,8 @@ using Projet_CryptoSim.AuthService.Data;
 
 namespace AuthService.Migrations
 {
-    [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(AuthdbContext))]
+    partial class AuthdbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

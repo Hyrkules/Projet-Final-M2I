@@ -1,6 +1,6 @@
 ﻿namespace OrderService.DTOs
 {
-    public class ExternalDTO
+    public class ExternalDto
     {
         public class CryptoPrice
         {

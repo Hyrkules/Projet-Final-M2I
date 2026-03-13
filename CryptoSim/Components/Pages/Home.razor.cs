@@ -135,7 +135,7 @@ public partial class Home
                 new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             _performance = perf?.ProfitLossPercent ?? 0;
         }
-        catch (Exception ex) { _performance = 0; }
+        catch (Exception) {}
 
         StateHasChanged();
     }

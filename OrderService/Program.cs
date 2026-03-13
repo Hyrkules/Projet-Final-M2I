@@ -75,7 +75,7 @@ builder.Services.AddAuthorization();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("ConnectionString:DefaultConnection est manquant !");
 
-builder.Services.AddDbContext<OrderDbContext>(options =>
+builder.Services.AddDbContext<OrderdbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
@@ -102,7 +102,7 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
+    var context = scope.ServiceProvider.GetRequiredService<OrderdbContext>();
     context.Database.EnsureCreated();
 }
 

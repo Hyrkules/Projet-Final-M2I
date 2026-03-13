@@ -10,8 +10,8 @@ using PortfolioService.Data;
 
 namespace PortfolioService.Migrations
 {
-    [DbContext(typeof(PortfolioDbContext))]
-    partial class PortfolioDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(PortfoliodbContext))]
+    partial class PortfoliodbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

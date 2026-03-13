@@ -2,9 +2,9 @@
 
 namespace Projet_CryptoSim.MarketService.Data;
 
-public static class MarketDbInitializer
+public static class MarketdbInitializer
 {
-    public static void Initialize(MarketDbContext context)
+    public static void Initialize(MarketdbContext context)
     {
         context.Database.EnsureCreated();
 

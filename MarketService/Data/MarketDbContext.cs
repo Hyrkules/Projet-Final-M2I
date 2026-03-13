@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Projet_CryptoSim.MarketService.Data;
 
-public class MarketDbContext(DbContextOptions<MarketDbContext> options) : DbContext(options)
+public class MarketdbContext(DbContextOptions<MarketdbContext> options) : DbContext(options)
 {
     public DbSet<Crypto> Cryptos => Set<Crypto>();
     public DbSet<PriceHistory> PriceHistories => Set<PriceHistory>();

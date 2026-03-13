@@ -6,8 +6,8 @@ namespace AuthService.Services
 {
     public interface IAuthService
     {
-        Task<AuthResponse> RegisterAsync(RegisterRequestDto dto);
-        Task<AuthResponse> LoginAsync(LoginRequestDto dto);
+        Task<AuthResponseDto> RegisterAsync(RegisterRequestDto dto);
+        Task<AuthResponseDto> LoginAsync(LoginRequestDto dto);
         Task<User?> CreditBalanceAsync(int userId, decimal amount);
         Task<User?> DeductBalanceAsync(int userId, decimal amount);
         Task<bool> ChangePasswordAsync(int userId, string currentPassword, string newPassword);

@@ -1,8 +1,8 @@
-﻿using MarketService.Models;
+﻿using MarketService.DTOs;
+using MarketService.Models;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Projet_CryptoSim.MarketService.Data;
-using Projet_CryptoSim.MarketService.DTOs;
 using Projet_CryptoSim.MarketService.Hubs;
 
 namespace Projet_CryptoSim.MarketService.Services;
@@ -42,7 +42,7 @@ public class PriceSimulatorService : BackgroundService
     private async Task SimulatePricesAsync()
     {
         using var scope = _scopeFactory.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<MarketDbContext>();
+        var context = scope.ServiceProvider.GetRequiredService<MarketdbContext>();
 
         var cryptos = await context.Cryptos.ToListAsync();
         var updates = new List<PriceUpdateDto>();

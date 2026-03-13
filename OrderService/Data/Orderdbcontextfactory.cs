@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace OrderService.Data;
 
-public class OrderDbContextFactory : IDesignTimeDbContextFactory<OrderDbContext>
+public class OrderdbContextFactory : IDesignTimeDbContextFactory<OrderdbContext>
 {
-    public OrderDbContext CreateDbContext(string[] args)
+    public OrderdbContext CreateDbContext(string[] args)
     {
         var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -15,9 +15,9 @@ public class OrderDbContextFactory : IDesignTimeDbContextFactory<OrderDbContext>
         var connectionString = config.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException("ConnectionString 'DefaultConnection' manquante.");
 
-        var optionsBuilder = new DbContextOptionsBuilder<OrderDbContext>();
+        var optionsBuilder = new DbContextOptionsBuilder<OrderdbContext>();
         optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
-        return new OrderDbContext(optionsBuilder.Options);
+        return new OrderdbContext(optionsBuilder.Options);
     }
 }

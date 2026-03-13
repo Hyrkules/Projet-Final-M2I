@@ -1,4 +1,4 @@
-using AuthService.Controllers;
+using AuthService.Data;
 using AuthService.Middleware;
 using AuthService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -95,7 +95,7 @@ builder.Services.AddAuthorization();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("ConnectionString:DefaultConnection est manquant !");
 
-builder.Services.AddDbContext<AuthDbContext>(options =>
+builder.Services.AddDbContext<AuthdbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
@@ -104,9 +104,9 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+    var context = scope.ServiceProvider.GetRequiredService<AuthdbContext>();
 
-    AuthDbInitializer.Initialize(context);
+    AuthdbInitializer.Initialize(context);
 }
 
 app.UseMiddleware<GlobalExceptionHandler>();
