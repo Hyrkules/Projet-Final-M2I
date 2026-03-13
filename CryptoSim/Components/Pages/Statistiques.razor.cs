@@ -106,6 +106,101 @@ namespace CryptoSim.Blazor.Components.Pages
             catch { MaxAvailableCryptos = 3; }
         }
 
+        // MEILLEUR TRADE (ROI) — crypto avec le meilleur % de gain sur les ventes
+        private (string Symbol, decimal Percent) BestTrade
+        {
+            get
+            {
+                var result = _transactions
+                    .GroupBy(t => t.CryptoSymbol)
+                    .Select(g => {
+                        var totalBought = g.Where(t => t.Type == "Buy").Sum(t => t.Total);
+                        var totalSold = g.Where(t => t.Type == "Sell").Sum(t => t.Total);
+                        var roi = totalBought > 0 ? (totalSold - totalBought) / totalBought * 100 : 0;
+                        return (Symbol: g.Key, Percent: Math.Round(roi, 2));
+                    })
+                    .OrderByDescending(x => x.Percent)
+                    .FirstOrDefault();
+                return result == default ? ("--", 0) : result;
+            }
+        }
+
+        // PLUS GROS GAIN — holding actuel avec le meilleur ProfitLossPercent
+        private (string Symbol, decimal Percent, decimal Amount) BestCurrentHolding
+        {
+            get
+            {
+                var best = Holdings.OrderByDescending(h => h.ProfitLossPercent).FirstOrDefault();
+                if (best == null) return ("--", 0, 0);
+                return (best.CryptoSymbol, best.ProfitLossPercent, Math.Round(best.CurrentValue - best.AcquisitionValue, 2));
+            }
+        }
+
+        // Moyenne du profit de mes trades 
+        private decimal AverageProfitPerTrade
+        {
+            get
+            {
+                var sells = _transactions.Where(t => t.Type == "Sell").ToList();
+                if (!sells.Any()) return 0;
+
+                decimal totalProfit = 0;
+                foreach (var sell in sells)
+                {
+                    // Trouve le coût moyen d'achat pour cette crypto
+                    var buys = _transactions
+                        .Where(t => t.Type == "Buy" && t.CryptoSymbol == sell.CryptoSymbol);
+
+                    var avgBuyPrice = buys.Any()
+                        ? buys.Sum(t => t.Total) / buys.Sum(t => t.Quantity)
+                        : 0;
+
+                    var costOfSold = avgBuyPrice * sell.Quantity;
+                    totalProfit += sell.Total - costOfSold;
+                }
+
+                return Math.Round(totalProfit / sells.Count, 2);
+            }
+        }
+
+        private decimal WinRate
+        {
+            get
+            {
+                int wins = 0;
+                int total = 0;
+
+                // Holdings actifs — profitable si CurrentValue > AcquisitionValue
+                foreach (var h in Holdings)
+                {
+                    total++;
+                    if (h.CurrentValue > h.AcquisitionValue) wins++;
+                }
+
+                // Positions fermées — grouper les ventes par crypto non détenue
+                var soldSymbols = _transactions
+                    .Where(t => t.Type == "Sell")
+                    .Select(t => t.CryptoSymbol)
+                    .Distinct()
+                    .Where(s => !Holdings.Any(h => h.CryptoSymbol == s));
+
+                foreach (var symbol in soldSymbols)
+                {
+                    var totalBought = _transactions
+                        .Where(t => t.CryptoSymbol == symbol && t.Type == "Buy")
+                        .Sum(t => t.Total);
+                    var totalSold = _transactions
+                        .Where(t => t.CryptoSymbol == symbol && t.Type == "Sell")
+                        .Sum(t => t.Total);
+
+                    total++;
+                    if (totalSold > totalBought) wins++;
+                }
+
+                return total == 0 ? 0 : Math.Round((decimal)wins / total * 100, 1);
+            }
+        }
+
         // ==========================================================================
         // 4. GRAPHIQUES
         // ==========================================================================

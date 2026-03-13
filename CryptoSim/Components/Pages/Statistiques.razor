@@ -93,10 +93,11 @@
                 <div class="kpi-item">
                     <div class="kpi-info">
                         <span class="kpi-label">WIN RATE (TAUX DE RÉUSSITE)</span>
-                        <span class="kpi-value text-green">68.5%</span>
+                        <span class="kpi-value @(WinRate >= 50 ? "text-green" : "text-red")">@WinRate.ToString("N1")%</span>
+
                     </div>
                     <div class="stats-progress-bar mini">
-                        <div class="stats-progress-fill bg-green" style="width: 68.5%;"></div>
+                        <div class="stats-progress-fill @(WinRate >= 50 ? "bg-green" : "bg-red")" style="width: @WinRate%;"></div>
                     </div>
                 </div>
 
@@ -104,7 +105,9 @@
                 <div class="kpi-item">
                     <div class="kpi-info">
                         <span class="kpi-label">PROFIT MOYEN / TRADE</span>
-                        <span class="kpi-value text-gold">+142.20 $</span>
+                        <span class="kpi-value @(AverageProfitPerTrade >= 0 ? "text-gold" : "text-red")">
+                            @(AverageProfitPerTrade >= 0 ? "+" : "")@AverageProfitPerTrade.ToString("N2") $
+                        </span>
                     </div>
                 </div>
 
@@ -119,23 +122,30 @@
                     </div>
                 </div>
 
-                @* --- 1. MEILLEUR TRADE --- *@
+                @* MEILLEUR TRADE *@
                 <div class="kpi-item highlight-kpi">
                     <i class="bi bi-trophy text-gold"></i>
                     <div class="kpi-content-grid">
                         <span class="kpi-label">MEILLEUR TRADE (ROI)</span>
-                        <span class="kpi-value text-white">BabyBitcoin (BBTC)</span>
-                        <span class="kpi-subtext text-green">+45.2% total profit</span>
+                        <span class="kpi-value text-white">@BestTrade.Symbol</span>
+                        <span class="kpi-subtext @(BestTrade.Percent >= 0 ? "text-green" : "text-red")">
+                            @(BestTrade.Percent >= 0 ? "+" : "")@BestTrade.Percent.ToString("N2")% total profit
+                        </span>
                     </div>
                 </div>
 
-                @* --- 2. PLUS GROS GAIN --- *@
+                @* PLUS GROS GAIN *@
                 <div class="kpi-item highlight-kpi">
                     <i class="bi bi-cash-coin text-gold"></i>
                     <div class="kpi-content-grid">
                         <span class="kpi-label">PLUS GROS GAIN</span>
-                        <span class="kpi-value text-white">+10 000.00 $</span>
-                        <span class="kpi-subtext text-green">+45.2%</span>
+                        <span class="kpi-value text-white">
+                            @(BestCurrentHolding.Amount >= 0 ? "+" : "")@BestCurrentHolding.Amount.ToString("N2") $
+                        </span>
+                        <span class="kpi-subtext @(BestCurrentHolding.Percent >= 0 ? "text-green" : "text-red")">
+                            @(BestCurrentHolding.Percent >= 0 ? "+" : "")@BestCurrentHolding.Percent.ToString("N2")%
+                            (@BestCurrentHolding.Symbol)
+                        </span>
                     </div>
                 </div>
 
