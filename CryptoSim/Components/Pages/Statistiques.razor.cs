@@ -1,4 +1,5 @@
-﻿using CryptoSim.Blazor.Services;
+﻿using CryptoSim.Blazor.DTOs;
+using CryptoSim.Blazor.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Net.Http.Headers;
@@ -189,42 +190,5 @@ namespace CryptoSim.Blazor.Components.Pages
             "MOON" => "images/moon_orbit.png",
             _ => "images/bbtc_pacifier.png"
         };
-
-        // ==========================================================================
-        // 5. DTOs
-        // ==========================================================================
-        private class HoldingDto
-        {
-            public string CryptoSymbol { get; set; } = string.Empty;
-            public decimal Quantity { get; set; }
-            public decimal AcquisitionValue => Quantity * AverageBuyPrice;
-            public decimal AverageBuyPrice { get; set; }
-            public decimal CurrentValue { get; set; }
-            public decimal ProfitLossPercent { get; set; }
-            public decimal AllocationPercent { get; set; }
-        }
-
-        private class PerformanceDto
-        {
-            public decimal TotalProfitLoss { get; set; }
-            public decimal ProfitLossPercent { get; set; }
-        }
-
-        private class TransactionDto
-        {
-            public string CryptoSymbol { get; set; } = string.Empty;
-            public string Type { get; set; } = string.Empty;
-            public decimal Total { get; set; }
-            public DateTime ExecutedAt { get; set; }
-        }
-
-        private class OrderDto
-        {
-            public string CryptoSymbol { get; set; } = string.Empty;
-            public string Type { get; set; } = string.Empty;
-            public decimal Total { get; set; }
-            public string Status { get; set; } = string.Empty;
-            public DateTime? ExecutedAt { get; set; }
-        }
     }
 }

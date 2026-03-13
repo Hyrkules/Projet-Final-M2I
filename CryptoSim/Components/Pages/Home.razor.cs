@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using CryptoSim.Blazor.DTOs;
 
 namespace CryptoSim.Blazor.Components.Pages;
 
@@ -143,29 +144,5 @@ public partial class Home
     {
         var parisZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Paris");
         return TimeZoneInfo.ConvertTimeFromUtc(utcDate, parisZone);
-    }
-
-    private class PerformanceDto
-    {
-        public decimal ProfitLossPercent { get; set; }
-    }
-
-    private class OrderDto
-    {
-        public string CryptoSymbol { get; set; } = string.Empty;
-        public string Type { get; set; } = string.Empty;
-        public decimal Total { get; set; }
-        public string Status { get; set; } = string.Empty;
-        public DateTime? ExecutedAt { get; set; }
-    }
-
-    private class HoldingDto
-    {
-        public string CryptoSymbol { get; set; } = string.Empty;
-        public string CryptoName { get; set; } = string.Empty;
-        public decimal Quantity { get; set; }
-        public decimal CurrentValue { get; set; }
-        public decimal ProfitLossPercent { get; set; }
-        public decimal AllocationPercent { get; set; }
     }
 }
