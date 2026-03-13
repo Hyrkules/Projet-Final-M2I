@@ -1,10 +1,6 @@
 {
   "version": 2,
-<<<<<<< HEAD
-  "dgSpecHash": "9GjfbVqsnAo=",
-=======
   "dgSpecHash": "jRniPpleL5E=",
->>>>>>> 0c6e1a1cbd4c7f9cd36b5fee68d1cfef5bc51559
   "success": true,
   "projectFilePath": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\Gateway\\Gateway.csproj",
   "expectedPackageFiles": [
@@ -15,19 +11,15 @@
     "C:\\Users\\Administrateur\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.9.0\\swashbuckle.aspnetcore.swaggergen.6.9.0.nupkg.sha512",
     "C:\\Users\\Administrateur\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.9.0\\swashbuckle.aspnetcore.swaggerui.6.9.0.nupkg.sha512"
   ],
-<<<<<<< HEAD
   "logs": [
     {
       "code": "Undefined",
       "level": "Warning",
-      "message": "Problème de lecture du fichier cache C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Gateway\\obj\\project.nuget.cache\u00A0: '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0.",
-      "projectPath": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Gateway\\Gateway.csproj",
+      "message": "Problème de lecture du fichier cache C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\Gateway\\obj\\project.nuget.cache\u00A0: '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0.",
+      "projectPath": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\Gateway\\Gateway.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Gateway\\Gateway.csproj",
+      "filePath": "C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\Gateway\\Gateway.csproj",
       "targetGraphs": []
     }
   ]
-=======
-  "logs": []
->>>>>>> 0c6e1a1cbd4c7f9cd36b5fee68d1cfef5bc51559
 }
