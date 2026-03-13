@@ -22,9 +22,9 @@
 
             <div class="info-list">
                 <div class="detail-row"><label>NOM D'UTILISATEUR</label><span>@AuthState.Username</span></div>
-                <div class="detail-row"><label>EMAIL</label><span>yann_helouri@cryptosim.dev</span></div>
-                <div class="detail-row"><label>RÔLE</label><span>Trader Virtuel</span></div>
-                <div class="detail-row"><label>DATE D'INSCRIPTION</label><span>12 FEV 2026</span></div>
+                <div class="detail-row"><label>EMAIL</label><span>@AuthState.Email</span></div>
+                <div class="detail-row"><label>RÔLE</label><span>@AuthState.Role</span></div>
+                <div class="detail-row"><label>DATE D'INSCRIPTION</label><span>@AuthState.CreatedAt.ToString("dd/MM/yyyy")</span></div>
             </div>
 
             <div class="action-buttons">
