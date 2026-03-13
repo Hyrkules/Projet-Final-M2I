@@ -7,7 +7,7 @@ using CryptoSim.Blazor.DTOs;
 
 namespace CryptoSim.Blazor.Components.Pages;
 
-public partial class Home
+public partial class Home : IDisposable // Ajout de IDisposable pour nettoyer la référence JS
 {
     [Inject] private NavigationManager Navigation { get; set; } = default!;
     [Inject] private HttpClient Http { get; set; } = default!;
@@ -15,17 +15,78 @@ public partial class Home
 
     private int? _cryptoCount;
     private int? _transactionCount;
-    private decimal _performance = 0;
+    private decimal _performancePercent = 0;
     private List<OrderDto> _recentOrders = new();
-    private string selectedSymbol = "BTCUSDT";
+    private string selectedSymbol = "BBTC";
     private string GameMessage = "En attendant que les devs se bougent les fesses... Gagnez des PikaCoin !";
     private List<HoldingDto> _holdings = new();
 
+    [JSInvokable]
+    public async Task UpdateCurrentPrice(decimal livePrice)
+    {
+        _currentPrice = livePrice;
+
+        // Si l'utilisateur est connecté, on peut mettre à jour ses holdings en direct
+        if (_holdings.Any())
+        {
+            var currentAsset = _holdings.FirstOrDefault(h => selectedSymbol.Contains(h.CryptoSymbol));
+            if (currentAsset != null)
+            {
+                // Logique de recalcul simplifiée pour l'affichage
+                currentAsset.CurrentValue = currentAsset.Quantity * livePrice;
+                StateHasChanged();
+            }
+        }
+    }
+
+    // Nouvelle méthode pour que le JS récupère les stats de ta base
+    [JSInvokable]
+    public async Task<object> GetMarketStats(string symbol)
+    {
+        try
+        {
+            var stats = await Http.GetFromJsonAsync<CryptoDto>($"/api/market/cryptos/{symbol}");
+            return new
+            {
+                high = stats?.CurrentPrice, // À remplacer par un vrai High 24h si tu as l'info
+                low = stats?.CurrentPrice,
+                vol = 1250.50 // Exemple ou donnée réelle
+            };
+        }
+        catch { return new { high = 0, low = 0, vol = 0 }; }
+    }
+
+
+
+    // Référence pour permettre au JavaScript d'appeler des méthodes C#
+    private DotNetObjectReference<Home>? _objRef;
+
+    private decimal _currentPrice = 0;
+
+    private async Task LoadCurrentPriceAsync(string symbol)
+    {
+        try
+        {
+            var crypto = await Http.GetFromJsonAsync<CryptoDto>($"/api/market/cryptos/{symbol}",
+                new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            _currentPrice = crypto?.CurrentPrice ?? 0;
+        }
+        catch { _currentPrice = 0; }
+    }
+
+    private class CryptoDto
+    {
+        public string Symbol { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public decimal CurrentPrice { get; set; }
+    }
+
+
     private string GetSelectedCryptoImage() => selectedSymbol switch
     {
-        "BTCUSDT" => "images/BBTC.png",
-        "SOLUSDT" => "images/PIKA.png",
-        "ETHUSDT" => "images/MOON.png",
+        "BBTC" => "images/BBTC.png",
+        "PIKA" => "images/PIKA.png",
+        "MOON" => "images/MOON.png",
         _ => "images/BBTC.png"
     };
 
@@ -41,36 +102,17 @@ public partial class Home
     {
         if (firstRender)
         {
-            if (!AuthState.IsAuthenticated)
-            {
-                // On attend 100ms que le CSS Glassmorphism soit bien appliqué
-                await Task.Delay(500);
-                await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart");
+            _objRef = DotNetObjectReference.Create(this);
 
-                try
-                {
-                    await JSRuntime.InvokeVoidAsync("initDinoGame");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Erreur JS : {ex.Message}");
-                }
+            await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart", selectedSymbol, _objRef);
+     
+
+            if (AuthState.IsAuthenticated)
+            {
+                await LoadStatsAsync();
             }
 
-            await LoadStatsAsync();
-
-            await Task.Delay(500);
-
-            await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart", selectedSymbol);
-
-            try
-            {
-                await JSRuntime.InvokeVoidAsync("initDinoGame");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Erreur JS : {ex.Message}");
-            }
+            try { await JSRuntime.InvokeVoidAsync("initDinoGame"); } catch { }
 
             StateHasChanged();
         }
@@ -78,14 +120,21 @@ public partial class Home
 
     private async Task OnCryptoChanged(ChangeEventArgs e)
     {
-        selectedSymbol = e.Value?.ToString() ?? "BTCUSDT";
-        await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart", selectedSymbol);
+        var newSymbol = e.Value?.ToString() ?? "BBTC";
+        if (newSymbol == selectedSymbol) return;
+
+        selectedSymbol = newSymbol;
+
+        // On force la mise à jour de l'image de l'icône immédiatement
+        StateHasChanged();
+
+        // Petit délai pour laisser le DOM se stabiliser
+        await Task.Delay(50);
+
+        // On relance la création (le JS va tout nettoyer grâce au remove() ci-dessus)
+        await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart", selectedSymbol, _objRef);
     }
 
-    private async Task FocusGame()
-    {
-        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('dino-game-wrapper').focus()");
-    }
 
     [JSInvokable]
     public void UpdatePikaCoins(int score)
@@ -133,16 +182,27 @@ public partial class Home
         {
             var perf = await Http.GetFromJsonAsync<PerformanceDto>("/api/portfolio/performance",
                 new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            _performance = perf?.ProfitLossPercent ?? 0;
+            _performancePercent = perf?.ProfitLossPercent ?? 0;
         }
-        catch (Exception) {}
+        catch (Exception) { _performancePercent = 0; }
 
         StateHasChanged();
+    }
+
+    private async Task FocusGame()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('dino-game-wrapper').focus()");
     }
 
     private static DateTime ToParisTime(DateTime utcDate)
     {
         var parisZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Paris");
         return TimeZoneInfo.ConvertTimeFromUtc(utcDate, parisZone);
+    }
+
+    public void Dispose()
+    {
+        // Libère la mémoire lors de la fermeture de la page
+        _objRef?.Dispose();
     }
 }

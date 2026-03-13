@@ -2,7 +2,7 @@
 @rendermode InteractiveServer
 @using CryptoSim.Blazor.Services
 
-<PageTitle>CryptoSim - Statistiques Détaillées</PageTitle>
+<PageTitle>Statistiques Détaillées</PageTitle>
 
 <div class="stats-page-container animate-fade-in">
     @* --- HEADER DE LA PAGE --- *@
@@ -32,7 +32,7 @@
                 <span class="stat-label">VALEUR TOTALE PORTEFEUILLE</span>
 
                 <span class="stat-value monospace">@TotalPortfolioValue.ToString("N2") $</span>
-                <span class="stat-trend @(TotalProfitLossPercent >= 0 ? "text-green" : "text-red")">
+                <span class="stat-trend @(TotalProfitLossPercent >= 0 ? "green" : "red")">
                     <i class="bi @(TotalProfitLossPercent >= 0 ? "bi-arrow-up" : "bi-arrow-down")"></i>
                     @(TotalProfitLossPercent >= 0 ? "+" : "")@TotalProfitLossPercent.ToString("N2")%
                 </span>
@@ -44,10 +44,10 @@
             <i class="bi bi-cash-stack text-gold"></i>
             <div>
                 <span class="stat-label">PROFIT / PERTE TOTAL</span>
-                <span class="stat-value monospace @(TotalProfitLoss >= 0 ? "text-green" : "text-red")">
+                <span class="stat-value monospace @(TotalProfitLoss >= 0 ? "green" : "red")">
                     @(TotalProfitLoss >= 0 ? "+" : "")@TotalProfitLoss.ToString("N2") $
                 </span>
-                <span class="stat-trend @(TotalProfitLossPercent >= 0 ? "text-green" : "text-red")">
+                <span class="stat-trend @(TotalProfitLossPercent >= 0 ? "green" : "red")">
                     <i class="bi @(TotalProfitLossPercent >= 0 ? "bi-arrow-up" : "bi-arrow-down")"></i>
                     @TotalProfitLossPercent.ToString("N2")%
                 </span>

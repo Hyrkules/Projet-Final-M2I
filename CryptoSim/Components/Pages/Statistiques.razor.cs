@@ -280,10 +280,10 @@ namespace CryptoSim.Blazor.Components.Pages
 
         private string GetCryptoImage(string symbol) => symbol switch
         {
-            "BBTC" => "images/bbtc_pacifier.png",
-            "PIKA" => "images/pika_head.png",
-            "MOON" => "images/moon_orbit.png",
-            _ => "images/bbtc_pacifier.png"
+            "BBTC" => "images/BBTC.png",
+            "PIKA" => "images/PIKA.png",
+            "MOON" => "images/MOON.png",
+            _ => "images/BBTC.png"
         };
     }
 }

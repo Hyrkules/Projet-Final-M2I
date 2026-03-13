@@ -1,16 +1,33 @@
-﻿let currentSocket = null;
+﻿window.cryptoChartInstance = {
+    chart: null,
+    interval: null,
+    dotNetHelper: null
+};
 
-window.createCryptoChart = async (containerId, symbol = 'BTCUSDT') => {
-    console.log(" createCryptoChart lancé");
+window.createCryptoChart = async (containerId, symbol = 'BBTC', helper) => {
+    window.cryptoChartInstance.dotNetHelper = helper;
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    if (currentSocket) {
-        currentSocket.close();
+    // 1. NETTOYAGE
+    if (window.cryptoChartInstance.interval) {
+        clearInterval(window.cryptoChartInstance.interval);
+        window.cryptoChartInstance.interval = null;
+    }
+
+    // On détruit l'ancien graphique s'il existe
+    if (window.cryptoChartInstance.chart && typeof window.cryptoChartInstance.chart.remove === 'function') {
+        try {
+            window.cryptoChartInstance.chart.remove();
+        } catch (e) {
+            console.warn("Erreur lors de la suppression du graphique:", e);
+        }
+        window.cryptoChartInstance.chart = null;
     }
 
     container.innerHTML = '';
 
+    // 2. CRÉATION DU GRAPHIQUE
     const chart = LightweightCharts.createChart(container, {
         width: container.clientWidth,
         height: 350,
@@ -19,110 +36,88 @@ window.createCryptoChart = async (containerId, symbol = 'BTCUSDT') => {
             vertLines: { color: 'rgba(193, 164, 97, 0.05)' },
             horzLines: { color: 'rgba(193, 164, 97, 0.05)' },
         },
-        timeScale: { borderVisible: false, timeVisible: true },
+        timeScale: { borderVisible: false, timeVisible: true, secondsVisible: true },
     });
 
-    const candleSeries = chart.addCandlestickSeries({
-        upColor: '#26a69a', downColor: '#ef5350',
-        borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350',
+    const lineSeries = chart.addLineSeries({
+        color: '#C1A461',
+        lineWidth: 3,
     });
 
+    window.cryptoChartInstance.chart = chart;
+
+    // 3. CHARGEMENT INITIAL (Historique)
+    const portAPI = "5005";
     try {
-        const response = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1h&limit=100`);
-        const rawData = await response.json();
-        const formattedData = rawData.map(d => ({
-            time: d[0] / 1000,
-            open: parseFloat(d[1]), high: parseFloat(d[2]),
-            low: parseFloat(d[3]), close: parseFloat(d[4]),
-        }));
-        candleSeries.setData(formattedData);
-        chart.timeScale().fitContent();
+        const hRes = await fetch(`http://localhost:${portAPI}/api/market/history/${symbol}?limit=100`);
+        if (hRes.ok) {
+            const rawData = await hRes.json();
+            const formattedData = rawData.map(d => ({
+                time: Math.floor(new Date(d.recordedAt).getTime() / 1000),
+                value: parseFloat(d.price)
+            })).sort((a, b) => a.time - b.time);
+            lineSeries.setData(formattedData);
+            chart.timeScale().fitContent();
+        }
     } catch (e) { console.error("Erreur historique:", e); }
 
-    // MODIFICATION ICI : On ajoute @depth5 à la liste des streams
-    const streams = `${symbol.toLowerCase()}@kline_1h/${symbol.toLowerCase()}@ticker/${symbol.toLowerCase()}@depth5`;
-    currentSocket = new WebSocket(`wss://stream.binance.com:9443/stream?streams=${streams}`);
+    // 4. BOUCLE DE MISE À JOUR (Polling)
+    window.cryptoChartInstance.interval = setInterval(async () => {
+        try {
+            const response = await fetch(`http://localhost:${portAPI}/api/market/cryptos/${symbol}`);
+            if (response.ok) {
+                const data = await response.json();
 
-    currentSocket.onmessage = (event) => {
-        const response = JSON.parse(event.data);
-        const stream = response.stream;
-        const data = response.data;
-       
+                lineSeries.update({
+                    time: Math.floor(new Date(data.lastUpdated || Date.now()).getTime() / 1000),
+                    value: parseFloat(data.currentPrice)
+                });
+                // Note : Attention à la casse (data.high24h vs data.High24h) selon ta config JSON
+                document.getElementById('live-price-val').innerText = `${data.currentPrice.toFixed(2)} $`;
+                document.getElementById('live-high').innerText = `${data.high24h.toFixed(2)} $`;
+                document.getElementById('live-low').innerText = `${data.low24h.toFixed(2)} $`;
+                document.getElementById('live-vol-24h').innerText = `${data.volume24h.toLocaleString()} $`;
 
-        // 1. Mise à jour des bougies
-        if (stream.includes('@kline')) {
-            const candle = data.k;
-            candleSeries.update({
-                time: candle.t / 1000,
-                open: parseFloat(candle.o), high: parseFloat(candle.h),
-                low: parseFloat(candle.l), close: parseFloat(candle.c),
-            });
-        }
-
-        // 2. Mise à jour des Stats HTML (Ticker 24h)
-        if (stream.includes('@ticker')) {
-            updateTickerStats(data);
-        }
-
-        // 3. NOUVEAU : Mise à jour du Carnet d'ordres (Order Book)
-        if (stream.includes('@depth')) {
-            updateOrderBookUI(data);
-        }
-    };
-
-    const resizeObserver = new ResizeObserver(entries => {
-        if (entries.length > 0) chart.applyOptions({ width: entries[0].contentRect.width });
-    });
-    resizeObserver.observe(container);
+                // 3. Update Blazor
+                if (dotNetHelper) {
+                    dotNetHelper.invokeMethodAsync('UpdateCurrentPrice', data.currentPrice);
+                }
+                // ON PASSE 'data' ENTIER MAINTENANT
+                updateTickerStatsFromLocal(data, symbol);
+            }
+        } catch (e) { console.error("Erreur polling:", e); }
+    }, 3000);
 };
 
-// Fonctions utilitaires pour garder createCryptoChart propre
-function updateTickerStats(data) {
-    const price = parseFloat(data.c);
-    const change = parseFloat(data.P).toFixed(2);
+function updateTickerStatsFromLocal(data, symbol) {
+    if (!data) return;
 
+    // Prix principal
     const priceElem = document.getElementById('live-price-val');
-    const highElem = document.getElementById('live-high');
-    const lowElem = document.getElementById('live-low');
-    const volElem = document.getElementById('live-vol-24h');
-    const changeElem = document.getElementById('live-price-change');
+    if (priceElem) priceElem.innerText = `${parseFloat(data.currentPrice).toFixed(2)} $`;
 
-    if (priceElem) priceElem.innerText = `${price.toFixed(2)} $`;
-    if (highElem) highElem.innerText = `${parseFloat(data.h).toFixed(2)} $`;
-    if (lowElem) lowElem.innerText = `${parseFloat(data.l).toFixed(2)} $`;
-    if (volElem) {
-        const vol = parseFloat(data.v);
-        volElem.innerText = vol >= 1000 ? `${(vol / 1000).toFixed(2)}K` : vol.toFixed(2);
-    }
-    if (changeElem) {
-        changeElem.innerText = `${change >= 0 ? '+' : ''}${change}%`;
+    // High 24h
+    const highElem = document.getElementById('live-high');
+    if (highElem) highElem.innerText = `${parseFloat(data.high24h || data.currentPrice).toFixed(2)} $`;
+
+    // Low 24h
+    const lowElem = document.getElementById('live-low');
+    if (lowElem) lowElem.innerText = `${parseFloat(data.low24h || data.currentPrice).toFixed(2)} $`;
+
+    // Volume 24h
+    const volElem = document.getElementById('live-vol-24h');
+    if (volElem) volElem.innerText = `${Math.floor(data.volume24h || 0).toLocaleString()} $`;
+
+    // Variation % (Optionnel - évite l'erreur si changeElem n'existe pas)
+    const changeElem = document.getElementById('live-price-change');
+    if (changeElem && data.priceChangePercent !== undefined) {
+        const change = parseFloat(data.priceChangePercent);
+        changeElem.innerText = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
         changeElem.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
     }
-    if (dotNetHelper) {
-        dotNetHelper.invokeMethodAsync('UpdateCurrentPrice', price);
+
+    // 3. Notification à Blazor pour le C#
+    if (window.cryptoChartInstance.dotNetHelper) {
+        window.cryptoChartInstance.dotNetHelper.invokeMethodAsync('UpdateCurrentPrice', parseFloat(data.currentPrice));
     }
-}
-
-function updateOrderBookUI(data) {
-    const asksContainer = document.querySelector('.asks');
-    const bidsContainer = document.querySelector('.bids');
-    if (!asksContainer || !bidsContainer) return;
-
-    // Ventes (Asks) - On inverse pour avoir les prix bas en bas
-    asksContainer.innerHTML = data.asks.reverse().map(ask => `
-        <div class="ob-row ask-row">
-            <span class="red">${parseFloat(ask[0]).toFixed(2)}</span>
-            <span>${parseFloat(ask[1]).toFixed(4)}</span>
-            <div class="depth-bg ask-bg" style="width: ${Math.min(parseFloat(ask[1]) * 500, 100)}%"></div>
-        </div>
-    `).join('');
-
-    // Achats (Bids)
-    bidsContainer.innerHTML = data.bids.map(bid => `
-        <div class="ob-row bid-row green">
-            <span class="green">${parseFloat(bid[0]).toFixed(2)}</span>
-            <span>${parseFloat(bid[1]).toFixed(4)}</span>
-            <div class="depth-bg bid-bg" style="width: ${Math.min(parseFloat(bid[1]) * 500, 100)}%"></div>
-        </div>
-    `).join('');
 }

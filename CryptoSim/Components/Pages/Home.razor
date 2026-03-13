@@ -22,11 +22,11 @@
         </div>
         <div class="standard-card stat-item">
 
-            <i class="bi @(_performance >= 0 ? "bi-graph-up-arrow text-green" : "bi-graph-down-arrow text-red")"></i>
+            <i class="bi @(_performancePercent >= 0 ? "bi-graph-up-arrow green" : "bi-graph-down-arrow red")"></i>
             <div>
                 <span class="stat-label">PERFORMANCE GLOBALE</span>
-                <span class="stat-value @(_performance >= 0 ? "text-green" : "text-red")">
-                    @(_performance >= 0 ? "+" : "")@_performance.ToString("N2")%
+                <span class="stat-value @(_performancePercent >= 0 ? "green" : "red")">
+                    @(_performancePercent >= 0 ? "+" : " ")@_performancePercent.ToString("N2")%
                 </span>
             </div>
         </div>
@@ -48,9 +48,9 @@
                         <div class="input-with-icon">
                             <img src="@GetSelectedCryptoImage()" class="crypto-select-icon" />
                             <select class="form-input custom-statistiques-select" @onchange="OnCryptoChanged">
-                                <option value="BTCUSDT">BabyBitcoin (BBTC)</option>
-                                <option value="SOLUSDT">PikaCoin (PIKA)</option>
-                                <option value="ETHUSDT">MoonCoin (MOON)</option>
+                                <option value="BBTC">BabyBitcoin (BBTC)</option>
+                                <option value="PIKA">PikaCoin (PIKA)</option>
+                                <option value="MOON">MoonCoin (MOON)</option>
                             </select>
                         </div>
                         <div class="price-badge-group">

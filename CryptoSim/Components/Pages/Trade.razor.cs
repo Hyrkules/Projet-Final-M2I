@@ -7,6 +7,7 @@ namespace CryptoSim.Blazor.Components.Pages
 {
     public partial class Trade
     {
+
         //  Un seul OnAfterRenderAsync
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -27,7 +28,7 @@ namespace CryptoSim.Blazor.Components.Pages
             }
         }
 
-        private string selectedSymbol = "BTCUSDT";
+        private string selectedSymbol = "BBTC";
         private string TradeMode = "BUY";
         private double TradeAmount = 0;
         private double CurrentPrice = 1000;
@@ -40,15 +41,15 @@ namespace CryptoSim.Blazor.Components.Pages
 
         private string GetSelectedCryptoImage() => selectedSymbol switch
         {
-            "BTCUSDT" => "images/BBTC.png",
-            "SOLUSDT" => "images/PIKA.png",
-            "ETHUSDT" => "images/MOON.png",
+            "BBTC" => "images/BBTC.png",
+            "PIKA" => "images/PIKA.png",
+            "MOON" => "images/MOON.png",
             _ => "images/BBTC.png"
         };
 
         private async Task OnCryptoChanged(ChangeEventArgs e)
         {
-            selectedSymbol = e.Value?.ToString() ?? "BTCUSDT";
+            selectedSymbol = e.Value?.ToString() ?? "BBTC";
             await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart", selectedSymbol);
         }
 
@@ -65,9 +66,9 @@ namespace CryptoSim.Blazor.Components.Pages
 
         private string GetBaseAsset() => selectedSymbol switch
         {
-            "BTCUSDT" => "BBTC",
-            "SOLUSDT" => "PIKA",
-            "ETHUSDT" => "MOON",
+            "BBTC" => "BBTC",
+            "PIKA" => "PIKA",
+            "MOON" => "MOON",
             _ => "BBTC"
         };
 
