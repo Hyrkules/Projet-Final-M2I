@@ -1,5 +1,7 @@
 ﻿using CryptoSim.Blazor.Services;
 using Microsoft.AspNetCore.Components;
+using System.Net.Http.Headers; // Ajouté pour l'auth
+using System.Net.Http.Json;
 
 namespace CryptoSim.Blazor.Components.Pages;
 
@@ -24,11 +26,44 @@ public partial class Profil
     private string? _error;
     private bool _isLoading = false;
 
-    protected override void OnInitialized()
+    private decimal _performance = 0;
+    private decimal _performancePercent = 0;
+
+    protected override async Task OnInitializedAsync() // Passage en asynchrone
     {
         if (!AuthState.IsAuthenticated)
+        {
             Navigation.NavigateTo("/login");
+            return;
+        }
+
+        await LoadPerformanceAsync(); // ON APPELLE ENFIN L'API
     }
+    private string PerformancePercentForCss => Math.Abs(_performancePercent)
+    .ToString("0.00", System.Globalization.CultureInfo.InvariantCulture);
+
+
+    private async Task LoadPerformanceAsync()
+    {
+        try
+        {
+            Http.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", AuthState.Token);
+
+            var perf = await Http.GetFromJsonAsync<PerformanceDto>("/api/portfolio/performance",
+                new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            _performance = perf?.TotalProfitLoss ?? 0;
+            _performancePercent = perf?.ProfitLossPercent ?? 0;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($">>> Erreur chargement performance profil: {ex.Message}");
+            _performance = 0;
+            _performancePercent = 0;
+        }
+    }
+
 
     private void OpenEditPassword()
     {
@@ -122,15 +157,16 @@ public partial class Profil
     private decimal FondInitial => 10000m;
 
     private decimal Difference => AuthState.Balance - FondInitial;
-    private bool IsPositive => Difference >= 0;
-
+    private bool IsPositive => _performance >= 0;
     private string StatusClass => IsPositive ? "green" : "red";
     private string StatusLabel => IsPositive ? "PLUS-VALUE" : "MOINS-VALUE";
     private string IconClass => IsPositive ? "bi-graph-up-arrow" : "bi-graph-down-arrow";
 
 
-    // Calcul du pourcentage : ((Actuel - Initial) / Initial) * 100
-    private decimal PerformancePercentage => FondInitial != 0
-        ? (Difference / FondInitial) * 100
-        : 0;
+        // DTO nécessaire pour la réception des données
+    private class PerformanceDto
+    {
+        public decimal ProfitLossPercent { get; set; }
+        public decimal TotalProfitLoss { get; set; }
+    }
 }

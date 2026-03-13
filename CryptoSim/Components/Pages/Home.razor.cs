@@ -14,7 +14,7 @@ public partial class Home
 
     private int? _cryptoCount;
     private int? _transactionCount;
-    private decimal _performance = 0;
+    private decimal _performancePercent = 0;
     private List<OrderDto> _recentOrders = new();
     private string selectedSymbol = "BTCUSDT";
     private string GameMessage = "En attendant que les devs se bougent les fesses... Gagnez des PikaCoin !";
@@ -132,9 +132,9 @@ public partial class Home
         {
             var perf = await Http.GetFromJsonAsync<PerformanceDto>("/api/portfolio/performance",
                 new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            _performance = perf?.ProfitLossPercent ?? 0;
+            _performancePercent = perf?.ProfitLossPercent ?? 0;
         }
-        catch (Exception ex) { _performance = 0; }
+        catch (Exception ex) { _performancePercent = 0; }
 
         StateHasChanged();
     }

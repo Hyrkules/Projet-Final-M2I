@@ -1,5 +1,6 @@
-﻿@rendermode InteractiveServer
-@page "/Profil"
+﻿@page "/Profil"
+@rendermode InteractiveServer
+
 @using CryptoSim.Blazor.Services
 
 <PageTitle>Profil</PageTitle>
@@ -44,13 +45,13 @@
                 <div class="gauge-container animate-fade-in">
                     @* On injecte le dégradé dynamiquement via l'attribut style *@
                     <div class="circular-gauge"
-                         style="background: conic-gradient(@(IsPositive ? "var(--green)" : "var(--red)") 0% @(Math.Abs(PerformancePercentage).ToString("0.0", System.Globalization.CultureInfo.InvariantCulture))%, #232834 0% 100%);
+                         style="background: conic-gradient(@(IsPositive ? "var(--green)" : "var(--red)") 0% @(PerformancePercentForCss)%, #232834 0% 100%);
                         box-shadow: 0 0 30px @(IsPositive ? "rgba(0, 255, 136, 0.2)" : "rgba(255, 77, 77, 0.2)");">
         
                         <div class="gauge-inner">
                             <span class="gauge-label">PERFORMANCE GLOBALE</span>
                             <span class="gauge-value" style="color: @(IsPositive ? "var(--green)" : "var(--red)")">
-                                @(PerformancePercentage >= 0 ? "+" : "")@PerformancePercentage.ToString("N1")%
+                                @(IsPositive ? "+" : "")@_performancePercent.ToString("N2")%
                             </span>
                         </div>
                     </div>
@@ -66,10 +67,10 @@
                     </div>
 
                     @* Utilisation des propriétés calculées dans le @code *@
-                    <div class="mini-box @StatusClass">
+                    <div class="mini-box">
                         <label>@StatusLabel</label>
-                        <div class="stat-content">
-                            @Difference.ToString("N2") $ <i class="bi @IconClass"></i>
+                        <div class="stat-content @(IsPositive ? "green" : "red")">
+                            @_performance.ToString("N2") $ <i class="bi @IconClass"></i>
                         </div>
                     </div>
                 </div>

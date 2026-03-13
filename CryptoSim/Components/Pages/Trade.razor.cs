@@ -36,8 +36,6 @@ namespace CryptoSim.Blazor.Components.Pages
 
         // ✅ Champs nécessaires à LoadStatsAsync
         private List<HoldingDto> _holdings = new();
-        private int _cryptoCount = 0;
-        private int _transactionCount = 0;
         private List<OrderDto> _recentOrders = new();
 
         private string GetSelectedCryptoImage() => selectedSymbol switch
