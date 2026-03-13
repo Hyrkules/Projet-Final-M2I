@@ -948,7 +948,7 @@
       "code": "Undefined",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Problème de lecture du fichier cache C:\\Users\\Administrateur\\Documents\\Projet Final\\Projet-Final-M2I\\Gateway\\obj\\project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0."
+      "message": "Problème de lecture du fichier cache C:\\Users\\Administrateur\\Documents\\cours M2I\\projet_final\\Gateway\\obj\\project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0."
     }
   ]
 }
