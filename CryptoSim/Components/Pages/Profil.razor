@@ -42,25 +42,35 @@
             {
                 <h3 class="card-subtitle">RÉSUMÉ ET PERFORMANCE</h3>
                 <div class="gauge-container animate-fade-in">
-                    <div class="circular-gauge">
+                    @* On injecte le dégradé dynamiquement via l'attribut style *@
+                    <div class="circular-gauge"
+                         style="background: conic-gradient(@(IsPositive ? "var(--green)" : "var(--red)") 0% @(Math.Abs(PerformancePercentage).ToString("0.0", System.Globalization.CultureInfo.InvariantCulture))%, #232834 0% 100%);
+                        box-shadow: 0 0 30px @(IsPositive ? "rgba(0, 255, 136, 0.2)" : "rgba(255, 77, 77, 0.2)");">
+        
                         <div class="gauge-inner">
                             <span class="gauge-label">PERFORMANCE GLOBALE</span>
-                            <span class="gauge-value">+55.5%</span>
+                            <span class="gauge-value" style="color: @(IsPositive ? "var(--green)" : "var(--red)")">
+                                @(PerformancePercentage >= 0 ? "+" : "")@PerformancePercentage.ToString("N1")%
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div class="stats-footer animate-fade-in">
                     <div class="mini-box text-gold">
                         <label>FOND INITIAL</label>
-                        <div class="stat-content">10,000.00 $ <i class="bi bi-safe2-fill"></i></div>
+                        <div class="stat-content">@FondInitial.ToString("N2") $ <i class="bi bi-safe2-fill"></i></div>
                     </div>
                     <div class="mini-box text-gold">
                         <label>FOND ACTUEL</label>
-                        <div class="stat-content">11,550.00 $ <i class="bi bi-wallet2"></i></div>
+                        <div class="stat-content">@AuthState.Balance.ToString("N2") $ <i class="bi bi-wallet2"></i></div>
                     </div>
-                    <div class="mini-box highlight-green">
-                        <label>PLUS-VALUE</label>
-                        <div class="stat-content">+1,550.00 $ <i class="bi bi-graph-up-arrow"></i></div>
+
+                    @* Utilisation des propriétés calculées dans le @code *@
+                    <div class="mini-box @StatusClass">
+                        <label>@StatusLabel</label>
+                        <div class="stat-content">
+                            @Difference.ToString("N2") $ <i class="bi @IconClass"></i>
+                        </div>
                     </div>
                 </div>
             }
@@ -127,5 +137,7 @@
 </div>
 
 @code {
+ 
+
     
 }

@@ -30,6 +30,7 @@
             <i class="bi bi-wallet2 text-gold"></i>
             <div>
                 <span class="stat-label">VALEUR TOTALE PORTEFEUILLE</span>
+
                 <span class="stat-value monospace">@TotalPortfolioValue.ToString("N2") $</span>
                 <span class="stat-trend @(TotalProfitLossPercent >= 0 ? "text-green" : "text-red")">
                     <i class="bi @(TotalProfitLossPercent >= 0 ? "bi-arrow-up" : "bi-arrow-down")"></i>
