@@ -9,25 +9,18 @@ window.createCryptoChart = async (containerId, symbol = 'BBTC', helper) => {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    // 1. NETTOYAGE
     if (window.cryptoChartInstance.interval) {
         clearInterval(window.cryptoChartInstance.interval);
         window.cryptoChartInstance.interval = null;
     }
 
-    // On détruit l'ancien graphique s'il existe
     if (window.cryptoChartInstance.chart && typeof window.cryptoChartInstance.chart.remove === 'function') {
-        try {
-            window.cryptoChartInstance.chart.remove();
-        } catch (e) {
-            console.warn("Erreur lors de la suppression du graphique:", e);
-        }
+        try { window.cryptoChartInstance.chart.remove(); } catch (e) { }
         window.cryptoChartInstance.chart = null;
     }
 
     container.innerHTML = '';
 
-    // 2. CRÉATION DU GRAPHIQUE
     const chart = LightweightCharts.createChart(container, {
         width: container.clientWidth,
         height: 350,
@@ -39,15 +32,11 @@ window.createCryptoChart = async (containerId, symbol = 'BBTC', helper) => {
         timeScale: { borderVisible: false, timeVisible: true, secondsVisible: true },
     });
 
-    const lineSeries = chart.addLineSeries({
-        color: '#C1A461',
-        lineWidth: 3,
-    });
-
+    const lineSeries = chart.addLineSeries({ color: '#C1A461', lineWidth: 3 });
     window.cryptoChartInstance.chart = chart;
 
-    // 3. CHARGEMENT INITIAL (Historique)
     const portAPI = "5005";
+
     try {
         const hRes = await fetch(`http://localhost:${portAPI}/api/market/history/${symbol}?limit=100`);
         if (hRes.ok) {
@@ -61,54 +50,37 @@ window.createCryptoChart = async (containerId, symbol = 'BBTC', helper) => {
         }
     } catch (e) { console.error("Erreur historique:", e); }
 
-    // 4. BOUCLE DE MISE À JOUR (Polling)
     window.cryptoChartInstance.interval = setInterval(async () => {
         try {
             const response = await fetch(`http://localhost:${portAPI}/api/market/cryptos/${symbol}`);
             if (response.ok) {
                 const data = await response.json();
-
                 lineSeries.update({
                     time: Math.floor(new Date(data.lastUpdated || Date.now()).getTime() / 1000),
                     value: parseFloat(data.currentPrice)
                 });
-                // Note : Attention à la casse (data.high24h vs data.High24h) selon ta config JSON
-                document.getElementById('live-price-val').innerText = `${data.currentPrice.toFixed(2)} $`;
-                document.getElementById('live-high').innerText = `${data.high24h.toFixed(2)} $`;
-                document.getElementById('live-low').innerText = `${data.low24h.toFixed(2)} $`;
-                document.getElementById('live-vol-24h').innerText = `${data.volume24h.toLocaleString()} $`;
-
-                // 3. Update Blazor
-                if (dotNetHelper) {
-                    dotNetHelper.invokeMethodAsync('UpdateCurrentPrice', data.currentPrice);
-                }
-                // ON PASSE 'data' ENTIER MAINTENANT
-                updateTickerStatsFromLocal(data, symbol);
+                updateTickerStatsFromLocal(data);
+                generateFakeOrderBook(parseFloat(data.currentPrice));
             }
         } catch (e) { console.error("Erreur polling:", e); }
     }, 3000);
 };
 
-function updateTickerStatsFromLocal(data, symbol) {
+function updateTickerStatsFromLocal(data) {
     if (!data) return;
 
-    // Prix principal
     const priceElem = document.getElementById('live-price-val');
     if (priceElem) priceElem.innerText = `${parseFloat(data.currentPrice).toFixed(2)} $`;
 
-    // High 24h
     const highElem = document.getElementById('live-high');
     if (highElem) highElem.innerText = `${parseFloat(data.high24h || data.currentPrice).toFixed(2)} $`;
 
-    // Low 24h
     const lowElem = document.getElementById('live-low');
     if (lowElem) lowElem.innerText = `${parseFloat(data.low24h || data.currentPrice).toFixed(2)} $`;
 
-    // Volume 24h
     const volElem = document.getElementById('live-vol-24h');
     if (volElem) volElem.innerText = `${Math.floor(data.volume24h || 0).toLocaleString()} $`;
 
-    // Variation % (Optionnel - évite l'erreur si changeElem n'existe pas)
     const changeElem = document.getElementById('live-price-change');
     if (changeElem && data.priceChangePercent !== undefined) {
         const change = parseFloat(data.priceChangePercent);
@@ -116,8 +88,65 @@ function updateTickerStatsFromLocal(data, symbol) {
         changeElem.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
     }
 
-    // 3. Notification à Blazor pour le C#
     if (window.cryptoChartInstance.dotNetHelper) {
         window.cryptoChartInstance.dotNetHelper.invokeMethodAsync('UpdateCurrentPrice', parseFloat(data.currentPrice));
     }
+}
+
+function generateFakeOrderBook(currentPrice) {
+    const asks = [];
+    const bids = [];
+
+    for (let i = 1; i <= 8; i++) {
+        const askPrice = currentPrice * (1 + (i * 0.0025));
+        const bidPrice = currentPrice * (1 - (i * 0.0025));
+        const quantity = (Math.random() * 2 + 0.1).toFixed(4);
+        asks.push([askPrice.toFixed(2), quantity]);
+        bids.push([bidPrice.toFixed(2), quantity]);
+    }
+
+    updateOrderBookUI({ asks: asks.reverse(), bids });
+}
+
+function updateOrderBookUI(data) {
+    const container = document.querySelector('.order-book-container');
+    if (!container) return;
+
+    const totalBidQty = data.bids.reduce((s, b) => s + parseFloat(b[1]), 0);
+    const totalAskQty = data.asks.reduce((s, a) => s + parseFloat(a[1]), 0);
+    const total = totalBidQty + totalAskQty;
+    const bidPct = total > 0 ? (totalBidQty / total * 100).toFixed(1) : 50;
+    const askPct = total > 0 ? (totalAskQty / total * 100).toFixed(1) : 50;
+
+    const rows = data.bids.map((bid, i) => {
+        const ask = data.asks[i] || ['0', '0'];
+        const bidQty = parseFloat(bid[1]);
+        const askQty = parseFloat(ask[1]);
+
+        // Dans generateFakeOrderBook, les classes text-green/text-red ne marchent pas
+        // Utilise des styles inline à la place
+        return `
+    <div class="ob-row">
+        <span style="color:var(--white)">${bidQty.toFixed(4)}</span>
+        <span style="color:#26a69a">${parseFloat(bid[0]).toFixed(2)}</span>
+        <span class="ob-separator"></span>
+        <span style="color:#ef5350">${parseFloat(ask[0]).toFixed(2)}</span>
+        <span style="color:var(--white)">${askQty.toFixed(4)}</span>
+    </div>`;
+    }).join('');
+
+    container.innerHTML = `
+    <div class="ob-global-gauge">
+        <div class="ob-global-bid" style="width: ${bidPct}%"></div>
+        <div class="ob-global-ask" style="width: ${askPct}%"></div>
+    </div>
+        <div class="ob-header">
+            <span style="color:var(--white)">QTÉ</span>
+            <span style="color:var(--white)">ACHAT</span>
+            <span></span>
+            <span style="color:var(--white)">VENTE</span>
+            <span style="color:var(--white)">QTÉ</span>
+        </div>
+        ${rows}
+    `;
 }
