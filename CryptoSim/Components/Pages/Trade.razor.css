@@ -46,21 +46,6 @@
     font-size: 0.9rem;
 }
 
-.ob-header {
-    display: flex;
-    justify-content: space-between;
-    color: #666;
-    padding-bottom: 5px;
-}
-
-.ob-row {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    padding: 2px 0;
-    z-index: 1;
-}
-
 .depth-bg {
     position: absolute;
     right: 0;
