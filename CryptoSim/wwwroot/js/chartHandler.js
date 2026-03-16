@@ -46,6 +46,12 @@ window.createCryptoChart = async (containerId, symbol = 'BBTC', helper) => {
                 value: parseFloat(d.price)
             })).sort((a, b) => a.time - b.time);
             lineSeries.setData(formattedData);
+            if (formattedData.length > 0) {
+                const lastPrice = formattedData[formattedData.length - 1].value;
+                if (window.cryptoChartInstance.dotNetHelper) {
+                    window.cryptoChartInstance.dotNetHelper.invokeMethodAsync('UpdateCurrentPrice', lastPrice);
+                }
+            }
             chart.timeScale().fitContent();
         }
     } catch (e) { console.error("Erreur historique:", e); }
@@ -59,8 +65,16 @@ window.createCryptoChart = async (containerId, symbol = 'BBTC', helper) => {
                     time: Math.floor(new Date(data.lastUpdated || Date.now()).getTime() / 1000),
                     value: parseFloat(data.currentPrice)
                 });
-                updateTickerStatsFromLocal(data);
-                generateFakeOrderBook(parseFloat(data.currentPrice));
+
+                // Mise à jour du texte HTML (ça, ça marchait déjà)
+                document.getElementById('live-price-val').innerText = `${data.currentPrice.toFixed(2)} $`;
+
+                // --- CORRECTION ICI ---
+                // On utilise le chemin complet vers le helper stocké au début
+                if (window.cryptoChartInstance.dotNetHelper) {
+                    window.cryptoChartInstance.dotNetHelper.invokeMethodAsync('UpdateCurrentPrice', parseFloat(data.currentPrice));
+                }
+                updateTickerStatsFromLocal(data, symbol);
             }
         } catch (e) { console.error("Erreur polling:", e); }
     }, 3000);
@@ -88,8 +102,9 @@ function updateTickerStatsFromLocal(data) {
         changeElem.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
     }
 
-    if (window.cryptoChartInstance.dotNetHelper) {
-        window.cryptoChartInstance.dotNetHelper.invokeMethodAsync('UpdateCurrentPrice', parseFloat(data.currentPrice));
+    // 3. Notification à Blazor pour le C#
+    if (dotNetHelper) {
+        dotNetHelper.invokeMethodAsync('UpdateCurrentPrice', data.currentPrice);
     }
 }
 

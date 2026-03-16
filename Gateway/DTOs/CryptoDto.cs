@@ -12,3 +12,4 @@
         public decimal Volume24h { get; set; }
     }
 }
+ 
