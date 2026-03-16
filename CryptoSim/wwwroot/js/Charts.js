@@ -76,74 +76,70 @@
 };
 
 window.createLineChart = (data) => {
-    if (typeof Chart === 'undefined') {
-        setTimeout(() => window.createLineChart(data), 50);
-        return;
-    }
-
-    const canvas = document.createElement('canvas');
     const container = document.getElementById('portfolioPerformanceChart');
-    if (!container) return;
+    if (!container || typeof Chart === 'undefined') return;
 
-    // Nettoyage du conteneur
     container.innerHTML = '';
+    const canvas = document.createElement('canvas');
     container.appendChild(canvas);
-
     const ctx = canvas.getContext('2d');
 
-    // Création du dégradé (Vert -> Transparent)
-    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(38, 166, 154, 0.4)'); // Ton vert #26a69a
-    gradient.addColorStop(1, 'rgba(38, 166, 154, 0)');
+    // 1. Déterminer les limites réelles pour placer le 0
+    const min = Math.min(...data.values);
+    const max = Math.max(...data.values);
+
+    // 2. Calculer le pourcentage vertical où se trouve le 0
+    // Formule : (Max / (Max - Min))
+    let zeroPoint = 0.5; // Par défaut au milieu
+    if (max !== min) {
+        zeroPoint = max / (max - min);
+    }
+
+    // Inverser pour le canvas (le haut du canvas est 0, le bas est 1)
+    const stop = 1 - zeroPoint;
+
+    // 3. Créer le dégradé de REMPLISSAGE (Fill)
+    const fillGradient = ctx.createLinearGradient(0, 0, 0, container.clientHeight);
+    fillGradient.addColorStop(0, 'rgba(38, 166, 154, 0.7)');  // Vert vif en haut
+    fillGradient.addColorStop(stop, 'rgba(38, 166, 154, 0.1)'); // Vert léger au 0
+    fillGradient.addColorStop(stop, 'rgba(239, 83, 80, 0.1)');  // Rouge léger au 0
+    fillGradient.addColorStop(1, 'rgba(239, 83, 80, 0.7)');    // Rouge vif en bas
+
+    // 4. Créer le dégradé de la LIGNE (Border)
+    const borderGradient = ctx.createLinearGradient(0, 0, 0, container.clientHeight);
+    borderGradient.addColorStop(0, '#26a69a');    // Vert
+    borderGradient.addColorStop(stop, '#26a69a'); // Vert jusqu'au 0
+    borderGradient.addColorStop(stop, '#ef5350'); // Rouge dès le 0
+    borderGradient.addColorStop(1, '#ef5350');    // Rouge
 
     new Chart(ctx, {
         type: 'line',
         data: {
             labels: data.dates,
             datasets: [{
-                label: 'Valeur du Portefeuille',
                 data: data.values,
                 fill: true,
-                backgroundColor: gradient,
-                borderColor: '#26a69a',
-                borderWidth: 3,
-                pointRadius: 0, // Cache les points pour un look "TradingView"
-                pointHoverRadius: 6,
-                pointHoverBackgroundColor: '#26a69a',
-                pointHoverBorderColor: '#fff',
-                pointHoverBorderWidth: 2,
-                tension: 0.4 // Courbe lisse
+                backgroundColor: fillGradient,
+                borderColor: borderGradient,
+                borderWidth: 4,
+                pointRadius: 0,
+                tension: 0.4
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false }, // Pas besoin de légende pour une seule ligne
-                tooltip: {
-                    mode: 'index',
-                    intersect: false,
-                    backgroundColor: '#1c212d',
-                    titleColor: '#848e9c',
-                    bodyColor: '#fff',
-                    bodyFont: { weight: 'bold' },
-                    callbacks: {
-                        label: (context) => ` ${context.parsed.y.toLocaleString()} $`
-                    }
-                }
-            },
+            plugins: { legend: { display: false } },
             scales: {
-                x: {
-                    grid: { display: false },
-                    ticks: { color: '#848e9c', maxRotation: 0 }
-                },
                 y: {
-                    grid: { color: 'rgba(132, 142, 156, 0.1)' },
-                    ticks: {
-                        color: '#848e9c',
-                        callback: (value) => value + ' $'
-                    }
-                }
+                    grid: {
+                        // On met en avant la ligne du 0 avec une couleur blanche
+                        color: (context) => context.tick.value === 0 ? 'rgba(255, 255, 255, 0.8)' : 'rgba(132, 142, 156, 0.1)',
+                        lineWidth: (context) => context.tick.value === 0 ? 2 : 1
+                    },
+                    ticks: { color: '#848e9c' }
+                },
+                x: { display: false } // Pour un look plus clean
             }
         }
     });
