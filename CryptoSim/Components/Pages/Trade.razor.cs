@@ -2,13 +2,28 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace CryptoSim.Blazor.Components.Pages
 {
-    public partial class Trade
+    public partial class Trade : IDisposable
     {
+        [Inject] private NotificationService NotificationService { get; set; } = default!;
+        private string selectedSymbol = "BBTC";
+        private string TradeMode = "BUY";
+        private decimal TradeAmount = 0; // Quantité de Crypto
+        private decimal FakeEurBalance = 0;
+        private decimal FakeCryptoBalance = 0;
+        private decimal _currentPrice = 0;
 
-        //  Un seul OnAfterRenderAsync
+        private DotNetObjectReference<Trade>? _objRef;
+
+        // Somme totale en $ (Quantité * Prix)
+        private decimal EstimatedTotal => TradeAmount * _currentPrice;
+
+        private List<HoldingDto> _holdings = new();
+        private List<OrderDto> _recentOrders = new();
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
@@ -19,58 +34,34 @@ namespace CryptoSim.Blazor.Components.Pages
                     return;
                 }
 
+                _objRef = DotNetObjectReference.Create(this);
                 await LoadStatsAsync();
 
-                await Task.Delay(500);
-                await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart", selectedSymbol);
+                // On initialise le graphique et on passe la référence pour le prix live
+                await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart", selectedSymbol, _objRef);
 
                 StateHasChanged();
             }
         }
 
-        private string selectedSymbol = "BBTC";
-        private string TradeMode = "BUY";
-        private double TradeAmount = 0;
-        private double CurrentPrice = 1000;
-        private double FakeEurBalance = 0;
-        private double FakeCryptoBalance = 0;
-
-        //  Champs nécessaires à LoadStatsAsync
-        private List<HoldingDto> _holdings = new();
-        private List<OrderDto> _recentOrders = new();
-
-        private string GetSelectedCryptoImage() => selectedSymbol switch
+        [JSInvokable]
+        public void UpdateCurrentPrice(decimal livePrice)
         {
-            "BBTC" => "images/BBTC.png",
-            "PIKA" => "images/PIKA.png",
-            "MOON" => "images/MOON.png",
-            _ => "images/BBTC.png"
-        };
+            _currentPrice = livePrice;
+            StateHasChanged();
+        }
 
         private async Task OnCryptoChanged(ChangeEventArgs e)
         {
             selectedSymbol = e.Value?.ToString() ?? "BBTC";
-            await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart", selectedSymbol);
+            TradeAmount = 0; // Reset montant
+
+            // Recharger les stats pour la nouvelle crypto (solde spécifique)
+            await LoadStatsAsync();
+
+            // Mettre à jour le graphique
+            await JSRuntime.InvokeVoidAsync("createCryptoChart", "cryptoChart", selectedSymbol, _objRef);
         }
-
-        private double EstimatedTotal => (TradeAmount > 0 && CurrentPrice > 0)
-            ? (TradeMode == "BUY" ? (TradeAmount / CurrentPrice) : (TradeAmount * CurrentPrice))
-            : 0;
-
-        [JSInvokable]
-        public void UpdateCurrentPrice(double price)
-        {
-            CurrentPrice = price;
-            StateHasChanged();
-        }
-
-        private string GetBaseAsset() => selectedSymbol switch
-        {
-            "BBTC" => "BBTC",
-            "PIKA" => "PIKA",
-            "MOON" => "MOON",
-            _ => "BBTC"
-        };
 
         private void SwitchMode(string mode)
         {
@@ -81,108 +72,152 @@ namespace CryptoSim.Blazor.Components.Pages
 
         private void SetAmount(int percent)
         {
-            double balance = TradeMode == "BUY" ? FakeEurBalance : FakeCryptoBalance;
-            TradeAmount = Math.Round(balance * (percent / 100.0), 4);
+            if (_currentPrice <= 0)
+            {
+                return;
+            }
+
+            decimal calculatedAmount = 0;
+            if (TradeMode == "BUY")
+            {
+                decimal budget = (FakeEurBalance * (percent / 100m)) * 0.999m;
+                calculatedAmount = budget / _currentPrice;
+            }
+            else
+            {
+                // Calcul : Solde Crypto * pourcentage
+                calculatedAmount = FakeCryptoBalance * (percent / 100m);
+            }
+            TradeAmount = Math.Round(calculatedAmount, 3);
             StateHasChanged();
         }
 
         private async Task ExecuteTrade()
         {
-            if (TradeAmount <= 0) return;
+            // 1. Validation de base
+            if (TradeAmount <= 0)
+            {
+                NotificationService.ShowError("Veuillez saisir une quantité supérieure à 0.");
+                return;
+            }
 
-            //  Calcul correct de la quantité selon le mode
-            double quantity = TradeMode == "BUY"
-                ? TradeAmount / CurrentPrice   // $ → crypto
-                : TradeAmount;                 // déjà en crypto
+            if (_currentPrice <= 0)
+            {
+                NotificationService.ShowError("Le prix du marché n'est pas encore disponible. Veuillez patienter.");
+                return;
+            }
 
-            Console.WriteLine($">>> ExecuteTrade | Mode: {TradeMode} | Amount: {TradeAmount} | Quantity calculée: {quantity} | Price: {CurrentPrice}");
+            // 2. Calcul du coût et vérification des soldes (Validation pré-envoi)
+            decimal totalCost = TradeAmount * _currentPrice;
+
+            if (TradeMode == "BUY")
+            {
+                // On vérifie si l'utilisateur a assez de cash (incluant une petite marge pour d'éventuels frais côté serveur)
+                if (totalCost > FakeEurBalance)
+                {
+                    NotificationService.ShowError($"Solde insuffisant - Coût estimé : {totalCost:N2} $, mais vous ne possédez que {FakeEurBalance:N2} $.");
+                    return;
+                }
+            }
+            else // SELL
+            {
+                if (TradeAmount > FakeCryptoBalance)
+                {
+                    NotificationService.ShowError($"Stock de {selectedSymbol} insuffisant. Vous essayez de vendre {TradeAmount} mais vous n'avez que {FakeCryptoBalance} en portefeuille.");
+                    return;
+                }
+            }
+
+            // 3. Préparation des données pour l'envoi
+            decimal executedAmount = TradeAmount;
+            decimal executedPrice = _currentPrice;
+            string actionText = TradeMode == "BUY" ? "D'ACHAT" : "DE VENTE";
+
+            var orderRequest = new
+            {
+                CryptoSymbol = selectedSymbol,
+                Type = TradeMode == "BUY" ? "Buy" : "Sell",
+                Quantity = executedAmount,
+                Price = executedPrice
+            };
 
             try
             {
-                Http.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Bearer", AuthState.Token);
-
-                var payload = new
-                {
-                    CryptoSymbol = GetBaseAsset(),
-                    Type = TradeMode == "BUY" ? "Buy" : "Sell",
-                    Quantity = quantity,       //  quantité réelle en crypto
-                    Price = CurrentPrice
-                };
-
-                Console.WriteLine($">>> Payload : CryptoSymbol={payload.CryptoSymbol}, Type={payload.Type}, Quantity={payload.Quantity}, Price={payload.Price}");
-
-                var response = await Http.PostAsJsonAsync("/api/orders", payload);
-                Console.WriteLine($">>> Réponse : {(int)response.StatusCode} {response.StatusCode}");
+                var response = await Http.PostAsJsonAsync("/api/orders", orderRequest);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine(">>> Ordre accepté ");
                     TradeAmount = 0;
-                    await LoadStatsAsync();
+                    await LoadStatsAsync(); // Met à jour les soldes après l'ordre
+
+                    // Message de succès complet
+                    NotificationService.ShowSuccess(
+                        $"ORDRE {actionText} RÉUSSI - {executedAmount} {selectedSymbol} à {executedPrice:N2} $ (Total: {totalCost:N2} $)");
                 }
                 else
                 {
-                    var error = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($">>> Erreur API : {error}");
+                    // Lecture de l'erreur envoyée par le serveur (ex: erreur métier du backend)
+                    var errorBody = await response.Content.ReadAsStringAsync();
+
+                    // Si le serveur renvoie un objet d'erreur standard ASP.NET, on essaie de l'extraire, 
+                    // sinon on affiche le corps de la réponse.
+                    NotificationService.ShowError($"Le serveur a refusé l'ordre : {errorBody}");
                 }
             }
             catch (Exception ex)
             {
+                NotificationService.ShowError("Impossible de contacter le service de trading. Vérifiez votre connexion.");
                 Console.WriteLine($">>> EXCEPTION : {ex.Message}");
             }
         }
 
-        //  Copié du même pattern que Home
+        private string GetBaseAsset() => selectedSymbol;
+
+        private string GetSelectedCryptoImage() => selectedSymbol switch
+        {
+            "BBTC" => "images/BBTC.png",
+            "PIKA" => "images/PIKA.png",
+            "MOON" => "images/MOON.png",
+            _ => "images/BBTC.png"
+        };
+
         private async Task LoadStatsAsync()
         {
+            if (string.IsNullOrEmpty(AuthState.Token)) return;
 
-            Http.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", AuthState.Token);
-
-            try
-            {
-                var raw = await Http.GetStringAsync("/api/portfolio/holdings");
-
-                var holdings = System.Text.Json.JsonSerializer.Deserialize<List<HoldingDto>>(raw,
-                    new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                _holdings = holdings ?? new();
-
-                var eurHolding = _holdings.FirstOrDefault(h => h.CryptoSymbol == "EUR");
-                FakeEurBalance = (double)AuthState.Balance;
-
-                var cryptoHolding = _holdings.FirstOrDefault(h => h.CryptoSymbol == GetBaseAsset());
-                FakeCryptoBalance = (double)(cryptoHolding?.Quantity ?? 0);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($">>> EXCEPTION holdings : {ex.Message}");
-            }
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AuthState.Token);
 
             try
             {
-                Console.WriteLine(">>> Appel /api/orders...");
+                _holdings = await Http.GetFromJsonAsync<List<HoldingDto>>("/api/portfolio/holdings") ?? new();
+
+                // Mise à jour des soldes pour l'UI
+                FakeEurBalance = AuthState.Balance; // Le cash vient du profil global
+
+                var cryptoHolding = _holdings.FirstOrDefault(h => h.CryptoSymbol == selectedSymbol);
+                FakeCryptoBalance = cryptoHolding?.Quantity ?? 0;
+            }
+            catch (Exception ex) { Console.WriteLine($"Err holdings: {ex.Message}"); }
+
+            try
+            {
                 var orders = await Http.GetFromJsonAsync<List<OrderDto>>("/api/orders");
                 _recentOrders = orders?.OrderByDescending(o => o.ExecutedAt).Take(5).ToList() ?? new();
-                Console.WriteLine($">>> {_recentOrders.Count} ordres récupérés");
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($">>> EXCEPTION orders : {ex.Message}");
-            }
+            catch (Exception ex) { Console.WriteLine($"Err orders: {ex.Message}"); }
 
             StateHasChanged();
-            Console.WriteLine(">>> LoadStatsAsync terminé ");
         }
 
-        private class HoldingDto
+        // Classes de données (DTO)
+        public class HoldingDto
         {
             public string CryptoSymbol { get; set; } = string.Empty;
             public decimal Quantity { get; set; }
             public decimal CurrentValue { get; set; }
         }
 
-        private class OrderDto
+        public class OrderDto
         {
             public string CryptoSymbol { get; set; } = string.Empty;
             public string Type { get; set; } = string.Empty;
@@ -191,13 +226,6 @@ namespace CryptoSim.Blazor.Components.Pages
             public DateTime? ExecutedAt { get; set; }
         }
 
-        private void OnInputAmount(ChangeEventArgs e)
-        {
-            if (double.TryParse(e.Value?.ToString(), out var result))
-            {
-                TradeAmount = result;
-                StateHasChanged();
-            }
-        }
+        public void Dispose() => _objRef?.Dispose();
     }
 }

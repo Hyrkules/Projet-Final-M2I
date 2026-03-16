@@ -57,6 +57,12 @@ window.createCryptoChart = async (containerId, symbol = 'BBTC', helper) => {
                 value: parseFloat(d.price)
             })).sort((a, b) => a.time - b.time);
             lineSeries.setData(formattedData);
+            if (formattedData.length > 0) {
+                const lastPrice = formattedData[formattedData.length - 1].value;
+                if (window.cryptoChartInstance.dotNetHelper) {
+                    window.cryptoChartInstance.dotNetHelper.invokeMethodAsync('UpdateCurrentPrice', lastPrice);
+                }
+            }
             chart.timeScale().fitContent();
         }
     } catch (e) { console.error("Erreur historique:", e); }
@@ -72,17 +78,16 @@ window.createCryptoChart = async (containerId, symbol = 'BBTC', helper) => {
                     time: Math.floor(new Date(data.lastUpdated || Date.now()).getTime() / 1000),
                     value: parseFloat(data.currentPrice)
                 });
-                // Note : Attention à la casse (data.high24h vs data.High24h) selon ta config JSON
-                document.getElementById('live-price-val').innerText = `${data.currentPrice.toFixed(2)} $`;
-                document.getElementById('live-high').innerText = `${data.high24h.toFixed(2)} $`;
-                document.getElementById('live-low').innerText = `${data.low24h.toFixed(2)} $`;
-                document.getElementById('live-vol-24h').innerText = `${data.volume24h.toLocaleString()} $`;
 
-                // 3. Update Blazor
-                if (dotNetHelper) {
-                    dotNetHelper.invokeMethodAsync('UpdateCurrentPrice', data.currentPrice);
+                // Mise à jour du texte HTML (ça, ça marchait déjà)
+                document.getElementById('live-price-val').innerText = `${data.currentPrice.toFixed(2)} $`;
+
+                // --- CORRECTION ICI ---
+                // On utilise le chemin complet vers le helper stocké au début
+                if (window.cryptoChartInstance.dotNetHelper) {
+                    window.cryptoChartInstance.dotNetHelper.invokeMethodAsync('UpdateCurrentPrice', parseFloat(data.currentPrice));
                 }
-                // ON PASSE 'data' ENTIER MAINTENANT
+
                 updateTickerStatsFromLocal(data, symbol);
             }
         } catch (e) { console.error("Erreur polling:", e); }
@@ -117,7 +122,7 @@ function updateTickerStatsFromLocal(data, symbol) {
     }
 
     // 3. Notification à Blazor pour le C#
-    if (window.cryptoChartInstance.dotNetHelper) {
-        window.cryptoChartInstance.dotNetHelper.invokeMethodAsync('UpdateCurrentPrice', parseFloat(data.currentPrice));
+    if (dotNetHelper) {
+        dotNetHelper.invokeMethodAsync('UpdateCurrentPrice', data.currentPrice);
     }
 }

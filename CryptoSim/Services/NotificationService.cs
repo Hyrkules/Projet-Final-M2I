@@ -27,7 +27,7 @@ namespace CryptoSim.Blazor.Services
             Message = message;
             IsVisible = true;
             OnShow?.Invoke(message, IsError);
-            _ = HideAfterDelay(4000);
+            _ = HideAfterDelay(20000);
         }
 
         public void Hide()

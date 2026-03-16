@@ -13,7 +13,7 @@
             {
                 <div class="global-alert-wrapper">
                     @* On force l'état "show" car le @if gère déjà la présence *@
-                    <div class="success-alert-bar show">
+                    <div class="success-alert-bar show @(Notification.IsError ? "border-red" : "border-green")">
                         <div class="alert-content">
                             <i class="bi @(Notification.IsError ? "bi-x-circle-fill error-glow" : "bi-check-circle-fill success-glow")"></i>
                             <span>@Notification.Message</span>
